@@ -22,7 +22,8 @@ public class Hex
 
     public Vector3 Position()
     {
-        float radius = 0.525f; // =0.5 to clean grid 
+        //float radius = 0.5f; // =0.5 to clean grid 
+        float radius = 0.525f; // small grid
         float height = radius * 2;
         float width = WIDTH_MULTIPLIER * height;
 

@@ -37,19 +37,28 @@ public class HexMap : MonoBehaviour
         var continent = CreateContinent(OffsetOddToAxial(MapResolution.x*2/4, MapResolution.y / 2), 2,_minContinentTilesCount);
         SetTilesSprites(GetHexesAtAxialCoordinates(continent), TerrainType.Grass);
         
-        /*var secondcontinent = CreateContinent(OffsetOddToAxial(MapResolution.x/4, MapResolution.y / 2), 2,1000);
-        SetTilesSprites(GetHexesAtAxialCoordinates(secondcontinent), TerrainType.Grass);
-        Debug.Log(secondcontinent.Count);*/
+        
 
 
-        List<Vector2Int> continentMountain = CreateMountainsAtContinent(continent, 300);
+        List<Vector2Int> continentMountain = CreateMountainsAtContinent(continent, continent.Count*20/100);  // 30%
         SetTilesSprites(GetHexesAtAxialCoordinates(continentMountain), TerrainType.Mountain);
         
-        List<Vector2Int> continentHills = CreateMountainsAtContinent(continent, 300);
+        List<Vector2Int> continentHills = CreateMountainsAtContinent(continent, continent.Count*30/100);
         SetTilesSprites(GetHexesAtAxialCoordinates(continentHills), TerrainType.Hill);
         
         Debug.Log(continent.Count);
         
+        var secondcontinent = CreateContinent(OffsetOddToAxial(MapResolution.x/4, MapResolution.y / 2), 2,200);
+        SetTilesSprites(GetHexesAtAxialCoordinates(secondcontinent), TerrainType.Desert);
+        Debug.Log(secondcontinent.Count);
+        
+        var thirdContinent = CreateContinent(OffsetOddToAxial(MapResolution.x*3/4, MapResolution.y / 2), 2,300);
+        SetTilesSprites(GetHexesAtAxialCoordinates(thirdContinent), TerrainType.Desert);
+        Debug.Log(thirdContinent.Count);
+        
+        var poleNContinent = CreateContinent(OffsetOddToAxial(MapResolution.x/2, MapResolution.y* 9/10 ), 2,300);
+        SetTilesSprites(GetHexesAtAxialCoordinates(poleNContinent), TerrainType.Snow);
+        Debug.Log(thirdContinent.Count);
     }
 
     private List<Vector2Int> CreateMountainsAtContinent(List<Vector2Int> continent, int minTilesNumber)
