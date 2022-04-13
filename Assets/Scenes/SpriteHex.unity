@@ -394,7 +394,7 @@ MonoBehaviour:
   HexPrefab: {fileID: 7269950964969118158, guid: ed268553b9d91e24b94a3263879f9169, type: 3}
   SpriteSettings: {fileID: 11400000, guid: 413c35e8711b80c49bc37ed038d221e8, type: 2}
   MapResolution: {x: 90, y: 60}
-  _minContinentTilesCount: 1395
+  _minContinentTilesCount: 1500
 --- !u!1 &462197036
 GameObject:
   m_ObjectHideFlags: 0
