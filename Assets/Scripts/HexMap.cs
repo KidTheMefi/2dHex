@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class HexMap : MonoBehaviour
 {
@@ -59,27 +61,21 @@ public class HexMap : MonoBehaviour
         var poleNContinent = CreateContinent(OffsetOddToAxial(MapResolution.x/2, MapResolution.y* 9/10 ), 2,300);
         SetTilesSprites(GetHexesAtAxialCoordinates(poleNContinent), TerrainType.Snow);
         Debug.Log(thirdContinent.Count);
+
+        Vector2Int randomOffset = new Vector2Int(Random.Range(0, 10), Random.Range(0, 10));
+        var line = GetAxialLine(new Vector2Int(0, 0), OffsetOddToAxial(randomOffset) );
+        SetTilesSprites(GetHexesAtAxialCoordinates(line), TerrainType.Snow);
     }
 
-    private List<Vector2Int> CreateMountainsAtContinent(List<Vector2Int> continent, int minTilesNumber)
+    private void SetTilesSprites(List<Hex> hexes, TerrainType terrainType)
     {
-        //not single responsibility !!!!
-        List<Vector2Int> continentMountains = new List<Vector2Int>();
-        while (continentMountains.Count<minTilesNumber)
+        foreach (var hex in hexes)
         {
-            foreach (var axial in CreatePieceOffMountain(continent[Random.Range(0, continent.Count)], 1))
-            {
-                if (continent.Contains(axial))
-                {
-                    continentMountains.Add(axial);
-                    continent.Remove(axial);
-                }
-            }
+            _hexToHexViews[hex].SpriteRenderer.sprite = SpriteSettings.GetSprite(terrainType);
         }
-        return continentMountains;
     }
-    
-    private void GenerateMap()
+
+    private void GenerateMap() //more like generate hex grid
     {
         _hexStorageOddOffset = new Hex[MapResolution.x, MapResolution.y];
         _hexToHexViews = new Dictionary<Hex, HexView>();
@@ -131,14 +127,6 @@ public class HexMap : MonoBehaviour
         }
         return _hexStorageOddOffset[offset.x, offset.y];
     }
-    
-    private void SetTilesSprites(List<Hex> hexes, TerrainType terrainType)
-    {
-        foreach (var hex in hexes)
-        {
-            _hexToHexViews[hex].SpriteRenderer.sprite = SpriteSettings.GetSprite(terrainType);
-        }
-    }
 
     private bool HexAtAxialCoordinateExist(Vector2Int axial)
     {
@@ -189,6 +177,61 @@ public class HexMap : MonoBehaviour
         }
         return hexes;
     }
+
+    private List<Vector2Int> GetAxialLine(Vector2Int start, Vector2Int end)
+    {
+
+        int n = AxialDistance(start, end);
+        List<Vector2Int> hexes = new List<Vector2Int>();
+
+        float step = 1f / Mathf.Max(n, 1);
+
+        for (int i = 0; i <= n; i++)
+        {
+            hexes.Add(AxialRound(Vector2.Lerp(start, end, step * i)));
+        }
+        return hexes;
+    }
+
+    private Vector2Int AxialRound(Vector2 axial)
+    {
+        return CubeToAxial(CubeRound(AxialToCube(axial)));
+    }
+
+    private Vector3Int CubeRound(Vector3 cube)
+    {
+        int x = Mathf.RoundToInt(cube.x);
+        int y = Mathf.RoundToInt(cube.y);
+        int z = Mathf.RoundToInt(cube.z);
+
+        float xDiff = Mathf.Abs((x - cube.x));
+        float yDiff = Mathf.Abs((y - cube.y));
+        float zDiff = Mathf.Abs((z - cube.z));
+
+        if (xDiff > yDiff && xDiff > zDiff)
+        {
+            x = -y - z;
+        }
+        else if (yDiff>zDiff)
+        {
+            y = -x - z;
+        }
+        else
+        {
+            z = -x - y;
+        }
+        return new Vector3Int(x, y, z);
+    }
+
+    private Vector2Int CubeToAxial(Vector3Int cube)
+    {
+        return new Vector2Int(cube.x, cube.y);
+    }
+    
+    private Vector3 AxialToCube(Vector2 axial)
+    {
+        return new Vector3(axial.x, axial.y, -axial.x - axial.y);
+    }
     
     private Vector2Int AxialNeighbor(Vector2Int hexAxial, int direction)
     {
@@ -225,7 +268,20 @@ public class HexMap : MonoBehaviour
         return new Vector2Int(col, y);
     }
 
-    private List<Vector2Int> CreateContinent(Vector2Int center, int startScale, int minTilesNumber)
+    private Vector2Int RandomAxialDirection()
+    {
+        return _axialDirectionVectors[Random.Range(0, 6)];
+    }
+
+    private Vector2Int RandomAxialAtRadius(Vector2Int center, int radius)
+    {
+        List<Vector2Int> hexesAxial = GetAxialRingWithRadius(center, radius);
+        return hexesAxial[Random.Range(0, hexesAxial.Count)];
+    }
+
+    #region LandGeneration
+
+     private List<Vector2Int> CreateContinent(Vector2Int center, int startScale, int minTilesNumber)
     {
         List<Vector2Int> continentTilesCoordinate = CreateContinentPart(center, startScale);
         
@@ -279,6 +335,24 @@ public class HexMap : MonoBehaviour
         return landCoordinates;
     }
     
+    private List<Vector2Int> CreateMountainsAtContinent(List<Vector2Int> continent, int minTilesNumber)
+    {
+        //not single responsibility !!!!
+        List<Vector2Int> continentMountains = new List<Vector2Int>();
+        while (continentMountains.Count<minTilesNumber)
+        {
+            foreach (var axial in CreatePieceOffMountain(continent[Random.Range(0, continent.Count)], 1))
+            {
+                if (continent.Contains(axial))
+                {
+                    continentMountains.Add(axial);
+                    continent.Remove(axial);
+                }
+            }
+        }
+        return continentMountains;
+    }
+    
     private List<Vector2Int> CreatePieceOffMountain(Vector2Int center, int startScale)
     {
         List<Vector2Int> landCoordinates = GetAxialAreaAtRange(center, startScale);
@@ -289,14 +363,5 @@ public class HexMap : MonoBehaviour
         return landCoordinates;
     }
 
-    private Vector2Int RandomAxialDirection()
-    {
-        return _axialDirectionVectors[Random.Range(0, 6)];
-    }
-
-    private Vector2Int RandomAxialAtRadius(Vector2Int center, int radius)
-    {
-        List<Vector2Int> hexesAxial = GetAxialRingWithRadius(center, radius);
-        return hexesAxial[Random.Range(0, hexesAxial.Count)];
-    }
+  #endregion
 }

@@ -43,37 +43,67 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 3b6bb33ebfe48b94d9e0368af96624cd, type: 3}
     - {fileID: 2800000, guid: 53d3ee5bc3b9ea14f83bf26ac7fba65a, type: 3}
     - {fileID: 2800000, guid: 5af3d0e2ffe39e44c83110cefade49a1, type: 3}
-    totalSpriteSurfaceArea: 67500
+    - {fileID: 2800000, guid: 767c54fe68117df44ad68937d224d457, type: 3}
+    - {fileID: 2800000, guid: 076430ce5e1f1c9489d13a91b2140793, type: 3}
+    - {fileID: 2800000, guid: 683e96164d2b77f479f49387b1a26a40, type: 3}
+    - {fileID: 2800000, guid: 913a33769ce7ef74cb6f3642e0fe97e2, type: 3}
+    - {fileID: 2800000, guid: 7408e1d4480459d45bbf046b0675b9d4, type: 3}
+    - {fileID: 2800000, guid: 7b6229719f2f2364190e32502b99e82c, type: 3}
+    - {fileID: 2800000, guid: 351ca6ea2a557794dbc414c7321ea50d, type: 3}
+    - {fileID: 2800000, guid: 96ed829a2eeda624dafe9b957a2ecbc6, type: 3}
+    - {fileID: 2800000, guid: ff3928b9719effb48a913d4a1db5e24c, type: 3}
+    - {fileID: 2800000, guid: d23f013cf6c6ea34db8be8f8964052cb, type: 3}
+    totalSpriteSurfaceArea: 123750
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: d585bed080469664f97d35703c5580e3, type: 3}
+  - {fileID: 21300000, guid: 7b6229719f2f2364190e32502b99e82c, type: 3}
   - {fileID: 21300000, guid: 5af3d0e2ffe39e44c83110cefade49a1, type: 3}
   - {fileID: 21300000, guid: 283a2073886b5054fa253b44257234ca, type: 3}
   - {fileID: 21300000, guid: 5553a2c3f38ded54997e3489f7818994, type: 3}
+  - {fileID: 21300000, guid: 7408e1d4480459d45bbf046b0675b9d4, type: 3}
+  - {fileID: 21300000, guid: 683e96164d2b77f479f49387b1a26a40, type: 3}
+  - {fileID: 21300000, guid: 913a33769ce7ef74cb6f3642e0fe97e2, type: 3}
   - {fileID: 21300000, guid: a73140a6a952d7c4180c9e1d8b58c38c, type: 3}
   - {fileID: 21300000, guid: 35d36ce7376995741b8bc1310598d53c, type: 3}
   - {fileID: 21300000, guid: 7c9b92d8a4399e241ac991cc5e01bf7f, type: 3}
   - {fileID: 21300000, guid: a2d0c0f8dc2a5e34f9ef41ec3e589c87, type: 3}
+  - {fileID: 21300000, guid: ff3928b9719effb48a913d4a1db5e24c, type: 3}
+  - {fileID: 21300000, guid: 96ed829a2eeda624dafe9b957a2ecbc6, type: 3}
+  - {fileID: 21300000, guid: 351ca6ea2a557794dbc414c7321ea50d, type: 3}
   - {fileID: 21300000, guid: 53d3ee5bc3b9ea14f83bf26ac7fba65a, type: 3}
   - {fileID: 21300000, guid: c34b1c1c3ff726f48b8d8e8df2b38756, type: 3}
+  - {fileID: 21300000, guid: d23f013cf6c6ea34db8be8f8964052cb, type: 3}
   - {fileID: 21300000, guid: 3b6bb33ebfe48b94d9e0368af96624cd, type: 3}
+  - {fileID: 21300000, guid: 076430ce5e1f1c9489d13a91b2140793, type: 3}
   - {fileID: 21300000, guid: 334ebecea7e375f42a115cd1c6494909, type: 3}
+  - {fileID: 21300000, guid: 767c54fe68117df44ad68937d224d457, type: 3}
   m_PackedSpriteNamesToIndex:
   - HexMGrass3
+  - HexSandV1
   - HexWater2
   - HexHill
   - HexHill2
+  - HexSandDead 1
+  - HexSand2
+  - HexSand3
   - HexWater3
   - HexHill3
   - HexMountain2
   - HexMGrass1
+  - HexSnow
+  - HexSandV3
+  - HexSandV2
   - HexWater
   - HexMountain
+  - HexSnow2
   - HexMountain3
+  - HexSand
   - HexMGrass2
+  - HexSnow3
   m_RenderDataMap: {}
   m_Tag: New Sprite Atlas
   m_IsVariant: 0
