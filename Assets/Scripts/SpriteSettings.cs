@@ -5,7 +5,7 @@ using UnityEngine.Assertions;
 
 public enum TerrainType
 {
-    Water, Grass, Hill, Mountain, Desert, Snow
+    Water, Grass, Hill, Mountain, Desert, Snow, Forrest
 }
 
 [CreateAssetMenu(menuName = "HexGame/SpriteSettings")]
