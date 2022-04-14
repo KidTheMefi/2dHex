@@ -46,15 +46,17 @@ public class HexUtils
 
     public static List<Vector2Int> GetAxialLine(Vector2Int start, Vector2Int end)
     {
+        //HAVE PROBLEMS AT THE EDGE OF MAP!!!
+        // TODO: SMTHG
 
         int n = AxialDistance(start, end);
         List<Vector2Int> hexes = new List<Vector2Int>();
-
+        Vector2 nudge = new Vector2(0.00001f, 0.00001f); //to round point that’s on an edge
         float step = 1f / Mathf.Max(n, 1);
 
         for (int i = 0; i <= n; i++)
         {
-            hexes.Add(AxialRound(Vector2.Lerp(start, end, step * i)));
+            hexes.Add(AxialRound(Vector2.Lerp(start + nudge, end+ nudge, step * i)));
         }
         return hexes;
     }
@@ -138,5 +140,5 @@ public class HexUtils
     {
         return AxialDirectionVectors[Random.Range(0, 6)];
     }
-    
+
 }

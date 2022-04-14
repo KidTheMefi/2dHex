@@ -25,9 +25,9 @@ MonoBehaviour:
     - {fileID: 21300000, guid: d585bed080469664f97d35703c5580e3, type: 3}
   - _terrainType: 2
     _sprites:
-    - {fileID: 21300000, guid: 35d36ce7376995741b8bc1310598d53c, type: 3}
-    - {fileID: 21300000, guid: 283a2073886b5054fa253b44257234ca, type: 3}
-    - {fileID: 21300000, guid: 5553a2c3f38ded54997e3489f7818994, type: 3}
+    - {fileID: 21300000, guid: f93d42fad32d9934ca012e423cb584fa, type: 3}
+    - {fileID: 21300000, guid: c66413e6cd8fc9b49a38c2daf86036c5, type: 3}
+    - {fileID: 21300000, guid: d2c3594fbd67b9141a36eab95812ec21, type: 3}
   - _terrainType: 3
     _sprites:
     - {fileID: 21300000, guid: c34b1c1c3ff726f48b8d8e8df2b38756, type: 3}
@@ -43,3 +43,8 @@ MonoBehaviour:
     - {fileID: 21300000, guid: ff3928b9719effb48a913d4a1db5e24c, type: 3}
     - {fileID: 21300000, guid: d23f013cf6c6ea34db8be8f8964052cb, type: 3}
     - {fileID: 21300000, guid: 767c54fe68117df44ad68937d224d457, type: 3}
+  - _terrainType: 6
+    _sprites:
+    - {fileID: 21300000, guid: 3e3786272fc3abe459d49fd06a344c68, type: 3}
+    - {fileID: 21300000, guid: d8226b3c6a130c04aa26fecd09e24454, type: 3}
+    - {fileID: 21300000, guid: 10828a39ed3e4644bb5472da95352527, type: 3}
