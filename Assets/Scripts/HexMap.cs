@@ -11,6 +11,7 @@ public class HexMap : MonoBehaviour, IWeightedGraph<Vector2Int>
 {
     [SerializeField] private HexView HexPrefab;
     [SerializeField] private GameObject _pathPointCircle;
+    [SerializeField] private LineRenderer _riverPrefab;
     [SerializeField] private GameObject _startPathPointCircle;
     [SerializeField] private GameObject _endPathPointCircle;
     
@@ -19,8 +20,11 @@ public class HexMap : MonoBehaviour, IWeightedGraph<Vector2Int>
     [SerializeField] private Vector2Int MapResolution;
     [SerializeField] private int _minContinentTilesCount;
 
-    private HashSet<Vector2Int> _mountains = new HashSet<Vector2Int>();
-    private HashSet<Vector2Int> _forrest = new HashSet<Vector2Int>();
+    private GameObject _centerPoint;
+    private List<LineRenderer> _testRivers = new List<LineRenderer>();
+    private List<Vector2Int> _continentReachableHex;
+    private List<Vector2Int> _tutorPath;
+
     private HashSet<GameObject> _pathPoints = new HashSet<GameObject>();
     
     private Hex[,] _hexStorageOddOffset;
@@ -28,18 +32,10 @@ public class HexMap : MonoBehaviour, IWeightedGraph<Vector2Int>
     
     void Start()
     {
-        
         GenerateMap();
-        
     }
 
       #region FindPath
-
-    private bool Passable(Vector2Int axial)
-    {
-        return !_mountains.Contains(axial);
-    }
-
     public int Cost(Vector2Int axial)
     {
         return GetHexAtAxialCoordinate(axial).MovementCost;
@@ -50,34 +46,61 @@ public class HexMap : MonoBehaviour, IWeightedGraph<Vector2Int>
         foreach (var dir in HexUtils.AxialDirectionVectors) 
         {
             Vector2Int next = new Vector2Int(axial.x + dir.x, axial.y + dir.y);
-            if (HexAtAxialCoordinateExist(next) && Passable(next)) 
+            if (HexAtAxialCoordinateExist(next) && GetHexAtAxialCoordinate(next).IsPassible) 
             {
                 yield return next;
             }
         }
     }
-    
-   
-    
+
       #endregion
+
+    public Vector2Int CenterOf(List<Vector2Int> continent)
+    {
+        Vector2Int centerSum = new Vector2Int(0,0);
+
+        foreach (var vector2 in continent)
+        {
+            centerSum += vector2;
+        }
+        return new Vector2Int(centerSum.x / continent.Count, centerSum.y / continent.Count);
+    }
     
     public void Restart()
     {
         foreach (var hex in _hexToHexViews)
         {
             hex.Value.SpriteRenderer.sprite = SpriteSettings.GetSprite(TerrainType.Water);
+            hex.Key.SetPassible(false);
         }
+        
+        _continentReachableHex = CreateContinent(HexUtils.OffsetOddToAxial(MapResolution.x*2/4, MapResolution.y / 2), 2,_minContinentTilesCount);
+        var continent = new List<Vector2Int>();
 
-        var continent = CreateContinent(HexUtils.OffsetOddToAxial(MapResolution.x*2/4, MapResolution.y / 2), 2,_minContinentTilesCount);
+
+        if (_centerPoint != null)
+        {
+            Destroy(_centerPoint);
+        }
+        Vector2Int centerAxial = CenterOf(_continentReachableHex);
+        Debug.Log(centerAxial);
+        _centerPoint = Instantiate(_pathPointCircle, GetHexAtAxialCoordinate(centerAxial).Position(), Quaternion.identity);
+
+        
+        foreach (var hex in _continentReachableHex)
+        {
+            continent.Add(hex);
+            GetHexAtAxialCoordinate(hex).SetPassible(true);
+        }
         SetTilesSprites(GetHexesAtAxialCoordinates(continent), TerrainType.Grass);
         
         List<Vector2Int> continentMountain = CreateMountainsAtContinent(continent, continent.Count*10/100);
         
-        _mountains.Clear();
         foreach (var axial in continentMountain)
         {
-            _mountains.Add(axial);
+            GetHexAtAxialCoordinate(axial).SetPassible(false);
         }
+        
         SetTilesSprites(GetHexesAtAxialCoordinates(continentMountain), TerrainType.Mountain);
         
         List<Vector2Int> continentForrest = CreateMountainsAtContinent(continent, continent.Count*20/100);
@@ -89,18 +112,21 @@ public class HexMap : MonoBehaviour, IWeightedGraph<Vector2Int>
         SetTilesSprites(GetHexesAtAxialCoordinates(continentForrest), TerrainType.Forrest);
         
         List<Vector2Int> continentHills = CreateMountainsAtContinent(continent, continent.Count*10/100);
+        foreach (var hills in GetHexesAtAxialCoordinates(continentHills))
+        {
+            hills.SetMovementCost(5);
+        }
         SetTilesSprites(GetHexesAtAxialCoordinates(continentHills), TerrainType.Hill);
-        
-        
-        
-       /* var secondcontinent = CreateContinent(HexUtils.OffsetOddToAxial(MapResolution.x/4, MapResolution.y / 2), 2,200);
-        SetTilesSprites(GetHexesAtAxialCoordinates(secondcontinent), TerrainType.Desert);
 
-        var thirdContinent = CreateContinent(HexUtils.OffsetOddToAxial(MapResolution.x*3/4, MapResolution.y / 2), 2,300);
-        SetTilesSprites(GetHexesAtAxialCoordinates(thirdContinent), TerrainType.Desert);
-
-        var poleNContinent = CreateContinent(HexUtils.OffsetOddToAxial(MapResolution.x/2, MapResolution.y* 9/10 ), 2,300);
-        SetTilesSprites(GetHexesAtAxialCoordinates(poleNContinent), TerrainType.Snow);*/
+        
+        /* var secondcontinent = CreateContinent(HexUtils.OffsetOddToAxial(MapResolution.x/4, MapResolution.y / 2), 2,200);
+         SetTilesSprites(GetHexesAtAxialCoordinates(secondcontinent), TerrainType.Desert);
+ 
+         var thirdContinent = CreateContinent(HexUtils.OffsetOddToAxial(MapResolution.x*3/4, MapResolution.y / 2), 2,300);
+         SetTilesSprites(GetHexesAtAxialCoordinates(thirdContinent), TerrainType.Desert);
+ 
+         var poleNContinent = CreateContinent(HexUtils.OffsetOddToAxial(MapResolution.x/2, MapResolution.y* 9/10 ), 2,300);
+         SetTilesSprites(GetHexesAtAxialCoordinates(poleNContinent), TerrainType.Snow);*/
 
         /*TODO: LineDrawingExample
          
@@ -111,43 +137,83 @@ public class HexMap : MonoBehaviour, IWeightedGraph<Vector2Int>
         SetTilesSprites(GetHexesAtAxialCoordinates(line), TerrainType.Snow);*/
     }
 
+    public void DrawRandomRivers(int count)
+    { 
+        if (_testRivers.Count != 0)
+        {
+            foreach (var river in _testRivers)
+            {
+                Destroy(river.gameObject);
+            }
+            _testRivers.Clear();
+        }
+
+        for (int i = 0; i < count; i++)
+        {
+            DrawRandomRiver();
+        }
+    }
+    
+    public void DrawRandomRiver()
+    {
+       
+        List<Vector3> positions = new List<Vector3>();
+        var currentRiver = Instantiate(_riverPrefab, this.transform.parent);
+         
+        
+        var starPathPos = _continentReachableHex[Random.Range(0, _continentReachableHex.Count)];
+        var endPathPos = _continentReachableHex[Random.Range(0, _continentReachableHex.Count)];
+        
+        if (TryPathFind(starPathPos, endPathPos, out var riverPositions))
+        {
+            foreach (var pathPoint in riverPositions)
+            {
+                positions.Add(GetHexAtAxialCoordinate(pathPoint).Position()+new Vector3(Random.Range(-0.1f, 0.1f), Random.Range(-0.1f, 0.1f)));
+            }
+        }
+        currentRiver.positionCount = positions.Count;
+        currentRiver.SetPositions(positions.ToArray());
+        _testRivers.Add(currentRiver);
+    }
+    
     public void PathFindTest()
     {
-        foreach (var hex in _hexToHexViews)
+        if (_tutorPath != null)
         {
-            hex.Value.SpriteRenderer.sprite = SpriteSettings.GetSprite(TerrainType.Water);
+            foreach (var pathPoint in _tutorPath)
+            {
+                _hexToHexViews[GetHexAtAxialCoordinate(pathPoint)].SetMeshRendererActive(false);
+            }
         }
-        
-        var testContinent = HexUtils.GetAxialAreaAtRange(HexUtils.OffsetOddToAxial(MapResolution.x*2/4, MapResolution.y / 2), 6);
-        SetTilesSprites(GetHexesAtAxialCoordinates(testContinent), TerrainType.Grass);
-        
         
         foreach (var point in _pathPoints)
         {
             Destroy(point);
         }
         
-        var starPathPos = new Vector2Int(24,30);
-        var endPathPos = new Vector2Int(32,30);
-
-        starPathPos = testContinent[Random.Range(0, testContinent.Count)];
-        endPathPos = testContinent[Random.Range(0, testContinent.Count)];
-        _mountains.Clear();
-        var mountain = HexUtils.GetAxialLine(new Vector2Int(26, 34), new Vector2Int(35, 26));
-        mountain = HexUtils.GetAxialRingWithRadius(new Vector2Int(30, 30), 3);
-        SetTilesSprites(GetHexesAtAxialCoordinates(mountain), TerrainType.Mountain);
-        foreach (var mount in mountain)
-        {
-            _mountains.Add(mount);
-        }
+        var starPathPos = _continentReachableHex[Random.Range(0, _continentReachableHex.Count)];
+        var endPathPos = _continentReachableHex[Random.Range(0, _continentReachableHex.Count)];
+        
         _pathPoints.Add(Instantiate(_startPathPointCircle, GetHexAtAxialCoordinate(starPathPos).Position(), Quaternion.identity));
         _pathPoints.Add(Instantiate(_endPathPointCircle, GetHexAtAxialCoordinate(endPathPos).Position(), Quaternion.identity));
 
-        Debug.Log(HexUtils.AxialDistance(starPathPos + Vector2Int.up, endPathPos));
-        Debug.Log(HexUtils.AxialDistance(starPathPos + Vector2Int.right, endPathPos));
-        
-        var astar = new AStarSearch(this, starPathPos, endPathPos);
+        if (TryPathFind(starPathPos, endPathPos, out _tutorPath))
+        {
+            foreach (var pathPoint in _tutorPath)
+            {
+                var hex = GetHexAtAxialCoordinate(pathPoint);
+                //_pathPoints.Add(Instantiate(_pathPointCircle, hex.Position(), Quaternion.identity));
+                
+                _hexToHexViews[hex].TextAtHex(hex.MovementCost.ToString());
+                _hexToHexViews[hex].SetMeshRendererActive(true);
+            }
+        }
+    }
 
+    private bool TryPathFind(Vector2Int starPathPos, Vector2Int endPathPos, out List<Vector2Int> path)
+    {
+        var astar = new AStarSearch(this, starPathPos, endPathPos);
+        List<Vector2Int> newPath = new List<Vector2Int>(); 
         Vector2Int drawPathPoint = endPathPos;
         while (!(drawPathPoint == starPathPos))
         {
@@ -156,9 +222,14 @@ public class HexMap : MonoBehaviour, IWeightedGraph<Vector2Int>
                 Debug.Log(starPathPos + " Unreachable from " + endPathPos);
                 break;
             }
-            _pathPoints.Add(Instantiate(_pathPointCircle, GetHexAtAxialCoordinate(drawPathPoint).Position(), Quaternion.identity));
+            newPath.Add(drawPathPoint);
         }
-        
+        path = newPath;
+        if (path.Count == 0)
+        {
+            return false;
+        }
+        return true;
     }
 
     private void SetTilesSprites(List<Hex> hexes, TerrainType terrainType)
@@ -190,7 +261,7 @@ public class HexMap : MonoBehaviour, IWeightedGraph<Vector2Int>
                 var terrain = TerrainType.Water;
                 hexTileView.SpriteRenderer.sprite = SpriteSettings.GetSprite(terrain);
                 hexTileView.gameObject.name = oddCoordinate.ToString();
-                hexTileView.ViewAxialCoordinate(HexUtils.OffsetOddToAxial(oddCoordinate).ToString());
+                hexTileView.TextAtHex(HexUtils.OffsetOddToAxial(oddCoordinate).ToString());
 
                 _hexStorageOddOffset[column, row] = hex;
                 _hexToHexViews.Add(hex, hexTileView);
@@ -227,8 +298,8 @@ public class HexMap : MonoBehaviour, IWeightedGraph<Vector2Int>
         if (!HexAtOffsetCoordinateExist(offset))
         {
             throw new System.ArgumentException("Wrong Coordinate. Hex doesn't exist");
-            Debug.LogWarning("there is no hex at: " + offset);
-            return null;
+            //Debug.LogWarning("there is no hex at: " + offset);
+            //return null;
         }
         return _hexStorageOddOffset[offset.x, offset.y];
     }

@@ -12,7 +12,9 @@ public class Hex
     public readonly Vector2Int AxialCoordinate;
 
     private int _movementCost = 1;
+    private bool _isPassible = false;
     public int MovementCost => _movementCost;
+    public bool IsPassible => _isPassible;
  
 
     private readonly float WIDTH_MULTIPLIER = Mathf.Sqrt(3) / 2; // it just work)))
@@ -26,6 +28,11 @@ public class Hex
     public void SetMovementCost(int cost)
     {
         _movementCost = cost;
+    }
+
+    public void SetPassible(bool passible)
+    {
+        _isPassible = passible;
     }
     
     public Vector3 Position()

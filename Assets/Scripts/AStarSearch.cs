@@ -34,7 +34,7 @@ public class AStarSearch
                                     || newCost < costSoFar[next])
                                 {
                                         costSoFar[next] = newCost;
-                                        float priority = newCost + HexUtils.AxialDistance(next, goal)*graph.Cost(current);;
+                                        float priority = newCost + HexUtils.AxialDistance(next, goal);;
                                         frontier.Enqueue(next, priority);
                                         cameFrom[next] = current;
                                 }
