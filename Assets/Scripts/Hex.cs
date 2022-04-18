@@ -10,6 +10,9 @@ public class Hex
 {
     public readonly Vector2Int OddOffsetCoordinate;
     public readonly Vector2Int AxialCoordinate;
+
+    private int _movementCost = 1;
+    public int MovementCost => _movementCost;
  
 
     private readonly float WIDTH_MULTIPLIER = Mathf.Sqrt(3) / 2; // it just work)))
@@ -20,6 +23,11 @@ public class Hex
         AxialCoordinate = new Vector2Int(axialCoordinate.x, axialCoordinate.y);
     }
 
+    public void SetMovementCost(int cost)
+    {
+        _movementCost = cost;
+    }
+    
     public Vector3 Position()
     {
         float radius = 0.5f; // =0.5 to clean grid 
