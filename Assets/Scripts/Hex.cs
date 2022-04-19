@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 using Zenject;
 
 
@@ -12,9 +13,10 @@ public class Hex
     public readonly Vector2Int AxialCoordinate;
 
     private int _movementCost = 1;
-    private bool _isPassible = false;
+    private LandType _hexLandTypeHex = LandType.Water;
     public int MovementCost => _movementCost;
-    public bool IsPassible => _isPassible;
+    
+    public LandType LandTypeHex => _hexLandTypeHex;
  
 
     private readonly float WIDTH_MULTIPLIER = Mathf.Sqrt(3) / 2; // it just work)))
@@ -25,16 +27,38 @@ public class Hex
         AxialCoordinate = new Vector2Int(axialCoordinate.x, axialCoordinate.y);
     }
 
-    public void SetMovementCost(int cost)
+    public bool IsPassible()
     {
-        _movementCost = cost;
-    }
-
-    public void SetPassible(bool passible)
-    {
-        _isPassible = passible;
+        switch (LandTypeHex)
+        {
+            case LandType.Mountain:
+                return false;
+            case LandType.Water:
+                return false;
+            default: return true;
+        }
     }
     
+    public void SetLandType(LandType landType)
+    {
+        _hexLandTypeHex = landType;
+    }
+
+    public int GetMovementCost()
+    {
+        switch (LandTypeHex)
+        {
+            case LandType.Grass:
+                return 1;
+            case LandType.Forrest:
+                return 3;
+            case LandType.Hill:
+                return 5;
+            default:
+                return 1;
+        }
+    }
+
     public Vector3 Position()
     {
         float radius = 0.5f; // =0.5 to clean grid 

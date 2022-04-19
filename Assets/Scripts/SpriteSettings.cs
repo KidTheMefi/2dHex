@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public enum TerrainType
+public enum LandType
 {
     Water, Grass, Hill, Mountain, Desert, Snow, Forrest
 }
@@ -13,10 +13,10 @@ public class SpriteSettings : ScriptableObject
 {
     [SerializeField] private List<HexLand> Sprites;
 
-    public Sprite GetSprite(TerrainType terrainType)
+    public Sprite GetSprite(LandType landType)
     {
-        HexLand land = Sprites.Find(s => s.TerrainType == terrainType);
-        Assert.IsNotNull(land, "There is no " + terrainType + "in SpriteSetting");
+        HexLand land = Sprites.Find(s => s.LandType == landType);
+        Assert.IsNotNull(land, "There is no " + landType + "in SpriteSetting");
         return land.Sprites[Random.Range(0, land.Sprites.Count)];
     }
 }

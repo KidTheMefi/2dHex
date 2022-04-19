@@ -6,9 +6,9 @@ using UnityEngine;
 [Serializable]
 public class HexLand
 {
-    [SerializeField] private TerrainType _terrainType;
+    [SerializeField] private LandType landType;
     [SerializeField] private List<Sprite> _sprites;
 
-    public TerrainType TerrainType => _terrainType;
+    public LandType LandType => landType;
     public List<Sprite> Sprites => _sprites;
 }

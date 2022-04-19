@@ -41,7 +41,7 @@ public class AStarSearch
                         foreach (var next in PassibleNeighbors(current))
                         {
                                 int newCost = costSoFar[current]
-                                        +_hexStorage.GetHexAtAxialCoordinate(current).MovementCost;
+                                        +_hexStorage.GetHexAtAxialCoordinate(current).GetMovementCost();
                                 if (!costSoFar.ContainsKey(next)
                                     || newCost < costSoFar[next])
                                 {
@@ -82,7 +82,7 @@ public class AStarSearch
                 foreach (var dir in HexUtils.AxialDirectionVectors) 
                 {
                         Vector2Int next = new Vector2Int(axial.x + dir.x, axial.y + dir.y);
-                        if (_hexStorage.HexAtAxialCoordinateExist(next) && _hexStorage.GetHexAtAxialCoordinate(next).IsPassible) 
+                        if (_hexStorage.HexAtAxialCoordinateExist(next) && _hexStorage.GetHexAtAxialCoordinate(next).IsPassible()) 
                         {
                                 yield return next;
                         }

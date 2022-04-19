@@ -1,0 +1,113 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class LandGeneration : ILandGeneration
+{
+    private IHexStorage _hexStorage;
+    
+    public LandGeneration(IHexStorage hexStorage)
+    {
+        _hexStorage = hexStorage;
+    }
+
+    #region LandGeneration
+
+     public List<Vector2Int> CreateContinentLand(Vector2Int center, int startScale, int minTilesNumber)
+    {
+        List<Vector2Int> continentTilesCoordinate = CreateContinentPart(center, startScale);
+        
+        while (continentTilesCoordinate.Count<minTilesNumber)
+        {
+            var continentAdd = CreateContinentPart(continentTilesCoordinate[Random.Range(0, continentTilesCoordinate.Count)], 2);
+
+            foreach (var axial in continentAdd)
+            {
+                if (!continentTilesCoordinate.Contains(axial))
+                {
+                    continentTilesCoordinate.Add(axial);
+                }
+            }
+        }
+        
+        return continentTilesCoordinate;
+    }
+
+
+     private List<Vector2Int> CreateContinentPart(Vector2Int center, int startScale)
+    {
+        List<Vector2Int> continentTilesCoordinate =  new List<Vector2Int>();
+
+        for (int i = 0; i < 5; i++) // magic 5. TODO: smth with that
+        {
+            Vector2Int nextCenter = RandomAxialAtRadius(center, Random.Range(startScale, startScale+3));
+            int nextScaleMin = HexUtils.AxialDistance(center, nextCenter) - startScale+1;
+            int nextScale = Random.Range(nextScaleMin, nextScaleMin + 1);
+
+            foreach (var axial in CreatePieceOffLand(nextCenter,nextScale))
+            {
+                if (!continentTilesCoordinate.Contains(axial)&& _hexStorage.HexAtAxialCoordinateExist(axial))
+                {
+                    continentTilesCoordinate.Add(axial);
+                }
+            }
+        }
+        return continentTilesCoordinate;
+    }
+     
+     private Vector2Int RandomAxialAtRadius(Vector2Int center, int radius)
+     {
+         List<Vector2Int> axialAtRadius = new List<Vector2Int>();
+         foreach (var axial in HexUtils.GetAxialRingWithRadius(center, radius))
+         {
+             if (_hexStorage.HexAtAxialCoordinateExist(axial))
+             {
+                 axialAtRadius.Add(axial);
+             }
+         }
+
+         return axialAtRadius[Random.Range(0, axialAtRadius.Count)];
+     }
+
+    private List<Vector2Int> CreatePieceOffLand(Vector2Int center, int startScale)
+    {
+        List<Vector2Int> landCoordinates = HexUtils.GetAxialAreaAtRange(center, startScale);
+        
+        foreach (var axial in HexUtils.GetAxialAreaAtRange(RandomAxialAtRadius(center, startScale), startScale - 1))
+        {
+            landCoordinates.Remove(axial);
+        }
+        return landCoordinates;
+    }
+    
+    public List<Vector2Int> CreateLandTypeAtContinent(List<Vector2Int> continent, int minTilesNumber)
+    {
+        //not single responsibility !!!!
+        List<Vector2Int> continentMountains = new List<Vector2Int>();
+        while (continentMountains.Count<minTilesNumber)
+        {
+            foreach (var axial in CreatePieceOfLandType(continent[Random.Range(0, continent.Count)]))
+            {
+                if (continent.Contains(axial))
+                {
+                    continentMountains.Add(axial);
+                    continent.Remove(axial); // look at this dude!
+                }
+            }
+        }
+        return continentMountains;
+    }
+    
+    private List<Vector2Int> CreatePieceOfLandType(Vector2Int center)
+    {
+        List<Vector2Int> landCoordinates = HexUtils.GetAxialAreaAtRange(center, 1);
+   
+        for (int i = 0; i < 3; i++)
+        {
+            landCoordinates.RemoveAt(Random.Range(0,landCoordinates.Count));
+        }
+        return landCoordinates;
+    }
+
+  #endregion
+}
