@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 
-public class HexMap : MonoBehaviour, IWeightedGraph<Vector2Int>
+public class HexMap : MonoBehaviour, IWeightedGraph<Vector2Int>, IHexStorage
 {
     [SerializeField] private HexView HexPrefab;
     [SerializeField] private GameObject _pathPointCircle;
@@ -24,14 +24,17 @@ public class HexMap : MonoBehaviour, IWeightedGraph<Vector2Int>
     private List<LineRenderer> _testRivers = new List<LineRenderer>();
     private List<Vector2Int> _continentReachableHex;
     private List<Vector2Int> _tutorPath;
+    private List<Vector2Int> _continentMountain;
 
     private HashSet<GameObject> _pathPoints = new HashSet<GameObject>();
     
     private Hex[,] _hexStorageOddOffset;
     private Dictionary<Hex, HexView> _hexToHexViews;
+    private AStarSearch _pathFind;
     
     void Start()
     {
+        _pathFind = new AStarSearch(this);
         GenerateMapGrid();
     }
 
@@ -95,7 +98,7 @@ public class HexMap : MonoBehaviour, IWeightedGraph<Vector2Int>
         SetTilesSprites(GetHexesAtAxialCoordinates(continent), TerrainType.Grass);
         
         List<Vector2Int> continentMountain = CreateMountainsAtContinent(continent, continent.Count*10/100);
-        
+        _continentMountain = continentMountain;
         foreach (var axial in continentMountain)
         {
             GetHexAtAxialCoordinate(axial).SetPassible(false);
@@ -159,12 +162,12 @@ public class HexMap : MonoBehaviour, IWeightedGraph<Vector2Int>
        
         List<Vector3> positions = new List<Vector3>();
         var currentRiver = Instantiate(_riverPrefab, this.transform.parent);
-         
-        
+
+        currentRiver.endWidth = 0.2f;
         var starPathPos = _continentReachableHex[Random.Range(0, _continentReachableHex.Count)];
         var endPathPos = _continentReachableHex[Random.Range(0, _continentReachableHex.Count)];
         
-        if (TryPathFind(starPathPos, endPathPos, out var riverPositions))
+        if (_pathFind.TryPathFind(starPathPos, endPathPos, out var riverPositions))
         {
             foreach (var pathPoint in riverPositions)
             {
@@ -192,12 +195,12 @@ public class HexMap : MonoBehaviour, IWeightedGraph<Vector2Int>
         }
         
         var starPathPos = _continentReachableHex[Random.Range(0, _continentReachableHex.Count)];
-        var endPathPos = _continentReachableHex[Random.Range(0, _continentReachableHex.Count)];
+        var endPathPos = _continentMountain[Random.Range(0, _continentMountain.Count)];
         
         _pathPoints.Add(Instantiate(_startPathPointCircle, GetHexAtAxialCoordinate(starPathPos).Position(), Quaternion.identity));
         _pathPoints.Add(Instantiate(_endPathPointCircle, GetHexAtAxialCoordinate(endPathPos).Position(), Quaternion.identity));
 
-        if (TryPathFind(starPathPos, endPathPos, out _tutorPath))
+        if (_pathFind.TryPathFind(starPathPos, endPathPos, out _tutorPath))
         {
             foreach (var pathPoint in _tutorPath)
             {
@@ -208,28 +211,6 @@ public class HexMap : MonoBehaviour, IWeightedGraph<Vector2Int>
                 _hexToHexViews[hex].SetMeshRendererActive(true);
             }
         }
-    }
-
-    private bool TryPathFind(Vector2Int starPathPos, Vector2Int endPathPos, out List<Vector2Int> path)
-    {
-        var astar = new AStarSearch(this, starPathPos, endPathPos);
-        List<Vector2Int> newPath = new List<Vector2Int>(); 
-        Vector2Int drawPathPoint = endPathPos;
-        while (!(drawPathPoint == starPathPos))
-        {
-            if (!astar.cameFrom.TryGetValue(drawPathPoint, out drawPathPoint))
-            {
-                Debug.Log(starPathPos + " Unreachable from " + endPathPos);
-                break;
-            }
-            newPath.Add(drawPathPoint);
-        }
-        path = newPath;
-        if (path.Count == 0)
-        {
-            return false;
-        }
-        return true;
     }
 
     private void SetTilesSprites(List<Hex> hexes, TerrainType terrainType)
@@ -303,12 +284,12 @@ public class HexMap : MonoBehaviour, IWeightedGraph<Vector2Int>
         return _hexStorageOddOffset[offset.x, offset.y];
     }
 
-    private bool HexAtAxialCoordinateExist(Vector2Int axial)
+    public bool HexAtAxialCoordinateExist(Vector2Int axial)
     {
         return HexAtOffsetCoordinateExist(HexUtils.AxialToOffsetOdd(axial));
     }
     
-    private bool HexAtOffsetCoordinateExist(Vector2Int offset)
+    public bool HexAtOffsetCoordinateExist(Vector2Int offset)
     {
         if (offset.x >= 0 && offset.x < MapResolution.x && offset.y >= 0 && offset.y < MapResolution.y)
         {
