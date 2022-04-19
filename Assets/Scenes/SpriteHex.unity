@@ -530,7 +530,9 @@ MonoBehaviour:
   _startPathPointCircle: {fileID: 4295881208535046092, guid: 22673af24c1b921448899b4d07677b59, type: 3}
   _endPathPointCircle: {fileID: 6069494507300514096, guid: fbea2edfa31dfa644b5e8c6dd1f6a0d2, type: 3}
   SpriteSettings: {fileID: 11400000, guid: 413c35e8711b80c49bc37ed038d221e8, type: 2}
-  _continentSettingsSettings: {fileID: 11400000, guid: 8a245800afd75f940b51cfd6f7157f73, type: 2}
+  _continentSettings: {fileID: 11400000, guid: 8a245800afd75f940b51cfd6f7157f73, type: 2}
+  _secondContinentSettings: {fileID: 11400000, guid: 7d3be3489483d444488ea0c4c04e57b6, type: 2}
+  _thirdContinentSettings: {fileID: 11400000, guid: eb48cc43e2b1d0a4e9348b3de86c5c7f, type: 2}
   MapResolution: {x: 90, y: 60}
   _minContinentTilesCount: 1500
 --- !u!1 &462197036

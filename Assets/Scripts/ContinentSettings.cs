@@ -2,14 +2,16 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "HexGame/setup")]
+[CreateAssetMenu(menuName = "HexGame/ContinentSettings")]
 public class ContinentSettings : ScriptableObject
 {
+    [SerializeField] private int _minHexesCount;
     [SerializeField] private List<ContinentSetting> _continentSettings;
     [SerializeField] private LandType _defaultLandType;
     
     public List<ContinentSetting> Lands => _continentSettings;
     public LandType DefaultLandType => _defaultLandType;
+    public int HexCount => _minHexesCount;
 }
 
 

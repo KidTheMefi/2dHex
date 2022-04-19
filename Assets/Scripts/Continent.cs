@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class Continent
@@ -28,11 +29,11 @@ public class Continent
         _continentAllHex.Remove(hexPos);
     }
 
-    public void CreateContinent(Vector2Int continentPos, int minTiles, ContinentSettings continentSettings)
+    public async UniTask CreateContinent(Vector2Int continentPos, ContinentSettings continentSettings, List<Vector2Int> unavailableHexes = null)
     {
         _landTypes = new Dictionary<LandType, List<Vector2Int>>();
 
-        _continentAllHex = _landGeneration.CreateContinentLand(continentPos, 2, minTiles);
+        _continentAllHex = _landGeneration.CreateContinentLand(continentPos, 2, continentSettings.HexCount, unavailableHexes);
         var continentFreeLand = new List<Vector2Int>();
 
         foreach (var hex in _continentAllHex)
@@ -48,12 +49,7 @@ public class Continent
         }
         
         CreateLandTypeAt(continentSettings.DefaultLandType, continentFreeLand);
-        
-        /*CreateLandTypeAt(LandType.Mountain, continentFreeLand, 10);
-        CreateLandTypeAt(LandType.Forrest, continentFreeLand, 10);
-        CreateLandTypeAt(LandType.Hill, continentFreeLand, 10);
-        CreateLandTypeAt(LandType.Grass, continentFreeLand);*/
-
+        await UniTask.Yield();
     }
 
     private void CreateLandTypeAt(LandType landType, List<Vector2Int> availableHexes, int percent)

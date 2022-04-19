@@ -13,7 +13,7 @@ public class LandGeneration : ILandGeneration
 
     #region LandGeneration
 
-     public List<Vector2Int> CreateContinentLand(Vector2Int center, int startScale, int minTilesNumber)
+     /*public List<Vector2Int> CreateContinentLand(Vector2Int center, int startScale, int minTilesNumber)
     {
         List<Vector2Int> continentTilesCoordinate = CreateContinentPart(center, startScale);
         
@@ -29,9 +29,42 @@ public class LandGeneration : ILandGeneration
                 }
             }
         }
-        
         return continentTilesCoordinate;
-    }
+    }*/
+     
+     public List<Vector2Int> CreateContinentLand(Vector2Int center, int startScale, int minTilesNumber, List<Vector2Int> unavailableHexes = null)
+     {
+         List<Vector2Int> continentTilesCoordinate = CreateContinentPart(center, startScale);
+
+         while (continentTilesCoordinate.Count<minTilesNumber)
+         {
+             var continentAdd = CreateContinentPart(continentTilesCoordinate[Random.Range(0, continentTilesCoordinate.Count)], 2);
+
+             foreach (var axial in continentAdd)
+             {
+                 if (unavailableHexes == null)
+                 {
+                     if (!continentTilesCoordinate.Contains(axial)  )
+                     {
+                         continentTilesCoordinate.Add(axial);
+                     }
+                 }
+                 else
+                 {
+                     if (!continentTilesCoordinate.Contains(axial) && !unavailableHexes.Contains(axial))
+                     {
+                         continentTilesCoordinate.Add(axial);
+                     }
+                 }
+                 
+                 if (continentTilesCoordinate.Count == minTilesNumber)
+                 {
+                     break;
+                 }
+             }
+         }
+         return continentTilesCoordinate;
+     }
 
 
      private List<Vector2Int> CreateContinentPart(Vector2Int center, int startScale)
@@ -83,19 +116,24 @@ public class LandGeneration : ILandGeneration
     public List<Vector2Int> CreateLandTypeAtContinent(List<Vector2Int> continent, int minTilesNumber)
     {
         //not single responsibility !!!!
-        List<Vector2Int> continentMountains = new List<Vector2Int>();
-        while (continentMountains.Count<minTilesNumber)
+        List<Vector2Int> continentNewLandType = new List<Vector2Int>();
+        while (continentNewLandType.Count<minTilesNumber)
         {
             foreach (var axial in CreatePieceOfLandType(continent[Random.Range(0, continent.Count)]))
             {
                 if (continent.Contains(axial))
                 {
-                    continentMountains.Add(axial);
+                    continentNewLandType.Add(axial);
                     continent.Remove(axial); // look at this dude!
+                }
+                
+                if (continentNewLandType.Count == minTilesNumber)
+                {
+                    break;
                 }
             }
         }
-        return continentMountains;
+        return continentNewLandType;
     }
     
     private List<Vector2Int> CreatePieceOfLandType(Vector2Int center)

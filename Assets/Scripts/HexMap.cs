@@ -16,7 +16,10 @@ public class HexMap : MonoBehaviour, IHexStorage
     [SerializeField] private GameObject _endPathPointCircle;
     
     [SerializeField] private SpriteSettings SpriteSettings;
-    [SerializeField] private ContinentSettings _continentSettingsSettings;
+    
+    [SerializeField] private ContinentSettings _continentSettings;
+    [SerializeField] private ContinentSettings _secondContinentSettings;
+    [SerializeField] private ContinentSettings _thirdContinentSettings;
     
     [SerializeField] private Vector2Int MapResolution;
     [SerializeField] private int _minContinentTilesCount;
@@ -24,6 +27,7 @@ public class HexMap : MonoBehaviour, IHexStorage
     private GameObject _centerPoint;
     private List<LineRenderer> _testRivers = new List<LineRenderer>();
     private List<Vector2Int> _tutorPath;
+    private List<Vector2Int> _allContinentsHexes = new List<Vector2Int>();
 
     private HashSet<GameObject> _pathPoints = new HashSet<GameObject>();
     
@@ -33,12 +37,16 @@ public class HexMap : MonoBehaviour, IHexStorage
     private AStarSearch _pathFind;
     private LandGeneration _landGeneration;
     private Continent _firstTestContinent;
+    private Continent _secondTestContinent;
+    private Continent _thirdTestContinent;
     void Start()
     {
         
         _pathFind = new AStarSearch(this);
         _landGeneration = new LandGeneration(this);
         _firstTestContinent = new Continent(this, _landGeneration);
+        _secondTestContinent = new Continent(this, _landGeneration);
+        _thirdTestContinent = new Continent(this, _landGeneration);
         GenerateMapGrid();
     }
     
@@ -76,11 +84,23 @@ public class HexMap : MonoBehaviour, IHexStorage
         return HexUtils.OffsetOddToAxial(MapResolution.x * 2 / 4, MapResolution.y / 2);
     }
 
-    public void CreateContinent()
+    public async void CreateContinent()
     {
-        _firstTestContinent.CreateContinent(CenterOfMap(), _minContinentTilesCount, _continentSettingsSettings);
+        _allContinentsHexes.Clear();
 
-        UpdateHexesSprite(_firstTestContinent.AllHexes);
+        Vector2Int secondContStartPos = HexUtils.OffsetOddToAxial(MapResolution.x * 1 / 4, MapResolution.y / 2);
+        await _secondTestContinent.CreateContinent(secondContStartPos , _secondContinentSettings);
+        _allContinentsHexes.AddRange(_secondTestContinent.AllHexes);
+        
+        Vector2Int thirdContStartPos = HexUtils.OffsetOddToAxial(MapResolution.x / 2, MapResolution.y * 9/ 10);
+        await _thirdTestContinent.CreateContinent(thirdContStartPos , _thirdContinentSettings, _allContinentsHexes);
+        _allContinentsHexes.AddRange(_thirdTestContinent.AllHexes);
+        
+        await _firstTestContinent.CreateContinent(CenterOfMap(), _continentSettings, _allContinentsHexes);
+        _allContinentsHexes.AddRange(_firstTestContinent.AllHexes);
+        
+        Debug.Log(_allContinentsHexes.Count);
+        UpdateHexesSprite(_allContinentsHexes);
     }
     
     public void Restart()
@@ -90,69 +110,7 @@ public class HexMap : MonoBehaviour, IHexStorage
             hex.Value.SpriteRenderer.sprite = SpriteSettings.GetSprite(LandType.Water);
             hex.Key.SetLandType(LandType.Water);
         }
-
         CreateContinent();
-        /*
-        _continentReachableHex = CreateContinent(HexUtils.OffsetOddToAxial(MapResolution.x*2/4, MapResolution.y / 2), 2,_minContinentTilesCount);
-        var continent = new List<Vector2Int>();
-
-
-        if (_centerPoint != null)
-        {
-            Destroy(_centerPoint);
-        }
-        Vector2Int centerAxial = CenterOf(_continentReachableHex);
-        _centerPoint = Instantiate(_pathPointCircle, GetHexAtAxialCoordinate(centerAxial).Position(), Quaternion.identity);
-
-        
-        foreach (var hex in _continentReachableHex)
-        {
-            continent.Add(hex);
-            GetHexAtAxialCoordinate(hex).SetPassible(true);
-        }
-        SetTilesSprites(GetHexesAtAxialCoordinates(continent), TerrainType.Grass);
-        
-        List<Vector2Int> continentMountain = CreateMountainsAtContinent(continent, continent.Count*10/100);
-        _continentMountain = continentMountain;
-        foreach (var axial in continentMountain)
-        {
-            GetHexAtAxialCoordinate(axial).SetPassible(false);
-        }
-        
-        SetTilesSprites(GetHexesAtAxialCoordinates(continentMountain), TerrainType.Mountain);
-        
-        List<Vector2Int> continentForrest = CreateMountainsAtContinent(continent, continent.Count*20/100);
-        foreach (var forrest in GetHexesAtAxialCoordinates(continentForrest))
-        {
-            forrest.SetMovementCost(3);
-        }
-        
-        SetTilesSprites(GetHexesAtAxialCoordinates(continentForrest), TerrainType.Forrest);
-        
-        List<Vector2Int> continentHills = CreateMountainsAtContinent(continent, continent.Count*10/100);
-        foreach (var hills in GetHexesAtAxialCoordinates(continentHills))
-        {
-            hills.SetMovementCost(5);
-        }
-        SetTilesSprites(GetHexesAtAxialCoordinates(continentHills), TerrainType.Hill);
-
-        
-        /* var secondcontinent = CreateContinent(HexUtils.OffsetOddToAxial(MapResolution.x/4, MapResolution.y / 2), 2,200);
-         SetTilesSprites(GetHexesAtAxialCoordinates(secondcontinent), TerrainType.Desert);
- 
-         var thirdContinent = CreateContinent(HexUtils.OffsetOddToAxial(MapResolution.x*3/4, MapResolution.y / 2), 2,300);
-         SetTilesSprites(GetHexesAtAxialCoordinates(thirdContinent), TerrainType.Desert);
- 
-         var poleNContinent = CreateContinent(HexUtils.OffsetOddToAxial(MapResolution.x/2, MapResolution.y* 9/10 ), 2,300);
-         SetTilesSprites(GetHexesAtAxialCoordinates(poleNContinent), TerrainType.Snow);*/
-
-        /*TODO: LineDrawingExample
-         
-         Vector2Int randomOffset1 = HexUtils.OffsetOddToAxial(Random.Range(0, MapResolution.x), Random.Range(0, MapResolution.y));
-        Vector2Int randomOffset2= HexUtils.OffsetOddToAxial(Random.Range(0, MapResolution.x), Random.Range(0, MapResolution.y));
-        
-        var line = HexUtils.GetAxialLine(randomOffset1, randomOffset2);
-        SetTilesSprites(GetHexesAtAxialCoordinates(line), TerrainType.Snow);*/
     }
 
     public void DrawRandomRivers(int count)
@@ -179,8 +137,8 @@ public class HexMap : MonoBehaviour, IHexStorage
         var currentRiver = Instantiate(_riverPrefab, this.transform.parent);
 
         currentRiver.endWidth = 0.2f;
-        var starPathPos = _firstTestContinent.AllHexes[Random.Range(0, _firstTestContinent.AllHexes.Count)];
-        var endPathPos = _firstTestContinent.AllHexes[Random.Range(0, _firstTestContinent.AllHexes.Count)];
+        var starPathPos = _allContinentsHexes[Random.Range(0, _allContinentsHexes.Count)];
+        var endPathPos = _allContinentsHexes[Random.Range(0, _allContinentsHexes.Count)];
         
         if (_pathFind.TryPathFind(starPathPos, endPathPos, out var riverPositions))
         {
@@ -209,8 +167,8 @@ public class HexMap : MonoBehaviour, IHexStorage
             Destroy(point);
         }
         
-        var starPathPos = _firstTestContinent.AllHexes[Random.Range(0, _firstTestContinent.AllHexes.Count)];
-        var endPathPos = _firstTestContinent.AllHexes[Random.Range(0, _firstTestContinent.AllHexes.Count)];
+        var starPathPos = _allContinentsHexes[Random.Range(0, _allContinentsHexes.Count)];
+        var endPathPos = _allContinentsHexes[Random.Range(0, _allContinentsHexes.Count)];
         
         _pathPoints.Add(Instantiate(_startPathPointCircle, GetHexAtAxialCoordinate(starPathPos).Position(), Quaternion.identity));
         _pathPoints.Add(Instantiate(_endPathPointCircle, GetHexAtAxialCoordinate(endPathPos).Position(), Quaternion.identity));
@@ -298,104 +256,4 @@ public class HexMap : MonoBehaviour, IHexStorage
         return false;
     }
     
-
-    #region LandGeneration
-
-     private List<Vector2Int> CreateContinent(Vector2Int center, int startScale, int minTilesNumber)
-    {
-        List<Vector2Int> continentTilesCoordinate = CreateContinentPart(center, startScale);
-        
-        while (continentTilesCoordinate.Count<minTilesNumber)
-        {
-            var continentAdd = CreateContinentPart(continentTilesCoordinate[Random.Range(0, continentTilesCoordinate.Count)], 2);
-
-            foreach (var axial in continentAdd)
-            {
-                if (!continentTilesCoordinate.Contains(axial))
-                {
-                    continentTilesCoordinate.Add(axial);
-                }
-            }
-        }
-        
-        return continentTilesCoordinate;
-    }
-
-
-     private List<Vector2Int> CreateContinentPart(Vector2Int center, int startScale)
-    {
-        List<Vector2Int> continentTilesCoordinate =  new List<Vector2Int>();
-
-        for (int i = 0; i < 5; i++) // magic 5. TODO: smth with that
-        {
-            Vector2Int nextCenter = RandomAxialAtRadius(center, Random.Range(startScale, startScale+3));
-            int nextScaleMin = HexUtils.AxialDistance(center, nextCenter) - startScale+1;
-            int nextScale = Random.Range(nextScaleMin, nextScaleMin + 1);
-
-            foreach (var axial in CreatePieceOffLand(nextCenter,nextScale))
-            {
-                if (!continentTilesCoordinate.Contains(axial)&& HexAtAxialCoordinateExist(axial))
-                {
-                    continentTilesCoordinate.Add(axial);
-                }
-            }
-        }
-        return continentTilesCoordinate;
-    }
-     
-     private Vector2Int RandomAxialAtRadius(Vector2Int center, int radius)
-     {
-         List<Vector2Int> axialAtRadius = new List<Vector2Int>();
-         foreach (var axial in HexUtils.GetAxialRingWithRadius(center, radius))
-         {
-             if (HexAtAxialCoordinateExist(axial))
-             {
-                 axialAtRadius.Add(axial);
-             }
-         }
-
-         return axialAtRadius[Random.Range(0, axialAtRadius.Count)];
-     }
-
-    private List<Vector2Int> CreatePieceOffLand(Vector2Int center, int startScale)
-    {
-        List<Vector2Int> landCoordinates = HexUtils.GetAxialAreaAtRange(center, startScale);
-        
-        foreach (var axial in HexUtils.GetAxialAreaAtRange(RandomAxialAtRadius(center, startScale), startScale - 1))
-        {
-            landCoordinates.Remove(axial);
-        }
-        return landCoordinates;
-    }
-    
-    private List<Vector2Int> CreateMountainsAtContinent(List<Vector2Int> continent, int minTilesNumber)
-    {
-        //not single responsibility !!!!
-        List<Vector2Int> continentMountains = new List<Vector2Int>();
-        while (continentMountains.Count<minTilesNumber)
-        {
-            foreach (var axial in CreatePieceOffMountain(continent[Random.Range(0, continent.Count)]))
-            {
-                if (continent.Contains(axial))
-                {
-                    continentMountains.Add(axial);
-                    continent.Remove(axial); // look at this dude!
-                }
-            }
-        }
-        return continentMountains;
-    }
-    
-    private List<Vector2Int> CreatePieceOffMountain(Vector2Int center)
-    {
-        List<Vector2Int> landCoordinates = HexUtils.GetAxialAreaAtRange(center, 1);
-   
-        for (int i = 0; i < 3; i++)
-        {
-            landCoordinates.RemoveAt(Random.Range(0,landCoordinates.Count));
-        }
-        return landCoordinates;
-    }
-
-  #endregion
 }

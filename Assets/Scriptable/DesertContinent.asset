@@ -10,16 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 74e0cc7cb3e53ed4b9fd85b398a5c092, type: 3}
-  m_Name: SimpleContinent
+  m_Name: DesertContinent
   m_EditorClassIdentifier: 
-  _minHexesCount: 1500
-  _continentSettings:
-  - _landType: 3
-    _percent: 10
-  - _landType: 6
-    _percent: 15
-  - _landType: 2
-    _percent: 10
-  - _landType: 0
-    _percent: 1
-  _defaultLandType: 1
+  _minHexesCount: 450
+  _continentSettings: []
+  _defaultLandType: 4
