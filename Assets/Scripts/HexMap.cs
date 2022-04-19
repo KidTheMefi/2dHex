@@ -32,7 +32,7 @@ public class HexMap : MonoBehaviour, IWeightedGraph<Vector2Int>
     
     void Start()
     {
-        GenerateMap();
+        GenerateMapGrid();
     }
 
       #region FindPath
@@ -41,7 +41,7 @@ public class HexMap : MonoBehaviour, IWeightedGraph<Vector2Int>
         return GetHexAtAxialCoordinate(axial).MovementCost;
     }
     
-    public IEnumerable<Vector2Int> Neighbors(Vector2Int axial)
+    public IEnumerable<Vector2Int> PassibleNeighbors(Vector2Int axial)
     {
         foreach (var dir in HexUtils.AxialDirectionVectors) 
         {
@@ -72,6 +72,7 @@ public class HexMap : MonoBehaviour, IWeightedGraph<Vector2Int>
         {
             hex.Value.SpriteRenderer.sprite = SpriteSettings.GetSprite(TerrainType.Water);
             hex.Key.SetPassible(false);
+            hex.Key.SetMovementCost(1);
         }
         
         _continentReachableHex = CreateContinent(HexUtils.OffsetOddToAxial(MapResolution.x*2/4, MapResolution.y / 2), 2,_minContinentTilesCount);
@@ -83,7 +84,6 @@ public class HexMap : MonoBehaviour, IWeightedGraph<Vector2Int>
             Destroy(_centerPoint);
         }
         Vector2Int centerAxial = CenterOf(_continentReachableHex);
-        Debug.Log(centerAxial);
         _centerPoint = Instantiate(_pathPointCircle, GetHexAtAxialCoordinate(centerAxial).Position(), Quaternion.identity);
 
         
@@ -240,7 +240,7 @@ public class HexMap : MonoBehaviour, IWeightedGraph<Vector2Int>
         }
     }
 
-    private void GenerateMap() //more like generate hex grid
+    private void GenerateMapGrid() //more like generate hex grid
     {
         _hexStorageOddOffset = new Hex[MapResolution.x, MapResolution.y];
         _hexToHexViews = new Dictionary<Hex, HexView>();
@@ -283,7 +283,6 @@ public class HexMap : MonoBehaviour, IWeightedGraph<Vector2Int>
                 Debug.LogWarning("[getHex] No Hex at Axial: " + axial);
                 Debug.LogWarning("[getHex] No Hex at Offset: " + HexUtils.AxialToOffsetOdd(axial));
             }
-            
         }
         return hexes;
     }
@@ -396,7 +395,7 @@ public class HexMap : MonoBehaviour, IWeightedGraph<Vector2Int>
         {
             foreach (var axial in CreatePieceOffMountain(continent[Random.Range(0, continent.Count)]))
             {
-                if (HexAtAxialCoordinateExist(axial)&&continent.Contains(axial))
+                if (continent.Contains(axial))
                 {
                     continentMountains.Add(axial);
                     continent.Remove(axial); // look at this dude!
@@ -414,7 +413,6 @@ public class HexMap : MonoBehaviour, IWeightedGraph<Vector2Int>
         {
             landCoordinates.RemoveAt(Random.Range(0,landCoordinates.Count));
         }
-
         return landCoordinates;
     }
 

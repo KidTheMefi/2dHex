@@ -5,5 +5,5 @@ using UnityEngine;
 public interface IWeightedGraph<TL>
 {
     int Cost(Vector2Int axial);
-    IEnumerable<TL> Neighbors(TL id);
+    IEnumerable<TL> PassibleNeighbors(TL id);
 }

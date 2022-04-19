@@ -26,7 +26,7 @@ public class AStarSearch
                                 break;
                         }
 
-                        foreach (var next in graph.Neighbors(current))
+                        foreach (var next in graph.PassibleNeighbors(current))
                         {
                                 int newCost = costSoFar[current]
                                         + graph.Cost(current);
