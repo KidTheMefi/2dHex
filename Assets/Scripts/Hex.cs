@@ -35,6 +35,8 @@ public class Hex
                 return false;
             case LandType.Water:
                 return false;
+            case LandType.SnowMountain:
+                return false;
             default: return true;
         }
     }
@@ -54,6 +56,12 @@ public class Hex
                 return 3;
             case LandType.Hill:
                 return 5;
+            case LandType.Snow:
+                return 2;
+            case LandType.SnowForrest:
+                return 4;
+            case LandType.SnowHill:
+                return 6;
             default:
                 return 1;
         }

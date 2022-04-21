@@ -16,4 +16,10 @@ MonoBehaviour:
   _continentSettings:
   - _landType: 0
     _percent: 1
+  - _landType: 7
+    _percent: 10
+  - _landType: 8
+    _percent: 10
+  - _landType: 9
+    _percent: 10
   _defaultLandType: 5

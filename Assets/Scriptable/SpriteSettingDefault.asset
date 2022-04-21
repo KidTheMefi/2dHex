@@ -48,3 +48,18 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 3e3786272fc3abe459d49fd06a344c68, type: 3}
     - {fileID: 21300000, guid: d8226b3c6a130c04aa26fecd09e24454, type: 3}
     - {fileID: 21300000, guid: 10828a39ed3e4644bb5472da95352527, type: 3}
+  - landType: 7
+    _sprites:
+    - {fileID: 21300000, guid: fcfee1f0b2383ee4b8287438c4db8025, type: 3}
+    - {fileID: 21300000, guid: 2840ea72146ed1248b56b2a804059e3f, type: 3}
+    - {fileID: 21300000, guid: f9e9415519922a344bba21d6266262ec, type: 3}
+  - landType: 8
+    _sprites:
+    - {fileID: 21300000, guid: ce869ff7620dcd444adc82d23a4b8b56, type: 3}
+    - {fileID: 21300000, guid: 6706a07d20950e54e910b364cf01867a, type: 3}
+    - {fileID: 21300000, guid: b5f720973c1574c42bf967b803e0eb90, type: 3}
+  - landType: 9
+    _sprites:
+    - {fileID: 21300000, guid: c568405f8f1489045a00048079397f8f, type: 3}
+    - {fileID: 21300000, guid: caa9febafff334f4ea31d32ba612ef7b, type: 3}
+    - {fileID: 21300000, guid: caecd19854fd3c742913b48d4260f679, type: 3}
