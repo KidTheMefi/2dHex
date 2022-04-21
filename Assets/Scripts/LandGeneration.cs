@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class LandGeneration : ILandGeneration
 {
@@ -17,15 +19,22 @@ public class LandGeneration : ILandGeneration
      {
          List<Vector2Int> continentTilesCoordinate = CreateContinentPart(center, startScale);
 
+         int cycleCount = 0;
+         int maxCycleCount = minTilesNumber / 5;
          while (continentTilesCoordinate.Count<minTilesNumber)
          {
              var continentAdd = CreateContinentPart(continentTilesCoordinate[Random.Range(0, continentTilesCoordinate.Count)], 2);
 
+             if (cycleCount == maxCycleCount)
+             {
+                 break;
+             }
+             
              foreach (var axial in continentAdd)
              {
                  if (unavailableHexes == null)
                  {
-                     if (!continentTilesCoordinate.Contains(axial)  )
+                     if (!continentTilesCoordinate.Contains(axial))
                      {
                          continentTilesCoordinate.Add(axial);
                      }
@@ -43,6 +52,7 @@ public class LandGeneration : ILandGeneration
                      break;
                  }
              }
+             cycleCount++;
          }
          return continentTilesCoordinate;
      }
@@ -52,7 +62,7 @@ public class LandGeneration : ILandGeneration
     {
         List<Vector2Int> continentTilesCoordinate =  new List<Vector2Int>();
 
-        for (int i = 0; i < 5; i++) // magic 5. TODO: smth with that
+        for (int i = 0; i < 8; i++) // magic . TODO: smth with that
         {
             Vector2Int nextCenter = RandomAxialAtRadius(center, Random.Range(startScale, startScale+3));
             int nextScaleMin = HexUtils.AxialDistance(center, nextCenter) - startScale+1;

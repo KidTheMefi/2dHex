@@ -16,9 +16,9 @@ MonoBehaviour:
   _minHexesCount: 300
   _landsTypeSettings:
   - _landType: {fileID: 11400000, guid: b0e4e5b87533e4742bf6b71941481ad2, type: 2}
-    _percent: 17
+    _percent: 10
   - _landType: {fileID: 11400000, guid: 22baaf66a5036004eb3901f20ea4dd7c, type: 2}
-    _percent: 14
+    _percent: 10
   - _landType: {fileID: 11400000, guid: 540594bfbfa5de342810b2645e453489, type: 2}
-    _percent: 8
+    _percent: 15
   _defaultLandType: {fileID: 11400000, guid: bf5097be6c2b92348a202b29ca717b67, type: 2}

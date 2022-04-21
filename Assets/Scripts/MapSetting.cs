@@ -12,20 +12,22 @@ public enum MapSize
 public class MapSetting : ScriptableObject
 {
     [SerializeField] private MapSize _mapSize;
+    [SerializeField] private LandTypeProperty _DefaultlandTypeProperty;
     [SerializeField] private List<ContinentAtMap> _continentsAtMap;
 
     public List<ContinentAtMap> ContinentsAtMap => _continentsAtMap;
+    public LandTypeProperty DefaultLandTypeProperty => _DefaultlandTypeProperty;
     
     public Vector2Int MapResolution()
     {
         switch (_mapSize)
         {
             case MapSize.Small:
-                return new Vector2Int(45, 30);
+                return new Vector2Int(72, 48);
             case MapSize.Default:
                 return new Vector2Int(90, 60);
             case MapSize.Big:
-                return new Vector2Int(135, 90);
+                return new Vector2Int(108, 72);
             default:
                 return new Vector2Int(90, 60);
         }

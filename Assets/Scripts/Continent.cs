@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
@@ -37,13 +38,15 @@ public class Continent
 
         _landTypes = new Dictionary<LandType, List<Vector2Int>>();
 
-        _continentAllHex = _landGeneration.CreateContinentLand(continentPos, 3, tilesCount, unavailableHexes);
+        _continentAllHex = _landGeneration.CreateContinentLand(continentPos, 5, tilesCount, unavailableHexes);
+
+        if (_continentAllHex.Count < tilesCount)
+        {
+            Debug.LogError(String.Format("To many cycles in LandCreating. Only {0}/{1} tiles produces", _continentAllHex.Count, tilesCount ));
+        }
         
         var continentFreeLand = new List<Vector2Int>();
         continentFreeLand.AddRange(_continentAllHex);
-      
-
-        Vector2Int centerAxial = CenterOf(_continentAllHex);
 
         foreach (var lands in continentSettings.Lands)
         {

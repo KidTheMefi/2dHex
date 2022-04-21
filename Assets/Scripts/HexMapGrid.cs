@@ -16,9 +16,8 @@ public class HexMapGrid : MonoBehaviour, IHexStorage
     [SerializeField] private GameObject _startPathPointCircle;
     [SerializeField] private GameObject _endPathPointCircle;
 
-    [SerializeField] private LandTypeProperty _DefaultlandTypeProperty;
     
-    [SerializeField] private Vector2Int MapResolution;
+    
     [SerializeField] private MapSetting _mapSetting;
 
     private GameObject _centerPoint;
@@ -30,26 +29,29 @@ public class HexMapGrid : MonoBehaviour, IHexStorage
 
     private Hex[,] _hexStorageOddOffset;
     private Dictionary<Hex, HexView> _hexToHexViews;
-
+    
     private AStarSearch _pathFind;
     private LandGeneration _landGeneration;
     private List<Continent> _allContinents;
+    private Vector2Int mapResolution;
 
     void Start()
     {
         _pathFind = new AStarSearch(this);
         _landGeneration = new LandGeneration(this);
+        mapResolution = _mapSetting.MapResolution();
         GenerateMapGrid();
+        
     }
 
     private void GenerateMapGrid() //more like generate hex grid
     {
-        _hexStorageOddOffset = new Hex[MapResolution.x, MapResolution.y];
+        _hexStorageOddOffset = new Hex[mapResolution.x, mapResolution.y];
         _hexToHexViews = new Dictionary<Hex, HexView>();
 
-        for (int column = 0; column < MapResolution.x; column++)
+        for (int column = 0; column < mapResolution.x; column++)
         {
-            for (int row = 0; row < MapResolution.y; row++)
+            for (int row = 0; row < mapResolution.y; row++)
             {
                 Vector2Int oddCoordinate = new Vector2Int(column, row);
                 Hex hex = new Hex(HexUtils.OffsetOddToAxial(oddCoordinate), oddCoordinate);
@@ -63,7 +65,7 @@ public class HexMapGrid : MonoBehaviour, IHexStorage
                 hexTileView.gameObject.name = oddCoordinate.ToString();
                 hexTileView.TextAtHex(HexUtils.OffsetOddToAxial(oddCoordinate).ToString());
 
-                hex.SetLandTypeProperty(_DefaultlandTypeProperty);
+                hex.SetLandTypeProperty(_mapSetting.DefaultLandTypeProperty);
                 _hexStorageOddOffset[column, row] = hex;
                 _hexToHexViews.Add(hex, hexTileView);
             }
@@ -77,15 +79,23 @@ public class HexMapGrid : MonoBehaviour, IHexStorage
 
     public Vector2Int CenterOfMap()
     {
-        return HexUtils.OffsetOddToAxial(MapResolution.x * 2 / 4, MapResolution.y / 2);
+        return HexUtils.OffsetOddToAxial(mapResolution.x  / 2, mapResolution.y / 2);
     }
 
     public void Restart()
     {
-        Debug.Log(_hexToHexViews.Count);
+        if (_testRivers.Count != 0)
+        {
+            foreach (var river in _testRivers)
+            {
+                Destroy(river.gameObject);
+            }
+            _testRivers.Clear();
+        }
+        
         foreach (var hex in _hexToHexViews)
         {
-            hex.Key.SetLandTypeProperty(_DefaultlandTypeProperty);
+            hex.Key.SetLandTypeProperty(_mapSetting.DefaultLandTypeProperty);
             hex.Value.SetHexView(hex.Key.LandTypeProperty.GetSprite());
         }
 
@@ -105,16 +115,15 @@ public class HexMapGrid : MonoBehaviour, IHexStorage
             Vector2Int continentStartPos = HexUtils.OffsetOddToAxial(_mapSetting.MapResolution().x * continent.StartPointXInPercent / 100, 
                                                                      _mapSetting.MapResolution().y * continent.StartPointYInPercent / 100);
             
-            newContinent.CreateContinent(continentStartPos, continent.Settings, tilesCount, _allContinentsHexes);
+            await newContinent.CreateContinent(continentStartPos, continent.Settings, tilesCount, _allContinentsHexes);
             
             _allContinentsHexes.AddRange(newContinent.AllHexes);
             _allContinents.Add(newContinent);
         }
         
-
-        Debug.Log(_allContinentsHexes.Count);
         UpdateHexesSprite(_allContinentsHexes);
 
+        Debug.Log(_hexToHexViews.Count);
 
         /*List<Vector2Int> testPoints;
 
@@ -139,32 +148,44 @@ public class HexMapGrid : MonoBehaviour, IHexStorage
             _testRivers.Clear();
         }
 
-        for (int i = 0; i < count; i++)
+        Debug.Log("continents count " + _allContinents.Count);
+        foreach (var continent in _allContinents)
         {
-            DrawRandomRiver();
+            for (int i = 0; i < count; i++)
+            {
+                DrawRandomRiver(continent);
+            }
         }
+        
     }
 
-    public void DrawRandomRiver()
+    public void DrawRandomRiver(Continent continent)
     {
-
         List<Vector3> positions = new List<Vector3>();
-        var currentRiver = Instantiate(_riverPrefab, this.transform.parent);
-
-        currentRiver.endWidth = 0.2f;
-        var starPathPos = _allContinentsHexes[Random.Range(0, _allContinentsHexes.Count)];
-        var endPathPos = _allContinentsHexes[Random.Range(0, _allContinentsHexes.Count)];
-
-        if (_pathFind.TryPathFind(starPathPos, endPathPos, out var riverPositions))
+        
+        var starPathPos = continent.AllHexes[Random.Range(0, continent.AllHexes.Count)];
+        var endPathPos = continent.AllHexes[Random.Range(0, continent.AllHexes.Count)];
+        
+        while (HexUtils.AxialDistance(starPathPos, endPathPos) < 6)
         {
+            endPathPos = continent.AllHexes[Random.Range(0, continent.AllHexes.Count)];
+        }
+        
+
+        if (_pathFind.TryPathFindForRiver(starPathPos, endPathPos, out var riverPositions))
+        {
+            var currentRiver = Instantiate(_riverPrefab, this.transform.parent);
+            currentRiver.endWidth = 0.2f;
+            
             foreach (var pathPoint in riverPositions)
             {
                 positions.Add(GetHexAtAxialCoordinate(pathPoint).Position + new Vector3(Random.Range(-0.1f, 0.1f), Random.Range(-0.1f, 0.1f)));
             }
+            
+            currentRiver.positionCount = positions.Count;
+            currentRiver.SetPositions(positions.ToArray());
+            _testRivers.Add(currentRiver);
         }
-        currentRiver.positionCount = positions.Count;
-        currentRiver.SetPositions(positions.ToArray());
-        _testRivers.Add(currentRiver);
     }
 
     public void PathFindTest()
@@ -262,7 +283,7 @@ public class HexMapGrid : MonoBehaviour, IHexStorage
 
     public bool HexAtOffsetCoordinateExist(Vector2Int offset)
     {
-        if (offset.x >= 0 && offset.x < MapResolution.x && offset.y >= 0 && offset.y < MapResolution.y)
+        if (offset.x >= 0 && offset.x < mapResolution.x && offset.y >= 0 && offset.y < mapResolution.y)
         {
             return true;
         }
