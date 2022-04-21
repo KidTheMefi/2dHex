@@ -7,10 +7,10 @@ public class ContinentSettings : ScriptableObject
 {
     [SerializeField] private int _minHexesCount;
     [SerializeField] private List<ContinentSetting> _continentSettings;
-    [SerializeField] private LandType _defaultLandType;
+    [SerializeField] private LandTypeProperty _defaultLandType;
     
     public List<ContinentSetting> Lands => _continentSettings;
-    public LandType DefaultLandType => _defaultLandType;
+    public LandTypeProperty DefaultLandType => _defaultLandType;
     public int HexCount => _minHexesCount;
 }
 
@@ -18,9 +18,9 @@ public class ContinentSettings : ScriptableObject
 [Serializable]
 public class ContinentSetting
 {
-    [SerializeField] private LandType _landType ;
+    [SerializeField] private LandTypeProperty _landType ;
     [SerializeField, Range(1,100)] private int _percent;
 
-    public LandType LandType => _landType;
+    public LandTypeProperty LandType => _landType;
     public int Percent => _percent;
 }

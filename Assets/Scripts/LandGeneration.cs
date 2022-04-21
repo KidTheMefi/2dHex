@@ -13,26 +13,7 @@ public class LandGeneration : ILandGeneration
 
     #region LandGeneration
 
-     /*public List<Vector2Int> CreateContinentLand(Vector2Int center, int startScale, int minTilesNumber)
-    {
-        List<Vector2Int> continentTilesCoordinate = CreateContinentPart(center, startScale);
-        
-        while (continentTilesCoordinate.Count<minTilesNumber)
-        {
-            var continentAdd = CreateContinentPart(continentTilesCoordinate[Random.Range(0, continentTilesCoordinate.Count)], 2);
-
-            foreach (var axial in continentAdd)
-            {
-                if (!continentTilesCoordinate.Contains(axial))
-                {
-                    continentTilesCoordinate.Add(axial);
-                }
-            }
-        }
-        return continentTilesCoordinate;
-    }*/
-     
-     public List<Vector2Int> CreateContinentLand(Vector2Int center, int startScale, int minTilesNumber, List<Vector2Int> unavailableHexes = null)
+    public List<Vector2Int> CreateContinentLand(Vector2Int center, int startScale, int minTilesNumber, List<Vector2Int> unavailableHexes = null)
      {
          List<Vector2Int> continentTilesCoordinate = CreateContinentPart(center, startScale);
 

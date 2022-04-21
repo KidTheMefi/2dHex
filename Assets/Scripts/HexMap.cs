@@ -15,14 +15,13 @@ public class HexMap : MonoBehaviour, IHexStorage
     [SerializeField] private GameObject _startPathPointCircle;
     [SerializeField] private GameObject _endPathPointCircle;
     
-    [SerializeField] private SpriteSettings SpriteSettings;
-    
+    [SerializeField] private LandTypeProperty _DefaultlandTypeProperty;
+
     [SerializeField] private ContinentSettings _continentSettings;
     [SerializeField] private ContinentSettings _secondContinentSettings;
     [SerializeField] private ContinentSettings _thirdContinentSettings;
     
     [SerializeField] private Vector2Int MapResolution;
-    [SerializeField] private int _minContinentTilesCount;
 
     private GameObject _centerPoint;
     private List<LineRenderer> _testRivers = new List<LineRenderer>();
@@ -39,6 +38,7 @@ public class HexMap : MonoBehaviour, IHexStorage
     private Continent _firstTestContinent;
     private Continent _secondTestContinent;
     private Continent _thirdTestContinent;
+    
     void Start()
     {
         
@@ -68,14 +68,18 @@ public class HexMap : MonoBehaviour, IHexStorage
                     Quaternion.identity,
                     this.transform);
                 
-                var terrain = LandType.Water;
-                hexTileView.SpriteRenderer.sprite = SpriteSettings.GetSprite(terrain);
                 hexTileView.gameObject.name = oddCoordinate.ToString();
                 hexTileView.TextAtHex(HexUtils.OffsetOddToAxial(oddCoordinate).ToString());
-
+                
+                hex.SetLandTypeProperty(_DefaultlandTypeProperty);
                 _hexStorageOddOffset[column, row] = hex;
                 _hexToHexViews.Add(hex, hexTileView);
             }
+        }
+
+        foreach (var hex in _hexStorageOddOffset)
+        {
+            UpdateHexesSprite(hex);
         }
     }
 
@@ -84,10 +88,21 @@ public class HexMap : MonoBehaviour, IHexStorage
         return HexUtils.OffsetOddToAxial(MapResolution.x * 2 / 4, MapResolution.y / 2);
     }
 
-    public async void CreateContinent()
+    public void Restart()
     {
-        _allContinentsHexes.Clear();
-
+        Debug.Log(_hexToHexViews.Count);
+        foreach (var hex in _hexToHexViews)
+        {
+            hex.Key.SetLandTypeProperty(_DefaultlandTypeProperty);
+            hex.Value.SpriteRenderer.sprite = hex.Key.LandTypeProperty.GetSprite(); //SpriteSettings.GetSprite(LandType.Water);
+        }
+        
+        _allContinentsHexes?.Clear();
+        CreateContinents();
+    }
+    
+    public async void CreateContinents()
+    {
         Vector2Int secondContStartPos = HexUtils.OffsetOddToAxial(MapResolution.x * 1 / 4, MapResolution.y / 2);
         await _secondTestContinent.CreateContinent(secondContStartPos , _secondContinentSettings);
         _allContinentsHexes.AddRange(_secondTestContinent.AllHexes);
@@ -101,16 +116,6 @@ public class HexMap : MonoBehaviour, IHexStorage
         
         Debug.Log(_allContinentsHexes.Count);
         UpdateHexesSprite(_allContinentsHexes);
-    }
-    
-    public void Restart()
-    {
-        foreach (var hex in _hexToHexViews)
-        {
-            hex.Value.SpriteRenderer.sprite = SpriteSettings.GetSprite(LandType.Water);
-            hex.Key.SetLandType(LandType.Water);
-        }
-        CreateContinent();
     }
 
     public void DrawRandomRivers(int count)
@@ -180,7 +185,7 @@ public class HexMap : MonoBehaviour, IHexStorage
                 var hex = GetHexAtAxialCoordinate(pathPoint);
                 //_pathPoints.Add(Instantiate(_pathPointCircle, hex.Position(), Quaternion.identity));
                 
-                _hexToHexViews[hex].TextAtHex(hex.GetMovementCost().ToString());
+                _hexToHexViews[hex].TextAtHex(hex.LandTypeProperty.MovementCost.ToString());
                 _hexToHexViews[hex].SetMeshRendererActive(true);
             }
         }
@@ -196,18 +201,14 @@ public class HexMap : MonoBehaviour, IHexStorage
     
     private void UpdateHexesSprite(Vector2Int hexAxial)
     {
-        Hex hex = GetHexAtAxialCoordinate(hexAxial);
-        _hexToHexViews[hex].SpriteRenderer.sprite = SpriteSettings.GetSprite(hex.LandTypeHex);
+        UpdateHexesSprite(GetHexAtAxialCoordinate(hexAxial));
     }
 
-    private void SetTilesSprites(List<Hex> hexes, LandType landType)
-    {
-        foreach (var hex in hexes)
-        {
-            _hexToHexViews[hex].SpriteRenderer.sprite = SpriteSettings.GetSprite(landType);
-        }
+    private void UpdateHexesSprite(Hex hex)
+    { 
+        _hexToHexViews[hex].SpriteRenderer.sprite = hex.LandTypeProperty.GetSprite();
     }
-
+    
     public List<Hex> GetHexesAtAxialCoordinates(List<Vector2Int> axialCoordinates)
     {
         List<Hex> hexes = new List<Hex>();

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 399626f79d78b874c83258370d01968f, type: 3}
+  m_Name: DesertPlain
+  m_EditorClassIdentifier: 
+  landName: Desert
+  _landType: 1
+  _isPassible: 1
+  _movementCost: 1
+  _landTypeSprites:
+  - {fileID: 21300000, guid: 076430ce5e1f1c9489d13a91b2140793, type: 3}
+  - {fileID: 21300000, guid: 683e96164d2b77f479f49387b1a26a40, type: 3}
+  - {fileID: 21300000, guid: 913a33769ce7ef74cb6f3642e0fe97e2, type: 3}

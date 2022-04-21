@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _minHexesCount: 450
   _continentSettings: []
-  _defaultLandType: 4
+  _defaultLandType: {fileID: 11400000, guid: 328ce91c336196549a5e14dd8746d40f, type: 2}

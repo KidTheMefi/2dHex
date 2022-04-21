@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 399626f79d78b874c83258370d01968f, type: 3}
+  m_Name: SimplePlain
+  m_EditorClassIdentifier: 
+  landName: Plain
+  _landType: 1
+  _isPassible: 1
+  _movementCost: 1
+  _landTypeSprites:
+  - {fileID: 21300000, guid: a2d0c0f8dc2a5e34f9ef41ec3e589c87, type: 3}
+  - {fileID: 21300000, guid: 334ebecea7e375f42a115cd1c6494909, type: 3}
+  - {fileID: 21300000, guid: d585bed080469664f97d35703c5580e3, type: 3}

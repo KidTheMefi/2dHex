@@ -52,24 +52,24 @@ public class Continent
         await UniTask.Yield();
     }
 
-    private void CreateLandTypeAt(LandType landType, List<Vector2Int> availableHexes, int percent)
+    private void CreateLandTypeAt(LandTypeProperty landType, List<Vector2Int> availableHexes, int percent)
     {
         var landList = _landGeneration.CreateLandTypeAtContinent(availableHexes, _continentAllHex.Count * percent / 100);
         
         foreach (var axial in landList)
         {
-            _hexStorage.GetHexAtAxialCoordinate(axial).SetLandType(landType);
+            _hexStorage.GetHexAtAxialCoordinate(axial).SetLandTypeProperty(landType);
         }
-        _landTypes.Add(landType, landList);
+        _landTypes.Add(landType.LandType, landList);
     }
     
-    private void CreateLandTypeAt(LandType landType, List<Vector2Int> availableHexes)
+    private void CreateLandTypeAt(LandTypeProperty landType, List<Vector2Int> availableHexes)
     {
         foreach (var hex in availableHexes)
         {
-            _hexStorage.GetHexAtAxialCoordinate(hex).SetLandType(landType);
+            _hexStorage.GetHexAtAxialCoordinate(hex).SetLandTypeProperty(landType);
         }
-        _landTypes.Add(landType, availableHexes);
+        _landTypes.Add(landType.LandType, availableHexes);
     }
     
     private Vector2Int CenterOf(List<Vector2Int> continent)
