@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32c2e0653d108a14eaf77684963714ca, type: 3}
+  m_Name: TestMap
+  m_EditorClassIdentifier: 
+  _mapSize: 1
+  _continentsAtMap:
+  - _percent: 10
+    _StartPointXInPercent: 50
+    _StartPointYInPercent: 100
+    settings: {fileID: 11400000, guid: eb48cc43e2b1d0a4e9348b3de86c5c7f, type: 2}
+  - _percent: 10
+    _StartPointXInPercent: 50
+    _StartPointYInPercent: 0
+    settings: {fileID: 11400000, guid: 7d3be3489483d444488ea0c4c04e57b6, type: 2}
+  - _percent: 20
+    _StartPointXInPercent: 30
+    _StartPointYInPercent: 50
+    settings: {fileID: 11400000, guid: 8a245800afd75f940b51cfd6f7157f73, type: 2}
+  - _percent: 20
+    _StartPointXInPercent: 70
+    _StartPointYInPercent: 35
+    settings: {fileID: 11400000, guid: 8a245800afd75f940b51cfd6f7157f73, type: 2}

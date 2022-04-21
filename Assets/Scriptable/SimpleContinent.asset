@@ -12,14 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74e0cc7cb3e53ed4b9fd85b398a5c092, type: 3}
   m_Name: SimpleContinent
   m_EditorClassIdentifier: 
-  _minHexesCount: 1500
-  _continentSettings:
-  - _landType: {fileID: 11400000, guid: 6471df123370a5a42bc35b55f3215e6e, type: 2}
-    _percent: 10
+  _biomType: 0
+  _minHexesCount: 2000
+  _landsTypeSettings:
   - _landType: {fileID: 11400000, guid: 2834691ae17dd3e48972ffd8039687d6, type: 2}
     _percent: 15
   - _landType: {fileID: 11400000, guid: 66e7e59a65f6d614a818d5ebce0a20a8, type: 2}
     _percent: 10
+  - _landType: {fileID: 11400000, guid: 6471df123370a5a42bc35b55f3215e6e, type: 2}
+    _percent: 10
   - _landType: {fileID: 11400000, guid: ad5b1a47c47d5bf4fa5fbc3a1465dda3, type: 2}
-    _percent: 1
+    _percent: 2
   _defaultLandType: {fileID: 11400000, guid: a3f4087bc1b53f543b9cb00ccc82479d, type: 2}

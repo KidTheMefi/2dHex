@@ -10,6 +10,7 @@ public class Hex
     
     public readonly Vector2Int OddOffsetCoordinate;
     public readonly Vector2Int AxialCoordinate;
+    public readonly Vector3 Position;
     
     private LandTypeProperty _landTypeProperty;
     public LandTypeProperty LandTypeProperty => _landTypeProperty;
@@ -24,10 +25,12 @@ public class Hex
     {
         OddOffsetCoordinate = oddOffsetCoordinate;
         AxialCoordinate = new Vector2Int(axialCoordinate.x, axialCoordinate.y);
+
+        Position = CalculatePosition();
     }
 
 
-    public Vector3 Position()
+    private Vector3 CalculatePosition()
     {
         float radius = 0.5f; // =0.5 to clean grid 
         //float radius = 0.525f; // small grid

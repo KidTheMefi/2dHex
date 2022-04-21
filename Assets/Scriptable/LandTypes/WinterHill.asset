@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 399626f79d78b874c83258370d01968f, type: 3}
-  m_Name: SnowHill
+  m_Name: WinterHill
   m_EditorClassIdentifier: 
   landName: Snow Hill
   _landType: 3

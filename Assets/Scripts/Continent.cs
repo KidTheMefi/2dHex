@@ -10,16 +10,18 @@ public class Continent
 
     private List<Vector2Int> _continentAllHex;
     private Dictionary<LandType, List<Vector2Int>> _landTypes;
-    
+    private BiomType _biomType;
+
     public Dictionary<LandType, List<Vector2Int>> LandTypes => _landTypes;
     public List<Vector2Int> AllHexes => _continentAllHex;
+    public BiomType BiomType => _biomType;
 
     public Continent(IHexStorage hexStorage, ILandGeneration landGeneration)
     {
         _hexStorage = hexStorage;
         _landGeneration = landGeneration;
     }
-    
+
     public void RemoveFromContinent(Vector2Int hexPos)
     {
         foreach (var landType in _landTypes)
@@ -29,25 +31,25 @@ public class Continent
         _continentAllHex.Remove(hexPos);
     }
 
-    public async UniTask CreateContinent(Vector2Int continentPos, ContinentSettings continentSettings, List<Vector2Int> unavailableHexes = null)
+    public async UniTask CreateContinent(Vector2Int continentPos, ContinentSettings continentSettings, int tilesCount, List<Vector2Int> unavailableHexes = null)
     {
+        _biomType = continentSettings.BiomType;
+
         _landTypes = new Dictionary<LandType, List<Vector2Int>>();
 
-        _continentAllHex = _landGeneration.CreateContinentLand(continentPos, 2, continentSettings.HexCount, unavailableHexes);
-        var continentFreeLand = new List<Vector2Int>();
-
-        foreach (var hex in _continentAllHex)
-        {
-            continentFreeLand.Add(hex);
-        }
+        _continentAllHex = _landGeneration.CreateContinentLand(continentPos, 3, tilesCount, unavailableHexes);
         
+        var continentFreeLand = new List<Vector2Int>();
+        continentFreeLand.AddRange(_continentAllHex);
+      
+
         Vector2Int centerAxial = CenterOf(_continentAllHex);
 
         foreach (var lands in continentSettings.Lands)
         {
             CreateLandTypeAt(lands.LandType, continentFreeLand, lands.Percent);
         }
-        
+
         CreateLandTypeAt(continentSettings.DefaultLandType, continentFreeLand);
         await UniTask.Yield();
     }
@@ -55,14 +57,14 @@ public class Continent
     private void CreateLandTypeAt(LandTypeProperty landType, List<Vector2Int> availableHexes, int percent)
     {
         var landList = _landGeneration.CreateLandTypeAtContinent(availableHexes, _continentAllHex.Count * percent / 100);
-        
+
         foreach (var axial in landList)
         {
             _hexStorage.GetHexAtAxialCoordinate(axial).SetLandTypeProperty(landType);
         }
         _landTypes.Add(landType.LandType, landList);
     }
-    
+
     private void CreateLandTypeAt(LandTypeProperty landType, List<Vector2Int> availableHexes)
     {
         foreach (var hex in availableHexes)
@@ -71,7 +73,7 @@ public class Continent
         }
         _landTypes.Add(landType.LandType, availableHexes);
     }
-    
+
     private Vector2Int CenterOf(List<Vector2Int> continent)
     {
         Vector2Int centerSum = new Vector2Int(0, 0);

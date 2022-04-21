@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74e0cc7cb3e53ed4b9fd85b398a5c092, type: 3}
   m_Name: DesertContinent
   m_EditorClassIdentifier: 
+  _biomType: 2
   _minHexesCount: 450
   _continentSettings: []
   _defaultLandType: {fileID: 11400000, guid: 328ce91c336196549a5e14dd8746d40f, type: 2}

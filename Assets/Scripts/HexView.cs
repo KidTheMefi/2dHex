@@ -9,7 +9,12 @@ public class HexView : MonoBehaviour
     [SerializeField] private TextMeshPro _coordinate;
     [SerializeField] private MeshRenderer _meshRenderer;
 
-    public SpriteRenderer SpriteRenderer => _spriteRenderer;
+    //public SpriteRenderer SpriteRenderer => _spriteRenderer;
+
+    public void SetHexView(Sprite sprite)
+    {
+        _spriteRenderer.sprite = sprite;
+    }
     
     public void SetMeshRendererActive(bool set)
     {

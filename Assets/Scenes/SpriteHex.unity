@@ -534,6 +534,7 @@ MonoBehaviour:
   _secondContinentSettings: {fileID: 11400000, guid: 7d3be3489483d444488ea0c4c04e57b6, type: 2}
   _thirdContinentSettings: {fileID: 11400000, guid: eb48cc43e2b1d0a4e9348b3de86c5c7f, type: 2}
   MapResolution: {x: 90, y: 60}
+  _mapSetting: {fileID: 11400000, guid: d778f19d9ad255b429cd0d2ba693f02d, type: 2}
 --- !u!1 &462197036
 GameObject:
   m_ObjectHideFlags: 0
