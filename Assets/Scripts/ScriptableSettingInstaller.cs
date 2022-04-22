@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -8,18 +5,14 @@ using Zenject;
 public class ScriptableSettingInstaller : ScriptableObjectInstaller<ScriptableSettingInstaller>
 {
     [SerializeField]
-    private HexMap.PrefabSettings HexMapPrefabs;
+    private PrefabList Prefabs;
     [SerializeField]
     private MapSetting MapSetting;
-    [SerializeField]
-    private HexView HexViewPrefab;
+    
 
     public override void InstallBindings()
     {
-        Container.BindInstance(HexViewPrefab);
-        Container.BindInstance(HexMapPrefabs);
+        Container.BindInstance(Prefabs);
         Container.BindInstance(MapSetting);
     }
-
-
 }

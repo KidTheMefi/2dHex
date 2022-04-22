@@ -1,17 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
 public class GameInstaller : MonoInstaller
 {
     [SerializeField] private Camera _camera;
-    
+    [SerializeField] private Canvas _canvas;
+
     [Inject]
-    private HexView _hexViewPrefab = null;
+    private PrefabList _prefabList = null;
+    
     public override void InstallBindings()
     {
         Container.BindInstance(_camera).AsSingle();
+        Container.BindInstance(_canvas).AsSingle();
         InstallGameField();
         InstallPathFind();
         InstallMapGenerator();
@@ -20,14 +21,14 @@ public class GameInstaller : MonoInstaller
 
     private void InstallGameField()
     {
-        Container.BindFactory<HexView, HexView.Factory>().FromComponentInNewPrefab(_hexViewPrefab).WithGameObjectName("tile").UnderTransformGroup("HexGridMap");
+        Container.BindFactory<HexView, HexView.Factory>().FromComponentInNewPrefab(_prefabList.HexViewPrefab).WithGameObjectName("tile").UnderTransformGroup("HexGridMap");
         Container.BindFactory<Continent, Continent.Factory>();
-
+        Container.BindFactory<TestButtonUI, TestButtonUI.Factory>().FromComponentInNewPrefab(_prefabList.ButtonPrefab).UnderTransform(_canvas.transform);
+        Container.BindFactory<RiverView, RiverView.Factory>().FromMonoPoolableMemoryPool(
+            x => x.FromComponentInNewPrefab(_prefabList.RiverPrefab).UnderTransformGroup("RiverPool"));
         
         Container.BindInterfacesAndSelfTo<HexMapGrid>().AsSingle();
 
-        //IHexStorage mapGrid = Instantiate(_settings.HexMapGridPrefab);
-        //Container.BindInstance(mapGrid).AsSingle();
     }
 
     private void InstallPathFind()
@@ -37,12 +38,13 @@ public class GameInstaller : MonoInstaller
     
     private void InstallMapGenerator()
     {
-        //Container.BindInterfacesAndSelfTo<LandGeneration>().AsSingle();
-        Container.Bind<ILandGeneration>().To<LandGeneration>().AsSingle();
+        Container.BindInterfacesAndSelfTo<LandGeneration>().AsSingle();
+        //Container.Bind<ILandGeneration>().To<LandGeneration>().AsSingle();
     }
 
     private void InstallMap()
     {
-        Container.BindInterfacesAndSelfTo<HexMap>().AsSingle();
+        Container.BindInterfacesAndSelfTo<HexMapContinents>().AsSingle();
+        Container.BindInterfacesAndSelfTo<RiverGenerator>().AsSingle();
     }
 }
