@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce927aaf7a34fbe4f83065fcd49bb6aa, type: 3}
+  m_Name: StartSettings
+  m_EditorClassIdentifier: 
+  HexMapPrefabs:
+    _riverPrefab: {fileID: 4805301681694227324, guid: bc5d527b457404d4798972d2c5d05696, type: 3}
+    _pathPointCircle: {fileID: 5985073117833735124, guid: 61ae9e8102c622d499e76a9164cebbc2, type: 3}
+    _startPathPointCircle: {fileID: 4295881208535046092, guid: 22673af24c1b921448899b4d07677b59, type: 3}
+    _endPathPointCircle: {fileID: 6069494507300514096, guid: fbea2edfa31dfa644b5e8c6dd1f6a0d2, type: 3}
+  MapSetting: {fileID: 11400000, guid: d778f19d9ad255b429cd0d2ba693f02d, type: 2}
+  HexViewPrefab: {fileID: 7269950964969118158, guid: ed268553b9d91e24b94a3263879f9169, type: 3}

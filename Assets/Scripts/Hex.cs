@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,9 +7,8 @@ using Zenject;
 
 public class Hex 
 {
-    private readonly float WIDTH_MULTIPLIER = Mathf.Sqrt(3) / 2; // it just work)))
+    public event Action<Hex, Sprite> LandTypeSpriteChanged = delegate { };
     
-    public readonly Vector2Int OddOffsetCoordinate;
     public readonly Vector2Int AxialCoordinate;
     public readonly Vector3 Position;
     
@@ -18,20 +18,17 @@ public class Hex
     public void SetLandTypeProperty(LandTypeProperty landTypeProperty)
     {
         _landTypeProperty = landTypeProperty;
-    }
-    
-
-    public Hex(Vector2Int axialCoordinate, Vector2Int oddOffsetCoordinate)
-    {
-        OddOffsetCoordinate = oddOffsetCoordinate;
-        AxialCoordinate = new Vector2Int(axialCoordinate.x, axialCoordinate.y);
-
-        Position = CalculatePosition();
+        LandTypeSpriteChanged.Invoke(this, landTypeProperty.GetSprite());
     }
 
-
-    private Vector3 CalculatePosition()
+    public Hex(Vector2Int axialCoordinate)
     {
+        Position = CalculatePosition(axialCoordinate);
+    }
+
+    private Vector3 CalculatePosition( Vector2Int axialCoordinate)
+    {
+        float WIDTH_MULTIPLIER = Mathf.Sqrt(3) / 2; // it just work)))
         float radius = 0.5f; // =0.5 to clean grid 
         //float radius = 0.525f; // small grid
         float height = radius * 2;
@@ -40,7 +37,7 @@ public class Hex
         float vert = height * 0.74f;
         float horiz = width;
 
-        return new Vector3(horiz * (AxialCoordinate.x + AxialCoordinate.y / 2f), vert * AxialCoordinate.y, 0);
+        return new Vector3(horiz * (axialCoordinate.x + axialCoordinate.y / 2f), vert * axialCoordinate.y, 0);
     }
     
 }

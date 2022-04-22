@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 public class HexView : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class HexView : MonoBehaviour
 
     //public SpriteRenderer SpriteRenderer => _spriteRenderer;
 
-    public void SetHexView(Sprite sprite)
+    public void SetHexViewSprite(Sprite sprite)
     {
         _spriteRenderer.sprite = sprite;
     }
@@ -23,5 +24,10 @@ public class HexView : MonoBehaviour
     public void TextAtHex(string coordinate)
     {
         _coordinate.text = coordinate;
+    }
+    
+    public class Factory : PlaceholderFactory<HexView>
+    {
+        
     }
 }

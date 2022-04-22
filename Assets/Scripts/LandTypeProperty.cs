@@ -11,6 +11,7 @@ public enum LandType
 [CreateAssetMenu(menuName = "HexGame/LandTypeSettings")]
 public class LandTypeProperty : ScriptableObject
 {
+   
    [SerializeField] private string landName;
    [SerializeField] private LandType _landType;
    [SerializeField] private bool _isPassible = true;

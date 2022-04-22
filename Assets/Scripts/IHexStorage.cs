@@ -8,7 +8,8 @@ public interface IHexStorage
 
     public Vector2Int CenterOfMap();
     public Hex GetHexAtAxialCoordinate(Vector2Int axial);
-    public Hex GetHexAtOffsetCoordinate(Vector2Int offset);
     public bool HexAtAxialCoordinateExist(Vector2Int axial);
-    public bool HexAtOffsetCoordinateExist(Vector2Int offset);
+
+    public Dictionary<Hex, HexView> GetAllTiles();
+
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Zenject;
 
 public class Continent
 {
@@ -30,6 +31,11 @@ public class Continent
             landType.Value.Remove(hexPos);
         }
         _continentAllHex.Remove(hexPos);
+    }
+    
+    public class Factory : PlaceholderFactory<Continent>
+    {
+        
     }
 
     public async UniTask CreateContinent(Vector2Int continentPos, ContinentSettings continentSettings, int tilesCount, List<Vector2Int> unavailableHexes = null)

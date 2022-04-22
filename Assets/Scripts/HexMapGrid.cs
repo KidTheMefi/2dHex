@@ -5,240 +5,73 @@ using System.Linq;
 using Priority_Queue;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 using Random = UnityEngine.Random;
 
 
-public class HexMapGrid : MonoBehaviour, IHexStorage
+public class HexMapGrid :  IInitializable, IHexStorage
 {
-    [SerializeField] private HexView HexPrefab;
-    [SerializeField] private GameObject _pathPointCircle;
-    [SerializeField] private LineRenderer _riverPrefab;
-    [SerializeField] private GameObject _startPathPointCircle;
-    [SerializeField] private GameObject _endPathPointCircle;
-
+    private MapSetting _mapSetting;
+    private HexView.Factory _hexViewFactory;
     
-    
-    [SerializeField] private MapSetting _mapSetting;
-
     private GameObject _centerPoint;
-    private List<LineRenderer> _testRivers = new List<LineRenderer>();
-    private List<Vector2Int> _tutorPath;
-    private List<Vector2Int> _allContinentsHexes = new List<Vector2Int>();
-
-    private HashSet<GameObject> _pathPoints = new HashSet<GameObject>();
-
-    private Hex[,] _hexStorageOddOffset;
-    private Dictionary<Hex, HexView> _hexToHexViews;
     
-    private AStarSearch _pathFind;
-    private LandGeneration _landGeneration;
-    private List<Continent> _allContinents;
-    private Vector2Int mapResolution;
-
-    void Start()
+    private Hex[,] _hexStorageOddOffset;
+    private Dictionary<Hex, HexView> _hexToHexViews = new Dictionary<Hex, HexView>();
+    
+    private Vector2Int _mapResolution;
+    public HexMapGrid( MapSetting mapSetting, HexView.Factory hexViewFactory)
     {
-        _pathFind = new AStarSearch(this);
-        _landGeneration = new LandGeneration(this);
-        mapResolution = _mapSetting.MapResolution();
+        _mapSetting = mapSetting;
+        _hexViewFactory = hexViewFactory;
+    }
+    
+    
+    public void Initialize()
+    {
         GenerateMapGrid();
-        
     }
 
     private void GenerateMapGrid() //more like generate hex grid
     {
-        _hexStorageOddOffset = new Hex[mapResolution.x, mapResolution.y];
-        _hexToHexViews = new Dictionary<Hex, HexView>();
-
-        for (int column = 0; column < mapResolution.x; column++)
+        if (_mapSetting == null)
         {
-            for (int row = 0; row < mapResolution.y; row++)
+            Debug.Log("didnt injected");
+        }
+        _mapResolution = _mapSetting.MapResolution();
+        _hexStorageOddOffset = new Hex[_mapResolution.x, _mapResolution.y];
+
+        for (int column = 0; column < _mapResolution.x; column++)
+        {
+            for (int row = 0; row < _mapResolution.y; row++)
             {
                 Vector2Int oddCoordinate = new Vector2Int(column, row);
-                Hex hex = new Hex(HexUtils.OffsetOddToAxial(oddCoordinate), oddCoordinate);
-
-                HexView hexTileView = Instantiate(
-                    HexPrefab,
-                    hex.Position,
-                    Quaternion.identity,
-                    this.transform);
+                Hex hex = new Hex(HexUtils.OffsetOddToAxial(oddCoordinate));
+                HexView hexTileView = _hexViewFactory.Create();
+                hexTileView.transform.position = hex.Position;
+                
 
                 hexTileView.gameObject.name = oddCoordinate.ToString();
                 hexTileView.TextAtHex(HexUtils.OffsetOddToAxial(oddCoordinate).ToString());
-
+                hex.LandTypeSpriteChanged += ChangeHexSprite;
                 hex.SetLandTypeProperty(_mapSetting.DefaultLandTypeProperty);
                 _hexStorageOddOffset[column, row] = hex;
                 _hexToHexViews.Add(hex, hexTileView);
             }
         }
-
-        foreach (var hex in _hexStorageOddOffset)
-        {
-            UpdateHexesSprite(hex);
-        }
     }
 
+    private void ChangeHexSprite(Hex hex, Sprite sprite)
+    {
+        if (_hexToHexViews.TryGetValue(hex, out var hexView))
+        {
+            hexView.SetHexViewSprite(sprite);
+        }
+    }
+    
     public Vector2Int CenterOfMap()
     {
-        return HexUtils.OffsetOddToAxial(mapResolution.x  / 2, mapResolution.y / 2);
-    }
-
-    public void Restart()
-    {
-        if (_testRivers.Count != 0)
-        {
-            foreach (var river in _testRivers)
-            {
-                Destroy(river.gameObject);
-            }
-            _testRivers.Clear();
-        }
-        
-        foreach (var hex in _hexToHexViews)
-        {
-            hex.Key.SetLandTypeProperty(_mapSetting.DefaultLandTypeProperty);
-            hex.Value.SetHexView(hex.Key.LandTypeProperty.GetSprite());
-        }
-
-        _allContinentsHexes?.Clear();
-        _allContinents?.Clear();
-        CreateContinents();
-    }
-
-    public async void CreateContinents()
-    {
-        _allContinents = new List<Continent>();
-        
-        foreach (var continent in _mapSetting.ContinentsAtMap)
-        {
-            var newContinent = new Continent(this, _landGeneration);
-            int tilesCount = _mapSetting.MapResolution().x * _mapSetting.MapResolution().y * continent.Percent/100;
-            Vector2Int continentStartPos = HexUtils.OffsetOddToAxial(_mapSetting.MapResolution().x * continent.StartPointXInPercent / 100, 
-                                                                     _mapSetting.MapResolution().y * continent.StartPointYInPercent / 100);
-            
-            await newContinent.CreateContinent(continentStartPos, continent.Settings, tilesCount, _allContinentsHexes);
-            
-            _allContinentsHexes.AddRange(newContinent.AllHexes);
-            _allContinents.Add(newContinent);
-        }
-        
-        UpdateHexesSprite(_allContinentsHexes);
-
-        Debug.Log(_hexToHexViews.Count);
-
-        /*List<Vector2Int> testPoints;
-
-        foreach (var continent in _allContinents)
-        {
-            if (continent.LandTypes.TryGetValue(LandType.Forrest, out testPoints))
-            {
-                Instantiate(_pathPointCircle, GetHexAtAxialCoordinate(testPoints[Random.Range(0, testPoints.Count)]).Position, Quaternion.identity);
-            }
-        }*/
-
-    }
-
-    public void DrawRandomRivers(int count)
-    {
-        if (_testRivers.Count != 0)
-        {
-            foreach (var river in _testRivers)
-            {
-                Destroy(river.gameObject);
-            }
-            _testRivers.Clear();
-        }
-
-        Debug.Log("continents count " + _allContinents.Count);
-        foreach (var continent in _allContinents)
-        {
-            for (int i = 0; i < count; i++)
-            {
-                DrawRandomRiver(continent);
-            }
-        }
-        
-    }
-
-    public void DrawRandomRiver(Continent continent)
-    {
-        List<Vector3> positions = new List<Vector3>();
-        
-        var starPathPos = continent.AllHexes[Random.Range(0, continent.AllHexes.Count)];
-        var endPathPos = continent.AllHexes[Random.Range(0, continent.AllHexes.Count)];
-        
-        while (HexUtils.AxialDistance(starPathPos, endPathPos) < 6)
-        {
-            endPathPos = continent.AllHexes[Random.Range(0, continent.AllHexes.Count)];
-        }
-        
-
-        if (_pathFind.TryPathFindForRiver(starPathPos, endPathPos, out var riverPositions))
-        {
-            var currentRiver = Instantiate(_riverPrefab, this.transform.parent);
-            currentRiver.endWidth = 0.2f;
-            
-            foreach (var pathPoint in riverPositions)
-            {
-                positions.Add(GetHexAtAxialCoordinate(pathPoint).Position + new Vector3(Random.Range(-0.1f, 0.1f), Random.Range(-0.1f, 0.1f)));
-            }
-            
-            currentRiver.positionCount = positions.Count;
-            currentRiver.SetPositions(positions.ToArray());
-            _testRivers.Add(currentRiver);
-        }
-    }
-
-    public void PathFindTest()
-    {
-        if (_tutorPath != null)
-        {
-            foreach (var pathPoint in _tutorPath)
-            {
-                _hexToHexViews[GetHexAtAxialCoordinate(pathPoint)].SetMeshRendererActive(false);
-            }
-        }
-
-        foreach (var point in _pathPoints)
-        {
-            Destroy(point);
-        }
-
-        var starPathPos = _allContinentsHexes[Random.Range(0, _allContinentsHexes.Count)];
-        var endPathPos = _allContinentsHexes[Random.Range(0, _allContinentsHexes.Count)];
-
-        _pathPoints.Add(Instantiate(_startPathPointCircle, GetHexAtAxialCoordinate(starPathPos).Position, Quaternion.identity));
-        _pathPoints.Add(Instantiate(_endPathPointCircle, GetHexAtAxialCoordinate(endPathPos).Position, Quaternion.identity));
-
-        if (_pathFind.TryPathFind(starPathPos, endPathPos, out _tutorPath))
-        {
-            foreach (var pathPoint in _tutorPath)
-            {
-                var hex = GetHexAtAxialCoordinate(pathPoint);
-
-                //_pathPoints.Add(Instantiate(_pathPointCircle, hex.Position(), Quaternion.identity));
-
-                _hexToHexViews[hex].TextAtHex(hex.LandTypeProperty.MovementCost.ToString());
-                _hexToHexViews[hex].SetMeshRendererActive(true);
-            }
-        }
-    }
-
-    private void UpdateHexesSprite(List<Vector2Int> hexes)
-    {
-        foreach (var hex in hexes)
-        {
-            UpdateHexesSprite(hex);
-        }
-    }
-
-    private void UpdateHexesSprite(Vector2Int hexAxial)
-    {
-        UpdateHexesSprite(GetHexAtAxialCoordinate(hexAxial));
-    }
-
-    private void UpdateHexesSprite(Hex hex)
-    {
-        _hexToHexViews[hex].SetHexView(hex.LandTypeProperty.GetSprite());
+        return HexUtils.OffsetOddToAxial(_mapResolution.x  / 2, _mapResolution.y / 2);
     }
 
     public List<Hex> GetHexesAtAxialCoordinates(List<Vector2Int> axialCoordinates)
@@ -261,33 +94,66 @@ public class HexMapGrid : MonoBehaviour, IHexStorage
 
     public Hex GetHexAtAxialCoordinate(Vector2Int axial)
     {
-        return GetHexAtOffsetCoordinate(HexUtils.AxialToOffsetOdd(axial));
-    }
-
-    public Hex GetHexAtOffsetCoordinate(Vector2Int offset)
-    {
-        if (!HexAtOffsetCoordinateExist(offset))
+        if (!HexAtAxialCoordinateExist(axial))
         {
-            throw new System.ArgumentException("Wrong Coordinate. Hex doesn't exist");
-
+            throw new System.ArgumentException("Wrong Axial Coordinate. Hex doesn't exist");
             //Debug.LogWarning("there is no hex at: " + offset);
             //return null;
         }
+
+        var offset = HexUtils.AxialToOffsetOdd(axial);
         return _hexStorageOddOffset[offset.x, offset.y];
     }
 
     public bool HexAtAxialCoordinateExist(Vector2Int axial)
     {
-        return HexAtOffsetCoordinateExist(HexUtils.AxialToOffsetOdd(axial));
-    }
-
-    public bool HexAtOffsetCoordinateExist(Vector2Int offset)
-    {
-        if (offset.x >= 0 && offset.x < mapResolution.x && offset.y >= 0 && offset.y < mapResolution.y)
+        var offset = HexUtils.AxialToOffsetOdd(axial);
+        if (offset.x >= 0 && offset.x < _mapResolution.x && offset.y >= 0 && offset.y < _mapResolution.y)
         {
             return true;
         }
         return false;
     }
+    public Dictionary<Hex, HexView> GetAllTiles()
+    {
+        return _hexToHexViews;
+    }
 
+    private void OnDestroy()
+    {
+        foreach (var tile in _hexToHexViews)
+        {
+            tile.Key.LandTypeSpriteChanged -= ChangeHexSprite;
+        }
+    }
+    
+    //HexView getter (unused for now)
+    /*
+   public HexView GetHexView(Hex hex)
+   {
+       if (_hexToHexViews.TryGetValue(hex, out var hexView))
+       {
+           return hexView;
+       }
+       else
+       {
+           throw new System.ArgumentException("Wrong Coordinate. HexView doesn't exist");
+       }
+   }
+   
+   public HexView GetHexView(Vector2Int hexAxial)
+   {
+       return GetHexView(GetHexAtAxialCoordinate(hexAxial));
+   }
+
+   public List<HexView> GetHexViews(List<Vector2Int> hexesAxial)
+   {
+       List<HexView> hexViews = new List<HexView>();
+       foreach (var hex in hexesAxial)
+       {
+           hexViews.Add(GetHexView(hex));
+       }
+       return hexViews;
+   }
+   */
 }
