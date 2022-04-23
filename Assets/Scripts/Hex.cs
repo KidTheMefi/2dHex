@@ -8,6 +8,7 @@ using Zenject;
 public class Hex 
 {
     public event Action<Hex, Sprite> LandTypeSpriteChanged = delegate { };
+    public event Action<Hex> OnMouseEnter = delegate { };
     
     public readonly Vector2Int AxialCoordinate;
     public readonly Vector3 Position;
@@ -23,21 +24,7 @@ public class Hex
 
     public Hex(Vector2Int axialCoordinate)
     {
-        Position = CalculatePosition(axialCoordinate);
+        Position = HexUtils.CalculatePosition(axialCoordinate);
     }
 
-    private Vector3 CalculatePosition( Vector2Int axialCoordinate)
-    {
-        float WIDTH_MULTIPLIER = Mathf.Sqrt(3) / 2; // it just work)))
-        float radius = 0.5f; // =0.5 to clean grid 
-        //float radius = 0.525f; // small grid
-        float height = radius * 2;
-        float width = WIDTH_MULTIPLIER * height;
-
-        float vert = height * 0.74f;
-        float horiz = width;
-
-        return new Vector3(horiz * (axialCoordinate.x + axialCoordinate.y / 2f), vert * axialCoordinate.y, 0);
-    }
-    
 }

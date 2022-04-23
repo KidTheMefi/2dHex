@@ -1,12 +1,7 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Priority_Queue;
 using UnityEngine;
-using UnityEngine.UI;
 using Zenject;
-using Random = UnityEngine.Random;
+
 
 
 public class HexMapGrid :  IInitializable, IHexStorage
@@ -18,6 +13,7 @@ public class HexMapGrid :  IInitializable, IHexStorage
     
     private Hex[,] _hexStorageOddOffset;
     private Dictionary<Hex, HexView> _hexToHexViews = new Dictionary<Hex, HexView>();
+    private Dictionary<HexView, Hex> _hexViewToHex = new Dictionary<HexView, Hex>();
     
     private Vector2Int _mapResolution;
     public HexMapGrid( MapSetting mapSetting, HexView.Factory hexViewFactory)
@@ -57,6 +53,7 @@ public class HexMapGrid :  IInitializable, IHexStorage
                 hex.SetLandTypeProperty(_mapSetting.DefaultLandTypeProperty);
                 _hexStorageOddOffset[column, row] = hex;
                 _hexToHexViews.Add(hex, hexTileView);
+                _hexViewToHex.Add(hexTileView, hex);
             }
         }
     }
@@ -114,9 +111,13 @@ public class HexMapGrid :  IInitializable, IHexStorage
         }
         return false;
     }
-    public Dictionary<Hex, HexView> GetAllTiles()
+    public Dictionary<Hex, HexView> HexToHexView()
     {
         return _hexToHexViews;
+    }
+    public Dictionary<HexView, Hex> HexViewToHex()
+    {
+        return _hexViewToHex;
     }
 
     private void OnDestroy()

@@ -74,41 +74,4 @@ public class RiverGenerator : IInitializable
             _testRivers.Add(currentRiver);
         }
     }
-/*
-    public void PathFindTest()
-    {
-        if (_tutorPath != null)
-        {
-            foreach (var pathPoint in _tutorPath)
-            {
-                _hexToHexViews[GetHexAtAxialCoordinate(pathPoint)].SetMeshRendererActive(false);
-            }
-        }
-
-        foreach (var point in _pathPoints)
-        {
-            Destroy(point);
-        }
-
-        var starPathPos = _allContinentsHexes[Random.Range(0, _allContinentsHexes.Count)];
-        var endPathPos = _allContinentsHexes[Random.Range(0, _allContinentsHexes.Count)];
-
-        _pathPoints.Add(Instantiate(_startPathPointCircle, _hexStorage.GetHexAtAxialCoordinate(starPathPos).Position, Quaternion.identity));
-        _pathPoints.Add(Instantiate(_endPathPointCircle, _hexStorage.GetHexAtAxialCoordinate(endPathPos).Position, Quaternion.identity));
-
-        if (_pathFind.TryPathFind(starPathPos, endPathPos, out _tutorPath))
-        {
-            foreach (var pathPoint in _tutorPath)
-            {
-                var hex = _hexStorage.GetHexAtAxialCoordinate(pathPoint);
-
-                //_pathPoints.Add(Instantiate(_pathPointCircle, hex.Position(), Quaternion.identity));
-
-                _hexToHexViews[hex].TextAtHex(hex.LandTypeProperty.MovementCost.ToString());
-                _hexToHexViews[hex].SetMeshRendererActive(true);
-            }
-        }
-    }
-*/
-
 }

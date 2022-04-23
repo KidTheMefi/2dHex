@@ -13,8 +13,7 @@ public class HexMapContinents : IInitializable, IDisposable
     public event Action ContinentsGenereted = delegate { };
     private MapSetting _mapSetting;
     private Continent.Factory _continentFactory;
-
-    private List<Vector2Int> _tutorPath;
+    
     private List<Vector2Int> _allContinentsHexes = new List<Vector2Int>();
     
     private List<Continent> _allContinents;
@@ -42,7 +41,7 @@ public class HexMapContinents : IInitializable, IDisposable
             _testRivers.Clear();
         }*/
 
-        foreach (var hex in _hexStorage.GetAllTiles())
+        foreach (var hex in _hexStorage.HexToHexView())
         {
             hex.Key.SetLandTypeProperty(_mapSetting.DefaultLandTypeProperty);
         }

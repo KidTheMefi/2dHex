@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class HexUtils
 {
+
+    private static readonly float WIDTH_MULTIPLIER = Mathf.Sqrt(3); // it just work)))
+    private static readonly float HexRadius = 0.5f; //or size
     public static readonly Vector2Int[] AxialDirectionVectors =
     {
         new Vector2Int (1, 0),
@@ -61,12 +64,12 @@ public class HexUtils
         return hexes;
     }
 
-    public static Vector2Int AxialRound(Vector2 axial)
+    private static Vector2Int AxialRound(Vector2 axial)
     {
         return CubeToAxial(CubeRound(AxialToCube(axial)));
     }
 
-    public static Vector3Int CubeRound(Vector3 cube)
+    private static Vector3Int CubeRound(Vector3 cube)
     {
         int x = Mathf.RoundToInt(cube.x);
         int y = Mathf.RoundToInt(cube.y);
@@ -75,7 +78,7 @@ public class HexUtils
         float xDiff = Mathf.Abs((x - cube.x));
         float yDiff = Mathf.Abs((y - cube.y));
         float zDiff = Mathf.Abs((z - cube.z));
-
+        
         if (xDiff > yDiff && xDiff > zDiff)
         {
             x = -y - z;
@@ -91,12 +94,12 @@ public class HexUtils
         return new Vector3Int(x, y, z);
     }
 
-    public static Vector2Int CubeToAxial(Vector3Int cube)
+    private static Vector2Int CubeToAxial(Vector3Int cube)
     {
         return new Vector2Int(cube.x, cube.y);
     }
 
-    public static Vector3 AxialToCube(Vector2 axial)
+    private static Vector3 AxialToCube(Vector2 axial)
     {
         return new Vector3(axial.x, axial.y, -axial.x - axial.y);
     }
@@ -141,4 +144,24 @@ public class HexUtils
         return AxialDirectionVectors[Random.Range(0, 6)];
     }
 
+    
+    // it just work))) 
+    public static Vector2Int GetAxialFromWorldCoordinates (Vector3 pointClick)
+    {
+        float q = (Mathf.Sqrt(3)/3 * pointClick.x  -  1f/3f * pointClick.y) / HexRadius;
+        float r = ( 2f/3 * pointClick.y) / HexRadius;
+
+        return AxialRound(new Vector2(q,r));
+    }
+
+    public static Vector3 CalculatePosition( Vector2Int axialCoordinate)
+    {
+        float height = HexRadius * 2;
+        float width = WIDTH_MULTIPLIER * HexRadius;
+
+        float vert = height * 0.75f; 
+        float horiz = width;
+
+        return new Vector3(horiz * (axialCoordinate.x + axialCoordinate.y / 2f), vert * axialCoordinate.y, 0);
+    }
 }

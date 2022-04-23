@@ -10,6 +10,7 @@ public interface IHexStorage
     public Hex GetHexAtAxialCoordinate(Vector2Int axial);
     public bool HexAtAxialCoordinateExist(Vector2Int axial);
 
-    public Dictionary<Hex, HexView> GetAllTiles();
+    public Dictionary<Hex, HexView> HexToHexView();
+    public Dictionary<HexView, Hex> HexViewToHex();
 
 }
