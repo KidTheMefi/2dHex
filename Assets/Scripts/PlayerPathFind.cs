@@ -23,8 +23,7 @@ public class PlayerPathFind : IInitializable
     {
         foreach (var hex in _hexStorage.HexToHexView())
         {
-            hex.Value.OnMouseDownAction += ClickOnStartPoint;
-            hex.Value.OnMouseEnterAction += SelectEndPoint;
+            
         }
     }
 
