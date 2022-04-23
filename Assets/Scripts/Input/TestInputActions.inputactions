@@ -1,0 +1,98 @@
+{
+    "name": "TestInputActions",
+    "maps": [
+        {
+            "name": "MouseInput",
+            "id": "f9cac46f-95df-43ee-98af-cf797007e189",
+            "actions": [
+                {
+                    "name": "MapClick",
+                    "type": "Button",
+                    "id": "9295f834-5a43-49b4-ac65-ff1c037faf15",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "MapClickVector",
+                    "type": "PassThrough",
+                    "id": "a91838ca-efae-44e9-a37d-75820b2c3b94",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "MapClickUp",
+                    "type": "Button",
+                    "id": "5539f89b-cb68-40dd-bab5-a100fe16a660",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "146b8565-2bcc-4be0-ac4b-ff53cc316864",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MapClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0a8c4c4f-fb4c-4b01-9348-fa3c58b4423f",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MapClickVector",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6928ac4a-0db1-4c46-bbb2-39f558dc3a88",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MapClickUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "ActionKey",
+            "id": "57fda782-503b-466b-840b-e3f5b26e7334",
+            "actions": [
+                {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "4256988a-ab86-43ba-b410-547e86ccef6e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "1a39d664-b04d-41bd-83c9-a9d8f8399999",
+                    "path": "<Keyboard>/space",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
