@@ -19,7 +19,7 @@ public class @TestInputActions : IInputActionCollection, IDisposable
             ""id"": ""f9cac46f-95df-43ee-98af-cf797007e189"",
             ""actions"": [
                 {
-                    ""name"": ""MapClick"",
+                    ""name"": ""MiddleClickDown"",
                     ""type"": ""Button"",
                     ""id"": ""9295f834-5a43-49b4-ac65-ff1c037faf15"",
                     ""expectedControlType"": ""Button"",
@@ -27,7 +27,7 @@ public class @TestInputActions : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""MapClickVector"",
+                    ""name"": ""MousePosition"",
                     ""type"": ""PassThrough"",
                     ""id"": ""a91838ca-efae-44e9-a37d-75820b2c3b94"",
                     ""expectedControlType"": ""Vector2"",
@@ -35,10 +35,18 @@ public class @TestInputActions : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""MapClickUp"",
+                    ""name"": ""MiddleClickUp"",
                     ""type"": ""Button"",
                     ""id"": ""5539f89b-cb68-40dd-bab5-a100fe16a660"",
                     ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Scroll"",
+                    ""type"": ""Value"",
+                    ""id"": ""9b316619-da1d-4e84-94a1-fc28d6b51e62"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
                 }
@@ -47,11 +55,11 @@ public class @TestInputActions : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""146b8565-2bcc-4be0-ac4b-ff53cc316864"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""path"": ""<Mouse>/middleButton"",
                     ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MapClick"",
+                    ""action"": ""MiddleClickDown"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -62,18 +70,29 @@ public class @TestInputActions : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MapClickVector"",
+                    ""action"": ""MousePosition"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""6928ac4a-0db1-4c46-bbb2-39f558dc3a88"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""path"": ""<Mouse>/middleButton"",
                     ""interactions"": ""Press(behavior=1)"",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MapClickUp"",
+                    ""action"": ""MiddleClickUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5e000dab-5e75-470a-84ff-36574ed8c4c1"",
+                    ""path"": ""<Mouse>/scroll"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Scroll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -111,9 +130,10 @@ public class @TestInputActions : IInputActionCollection, IDisposable
 }");
         // MouseInput
         m_MouseInput = asset.FindActionMap("MouseInput", throwIfNotFound: true);
-        m_MouseInput_MapClick = m_MouseInput.FindAction("MapClick", throwIfNotFound: true);
-        m_MouseInput_MapClickVector = m_MouseInput.FindAction("MapClickVector", throwIfNotFound: true);
-        m_MouseInput_MapClickUp = m_MouseInput.FindAction("MapClickUp", throwIfNotFound: true);
+        m_MouseInput_MiddleClickDown = m_MouseInput.FindAction("MiddleClickDown", throwIfNotFound: true);
+        m_MouseInput_MousePosition = m_MouseInput.FindAction("MousePosition", throwIfNotFound: true);
+        m_MouseInput_MiddleClickUp = m_MouseInput.FindAction("MiddleClickUp", throwIfNotFound: true);
+        m_MouseInput_Scroll = m_MouseInput.FindAction("Scroll", throwIfNotFound: true);
         // ActionKey
         m_ActionKey = asset.FindActionMap("ActionKey", throwIfNotFound: true);
         m_ActionKey_Jump = m_ActionKey.FindAction("Jump", throwIfNotFound: true);
@@ -166,16 +186,18 @@ public class @TestInputActions : IInputActionCollection, IDisposable
     // MouseInput
     private readonly InputActionMap m_MouseInput;
     private IMouseInputActions m_MouseInputActionsCallbackInterface;
-    private readonly InputAction m_MouseInput_MapClick;
-    private readonly InputAction m_MouseInput_MapClickVector;
-    private readonly InputAction m_MouseInput_MapClickUp;
+    private readonly InputAction m_MouseInput_MiddleClickDown;
+    private readonly InputAction m_MouseInput_MousePosition;
+    private readonly InputAction m_MouseInput_MiddleClickUp;
+    private readonly InputAction m_MouseInput_Scroll;
     public struct MouseInputActions
     {
         private @TestInputActions m_Wrapper;
         public MouseInputActions(@TestInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @MapClick => m_Wrapper.m_MouseInput_MapClick;
-        public InputAction @MapClickVector => m_Wrapper.m_MouseInput_MapClickVector;
-        public InputAction @MapClickUp => m_Wrapper.m_MouseInput_MapClickUp;
+        public InputAction @MiddleClickDown => m_Wrapper.m_MouseInput_MiddleClickDown;
+        public InputAction @MousePosition => m_Wrapper.m_MouseInput_MousePosition;
+        public InputAction @MiddleClickUp => m_Wrapper.m_MouseInput_MiddleClickUp;
+        public InputAction @Scroll => m_Wrapper.m_MouseInput_Scroll;
         public InputActionMap Get() { return m_Wrapper.m_MouseInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -185,28 +207,34 @@ public class @TestInputActions : IInputActionCollection, IDisposable
         {
             if (m_Wrapper.m_MouseInputActionsCallbackInterface != null)
             {
-                @MapClick.started -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnMapClick;
-                @MapClick.performed -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnMapClick;
-                @MapClick.canceled -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnMapClick;
-                @MapClickVector.started -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnMapClickVector;
-                @MapClickVector.performed -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnMapClickVector;
-                @MapClickVector.canceled -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnMapClickVector;
-                @MapClickUp.started -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnMapClickUp;
-                @MapClickUp.performed -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnMapClickUp;
-                @MapClickUp.canceled -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnMapClickUp;
+                @MiddleClickDown.started -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnMiddleClickDown;
+                @MiddleClickDown.performed -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnMiddleClickDown;
+                @MiddleClickDown.canceled -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnMiddleClickDown;
+                @MousePosition.started -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnMousePosition;
+                @MousePosition.performed -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnMousePosition;
+                @MousePosition.canceled -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnMousePosition;
+                @MiddleClickUp.started -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnMiddleClickUp;
+                @MiddleClickUp.performed -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnMiddleClickUp;
+                @MiddleClickUp.canceled -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnMiddleClickUp;
+                @Scroll.started -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnScroll;
+                @Scroll.performed -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnScroll;
+                @Scroll.canceled -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnScroll;
             }
             m_Wrapper.m_MouseInputActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @MapClick.started += instance.OnMapClick;
-                @MapClick.performed += instance.OnMapClick;
-                @MapClick.canceled += instance.OnMapClick;
-                @MapClickVector.started += instance.OnMapClickVector;
-                @MapClickVector.performed += instance.OnMapClickVector;
-                @MapClickVector.canceled += instance.OnMapClickVector;
-                @MapClickUp.started += instance.OnMapClickUp;
-                @MapClickUp.performed += instance.OnMapClickUp;
-                @MapClickUp.canceled += instance.OnMapClickUp;
+                @MiddleClickDown.started += instance.OnMiddleClickDown;
+                @MiddleClickDown.performed += instance.OnMiddleClickDown;
+                @MiddleClickDown.canceled += instance.OnMiddleClickDown;
+                @MousePosition.started += instance.OnMousePosition;
+                @MousePosition.performed += instance.OnMousePosition;
+                @MousePosition.canceled += instance.OnMousePosition;
+                @MiddleClickUp.started += instance.OnMiddleClickUp;
+                @MiddleClickUp.performed += instance.OnMiddleClickUp;
+                @MiddleClickUp.canceled += instance.OnMiddleClickUp;
+                @Scroll.started += instance.OnScroll;
+                @Scroll.performed += instance.OnScroll;
+                @Scroll.canceled += instance.OnScroll;
             }
         }
     }
@@ -246,9 +274,10 @@ public class @TestInputActions : IInputActionCollection, IDisposable
     public ActionKeyActions @ActionKey => new ActionKeyActions(this);
     public interface IMouseInputActions
     {
-        void OnMapClick(InputAction.CallbackContext context);
-        void OnMapClickVector(InputAction.CallbackContext context);
-        void OnMapClickUp(InputAction.CallbackContext context);
+        void OnMiddleClickDown(InputAction.CallbackContext context);
+        void OnMousePosition(InputAction.CallbackContext context);
+        void OnMiddleClickUp(InputAction.CallbackContext context);
+        void OnScroll(InputAction.CallbackContext context);
     }
     public interface IActionKeyActions
     {

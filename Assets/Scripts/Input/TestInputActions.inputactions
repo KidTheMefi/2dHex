@@ -6,7 +6,7 @@
             "id": "f9cac46f-95df-43ee-98af-cf797007e189",
             "actions": [
                 {
-                    "name": "MapClick",
+                    "name": "MiddleClickDown",
                     "type": "Button",
                     "id": "9295f834-5a43-49b4-ac65-ff1c037faf15",
                     "expectedControlType": "Button",
@@ -14,7 +14,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "MapClickVector",
+                    "name": "MousePosition",
                     "type": "PassThrough",
                     "id": "a91838ca-efae-44e9-a37d-75820b2c3b94",
                     "expectedControlType": "Vector2",
@@ -22,10 +22,18 @@
                     "interactions": ""
                 },
                 {
-                    "name": "MapClickUp",
+                    "name": "MiddleClickUp",
                     "type": "Button",
                     "id": "5539f89b-cb68-40dd-bab5-a100fe16a660",
                     "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Scroll",
+                    "type": "Value",
+                    "id": "9b316619-da1d-4e84-94a1-fc28d6b51e62",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": ""
                 }
@@ -34,11 +42,11 @@
                 {
                     "name": "",
                     "id": "146b8565-2bcc-4be0-ac4b-ff53cc316864",
-                    "path": "<Mouse>/leftButton",
+                    "path": "<Mouse>/middleButton",
                     "interactions": "Press",
                     "processors": "",
                     "groups": "",
-                    "action": "MapClick",
+                    "action": "MiddleClickDown",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -49,18 +57,29 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MapClickVector",
+                    "action": "MousePosition",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "6928ac4a-0db1-4c46-bbb2-39f558dc3a88",
-                    "path": "<Mouse>/leftButton",
+                    "path": "<Mouse>/middleButton",
                     "interactions": "Press(behavior=1)",
                     "processors": "",
                     "groups": "",
-                    "action": "MapClickUp",
+                    "action": "MiddleClickUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5e000dab-5e75-470a-84ff-36574ed8c4c1",
+                    "path": "<Mouse>/scroll",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Scroll",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
