@@ -35,18 +35,26 @@ public class @TestInputActions : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""MiddleClickUp"",
-                    ""type"": ""Button"",
-                    ""id"": ""5539f89b-cb68-40dd-bab5-a100fe16a660"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """"
-                },
-                {
                     ""name"": ""Scroll"",
                     ""type"": ""Value"",
                     ""id"": ""9b316619-da1d-4e84-94a1-fc28d6b51e62"",
                     ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""WASDMove"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""caa0823e-d8d7-469d-9518-d88884b0e489"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""WASDPress"",
+                    ""type"": ""Button"",
+                    ""id"": ""5966a75a-c454-4d7a-b0b1-7814c1d12fd0"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
                 }
@@ -76,23 +84,111 @@ public class @TestInputActions : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""6928ac4a-0db1-4c46-bbb2-39f558dc3a88"",
-                    ""path"": ""<Mouse>/middleButton"",
-                    ""interactions"": ""Press(behavior=1)"",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""MiddleClickUp"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""5e000dab-5e75-470a-84ff-36574ed8c4c1"",
                     ""path"": ""<Mouse>/scroll"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Scroll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""e908ca87-06dd-4bc5-b3c0-4a608dc87a94"",
+                    ""path"": ""2DVector(mode=1)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WASDMove"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""9acdc553-da49-4cfa-9d6a-cb52615c0835"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WASDMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""87361596-0221-4d3e-a9ca-08572a41a6f1"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WASDMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""445d46bc-3ad5-46ac-82d9-5c5be94751e9"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WASDMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""ff5e6f5a-c30c-4c98-b792-611e0be3704a"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WASDMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5d05006d-8f62-4936-839b-b53a985ec9c9"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WASDPress"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8bbdfb0b-c2c2-4e2f-9536-77087fbbd46a"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WASDPress"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3d83536e-d309-42c4-b14a-d1152ae4240a"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WASDPress"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0e733671-f41f-491c-8266-1226e8cbb1ed"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WASDPress"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -132,8 +228,9 @@ public class @TestInputActions : IInputActionCollection, IDisposable
         m_MouseInput = asset.FindActionMap("MouseInput", throwIfNotFound: true);
         m_MouseInput_MiddleClickDown = m_MouseInput.FindAction("MiddleClickDown", throwIfNotFound: true);
         m_MouseInput_MousePosition = m_MouseInput.FindAction("MousePosition", throwIfNotFound: true);
-        m_MouseInput_MiddleClickUp = m_MouseInput.FindAction("MiddleClickUp", throwIfNotFound: true);
         m_MouseInput_Scroll = m_MouseInput.FindAction("Scroll", throwIfNotFound: true);
+        m_MouseInput_WASDMove = m_MouseInput.FindAction("WASDMove", throwIfNotFound: true);
+        m_MouseInput_WASDPress = m_MouseInput.FindAction("WASDPress", throwIfNotFound: true);
         // ActionKey
         m_ActionKey = asset.FindActionMap("ActionKey", throwIfNotFound: true);
         m_ActionKey_Jump = m_ActionKey.FindAction("Jump", throwIfNotFound: true);
@@ -188,16 +285,18 @@ public class @TestInputActions : IInputActionCollection, IDisposable
     private IMouseInputActions m_MouseInputActionsCallbackInterface;
     private readonly InputAction m_MouseInput_MiddleClickDown;
     private readonly InputAction m_MouseInput_MousePosition;
-    private readonly InputAction m_MouseInput_MiddleClickUp;
     private readonly InputAction m_MouseInput_Scroll;
+    private readonly InputAction m_MouseInput_WASDMove;
+    private readonly InputAction m_MouseInput_WASDPress;
     public struct MouseInputActions
     {
         private @TestInputActions m_Wrapper;
         public MouseInputActions(@TestInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @MiddleClickDown => m_Wrapper.m_MouseInput_MiddleClickDown;
         public InputAction @MousePosition => m_Wrapper.m_MouseInput_MousePosition;
-        public InputAction @MiddleClickUp => m_Wrapper.m_MouseInput_MiddleClickUp;
         public InputAction @Scroll => m_Wrapper.m_MouseInput_Scroll;
+        public InputAction @WASDMove => m_Wrapper.m_MouseInput_WASDMove;
+        public InputAction @WASDPress => m_Wrapper.m_MouseInput_WASDPress;
         public InputActionMap Get() { return m_Wrapper.m_MouseInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -213,12 +312,15 @@ public class @TestInputActions : IInputActionCollection, IDisposable
                 @MousePosition.started -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnMousePosition;
                 @MousePosition.performed -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnMousePosition;
                 @MousePosition.canceled -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnMousePosition;
-                @MiddleClickUp.started -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnMiddleClickUp;
-                @MiddleClickUp.performed -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnMiddleClickUp;
-                @MiddleClickUp.canceled -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnMiddleClickUp;
                 @Scroll.started -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnScroll;
                 @Scroll.performed -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnScroll;
                 @Scroll.canceled -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnScroll;
+                @WASDMove.started -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnWASDMove;
+                @WASDMove.performed -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnWASDMove;
+                @WASDMove.canceled -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnWASDMove;
+                @WASDPress.started -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnWASDPress;
+                @WASDPress.performed -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnWASDPress;
+                @WASDPress.canceled -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnWASDPress;
             }
             m_Wrapper.m_MouseInputActionsCallbackInterface = instance;
             if (instance != null)
@@ -229,12 +331,15 @@ public class @TestInputActions : IInputActionCollection, IDisposable
                 @MousePosition.started += instance.OnMousePosition;
                 @MousePosition.performed += instance.OnMousePosition;
                 @MousePosition.canceled += instance.OnMousePosition;
-                @MiddleClickUp.started += instance.OnMiddleClickUp;
-                @MiddleClickUp.performed += instance.OnMiddleClickUp;
-                @MiddleClickUp.canceled += instance.OnMiddleClickUp;
                 @Scroll.started += instance.OnScroll;
                 @Scroll.performed += instance.OnScroll;
                 @Scroll.canceled += instance.OnScroll;
+                @WASDMove.started += instance.OnWASDMove;
+                @WASDMove.performed += instance.OnWASDMove;
+                @WASDMove.canceled += instance.OnWASDMove;
+                @WASDPress.started += instance.OnWASDPress;
+                @WASDPress.performed += instance.OnWASDPress;
+                @WASDPress.canceled += instance.OnWASDPress;
             }
         }
     }
@@ -276,8 +381,9 @@ public class @TestInputActions : IInputActionCollection, IDisposable
     {
         void OnMiddleClickDown(InputAction.CallbackContext context);
         void OnMousePosition(InputAction.CallbackContext context);
-        void OnMiddleClickUp(InputAction.CallbackContext context);
         void OnScroll(InputAction.CallbackContext context);
+        void OnWASDMove(InputAction.CallbackContext context);
+        void OnWASDPress(InputAction.CallbackContext context);
     }
     public interface IActionKeyActions
     {
