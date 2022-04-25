@@ -15,7 +15,7 @@ public class @TestInputActions : IInputActionCollection, IDisposable
     ""name"": ""TestInputActions"",
     ""maps"": [
         {
-            ""name"": ""MouseInput"",
+            ""name"": ""CameraInput"",
             ""id"": ""f9cac46f-95df-43ee-98af-cf797007e189"",
             ""actions"": [
                 {
@@ -224,13 +224,13 @@ public class @TestInputActions : IInputActionCollection, IDisposable
     ],
     ""controlSchemes"": []
 }");
-        // MouseInput
-        m_MouseInput = asset.FindActionMap("MouseInput", throwIfNotFound: true);
-        m_MouseInput_MiddleClickDown = m_MouseInput.FindAction("MiddleClickDown", throwIfNotFound: true);
-        m_MouseInput_MousePosition = m_MouseInput.FindAction("MousePosition", throwIfNotFound: true);
-        m_MouseInput_Scroll = m_MouseInput.FindAction("Scroll", throwIfNotFound: true);
-        m_MouseInput_WASDMove = m_MouseInput.FindAction("WASDMove", throwIfNotFound: true);
-        m_MouseInput_WASDPress = m_MouseInput.FindAction("WASDPress", throwIfNotFound: true);
+        // CameraInput
+        m_CameraInput = asset.FindActionMap("CameraInput", throwIfNotFound: true);
+        m_CameraInput_MiddleClickDown = m_CameraInput.FindAction("MiddleClickDown", throwIfNotFound: true);
+        m_CameraInput_MousePosition = m_CameraInput.FindAction("MousePosition", throwIfNotFound: true);
+        m_CameraInput_Scroll = m_CameraInput.FindAction("Scroll", throwIfNotFound: true);
+        m_CameraInput_WASDMove = m_CameraInput.FindAction("WASDMove", throwIfNotFound: true);
+        m_CameraInput_WASDPress = m_CameraInput.FindAction("WASDPress", throwIfNotFound: true);
         // ActionKey
         m_ActionKey = asset.FindActionMap("ActionKey", throwIfNotFound: true);
         m_ActionKey_Jump = m_ActionKey.FindAction("Jump", throwIfNotFound: true);
@@ -280,49 +280,49 @@ public class @TestInputActions : IInputActionCollection, IDisposable
         asset.Disable();
     }
 
-    // MouseInput
-    private readonly InputActionMap m_MouseInput;
-    private IMouseInputActions m_MouseInputActionsCallbackInterface;
-    private readonly InputAction m_MouseInput_MiddleClickDown;
-    private readonly InputAction m_MouseInput_MousePosition;
-    private readonly InputAction m_MouseInput_Scroll;
-    private readonly InputAction m_MouseInput_WASDMove;
-    private readonly InputAction m_MouseInput_WASDPress;
-    public struct MouseInputActions
+    // CameraInput
+    private readonly InputActionMap m_CameraInput;
+    private ICameraInputActions m_CameraInputActionsCallbackInterface;
+    private readonly InputAction m_CameraInput_MiddleClickDown;
+    private readonly InputAction m_CameraInput_MousePosition;
+    private readonly InputAction m_CameraInput_Scroll;
+    private readonly InputAction m_CameraInput_WASDMove;
+    private readonly InputAction m_CameraInput_WASDPress;
+    public struct CameraInputActions
     {
         private @TestInputActions m_Wrapper;
-        public MouseInputActions(@TestInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @MiddleClickDown => m_Wrapper.m_MouseInput_MiddleClickDown;
-        public InputAction @MousePosition => m_Wrapper.m_MouseInput_MousePosition;
-        public InputAction @Scroll => m_Wrapper.m_MouseInput_Scroll;
-        public InputAction @WASDMove => m_Wrapper.m_MouseInput_WASDMove;
-        public InputAction @WASDPress => m_Wrapper.m_MouseInput_WASDPress;
-        public InputActionMap Get() { return m_Wrapper.m_MouseInput; }
+        public CameraInputActions(@TestInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @MiddleClickDown => m_Wrapper.m_CameraInput_MiddleClickDown;
+        public InputAction @MousePosition => m_Wrapper.m_CameraInput_MousePosition;
+        public InputAction @Scroll => m_Wrapper.m_CameraInput_Scroll;
+        public InputAction @WASDMove => m_Wrapper.m_CameraInput_WASDMove;
+        public InputAction @WASDPress => m_Wrapper.m_CameraInput_WASDPress;
+        public InputActionMap Get() { return m_Wrapper.m_CameraInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(MouseInputActions set) { return set.Get(); }
-        public void SetCallbacks(IMouseInputActions instance)
+        public static implicit operator InputActionMap(CameraInputActions set) { return set.Get(); }
+        public void SetCallbacks(ICameraInputActions instance)
         {
-            if (m_Wrapper.m_MouseInputActionsCallbackInterface != null)
+            if (m_Wrapper.m_CameraInputActionsCallbackInterface != null)
             {
-                @MiddleClickDown.started -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnMiddleClickDown;
-                @MiddleClickDown.performed -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnMiddleClickDown;
-                @MiddleClickDown.canceled -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnMiddleClickDown;
-                @MousePosition.started -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnMousePosition;
-                @MousePosition.performed -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnMousePosition;
-                @MousePosition.canceled -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnMousePosition;
-                @Scroll.started -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnScroll;
-                @Scroll.performed -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnScroll;
-                @Scroll.canceled -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnScroll;
-                @WASDMove.started -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnWASDMove;
-                @WASDMove.performed -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnWASDMove;
-                @WASDMove.canceled -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnWASDMove;
-                @WASDPress.started -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnWASDPress;
-                @WASDPress.performed -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnWASDPress;
-                @WASDPress.canceled -= m_Wrapper.m_MouseInputActionsCallbackInterface.OnWASDPress;
+                @MiddleClickDown.started -= m_Wrapper.m_CameraInputActionsCallbackInterface.OnMiddleClickDown;
+                @MiddleClickDown.performed -= m_Wrapper.m_CameraInputActionsCallbackInterface.OnMiddleClickDown;
+                @MiddleClickDown.canceled -= m_Wrapper.m_CameraInputActionsCallbackInterface.OnMiddleClickDown;
+                @MousePosition.started -= m_Wrapper.m_CameraInputActionsCallbackInterface.OnMousePosition;
+                @MousePosition.performed -= m_Wrapper.m_CameraInputActionsCallbackInterface.OnMousePosition;
+                @MousePosition.canceled -= m_Wrapper.m_CameraInputActionsCallbackInterface.OnMousePosition;
+                @Scroll.started -= m_Wrapper.m_CameraInputActionsCallbackInterface.OnScroll;
+                @Scroll.performed -= m_Wrapper.m_CameraInputActionsCallbackInterface.OnScroll;
+                @Scroll.canceled -= m_Wrapper.m_CameraInputActionsCallbackInterface.OnScroll;
+                @WASDMove.started -= m_Wrapper.m_CameraInputActionsCallbackInterface.OnWASDMove;
+                @WASDMove.performed -= m_Wrapper.m_CameraInputActionsCallbackInterface.OnWASDMove;
+                @WASDMove.canceled -= m_Wrapper.m_CameraInputActionsCallbackInterface.OnWASDMove;
+                @WASDPress.started -= m_Wrapper.m_CameraInputActionsCallbackInterface.OnWASDPress;
+                @WASDPress.performed -= m_Wrapper.m_CameraInputActionsCallbackInterface.OnWASDPress;
+                @WASDPress.canceled -= m_Wrapper.m_CameraInputActionsCallbackInterface.OnWASDPress;
             }
-            m_Wrapper.m_MouseInputActionsCallbackInterface = instance;
+            m_Wrapper.m_CameraInputActionsCallbackInterface = instance;
             if (instance != null)
             {
                 @MiddleClickDown.started += instance.OnMiddleClickDown;
@@ -343,7 +343,7 @@ public class @TestInputActions : IInputActionCollection, IDisposable
             }
         }
     }
-    public MouseInputActions @MouseInput => new MouseInputActions(this);
+    public CameraInputActions @CameraInput => new CameraInputActions(this);
 
     // ActionKey
     private readonly InputActionMap m_ActionKey;
@@ -377,7 +377,7 @@ public class @TestInputActions : IInputActionCollection, IDisposable
         }
     }
     public ActionKeyActions @ActionKey => new ActionKeyActions(this);
-    public interface IMouseInputActions
+    public interface ICameraInputActions
     {
         void OnMiddleClickDown(InputAction.CallbackContext context);
         void OnMousePosition(InputAction.CallbackContext context);

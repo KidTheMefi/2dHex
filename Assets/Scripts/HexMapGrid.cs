@@ -4,7 +4,7 @@ using Zenject;
 
 
 
-public class HexMapGrid :  IInitializable, IHexStorage
+public class HexMapGrid :  IInitializable, IHexStorage, IMapBorder
 {
     private MapSetting _mapSetting;
     private HexView.Factory _hexViewFactory;
@@ -127,7 +127,17 @@ public class HexMapGrid :  IInitializable, IHexStorage
             tile.Key.LandTypeSpriteChanged -= ChangeHexSprite;
         }
     }
-    
+
+    public MapBorder GetMapBorderWorld()
+    {
+        var minPoint = HexUtils.CalculatePosition(new Vector2Int(0, 0)) - Vector3.one;
+        var maxPointOffset = HexUtils.OffsetOddToAxial(new Vector2Int(_mapSetting.MapResolution().x, _mapSetting.MapResolution().y));
+        var maxPoint = HexUtils.CalculatePosition(maxPointOffset) + Vector3.one;
+        return new MapBorder(minPoint, maxPoint);
+    }
+
+    #region  HexView Getter
+
     //HexView getter (unused for now)
     /*
    public HexView GetHexView(Hex hex)
@@ -157,4 +167,24 @@ public class HexMapGrid :  IInitializable, IHexStorage
        return hexViews;
    }
    */
+
+  #endregion
+    
+}
+
+public struct MapBorder
+{
+    public float XMin { get; }
+    public float YMin { get; }
+    public float XMax { get; }
+    public float YMax { get; }
+    
+    public override string ToString() => $"({XMin}, {YMin}, {XMax}, {YMax})";
+    public MapBorder(Vector2 minPoint, Vector2 maxPoint)
+    {
+        XMin = minPoint.x;
+        YMin = minPoint.y;
+        XMax = maxPoint.x;
+        YMax = maxPoint.y;
+    }
 }

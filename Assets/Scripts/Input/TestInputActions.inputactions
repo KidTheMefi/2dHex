@@ -2,7 +2,7 @@
     "name": "TestInputActions",
     "maps": [
         {
-            "name": "MouseInput",
+            "name": "CameraInput",
             "id": "f9cac46f-95df-43ee-98af-cf797007e189",
             "actions": [
                 {
