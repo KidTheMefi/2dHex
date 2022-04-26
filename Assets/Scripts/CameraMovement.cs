@@ -61,25 +61,13 @@ public class CameraMovement : MonoBehaviour
     private async UniTask AsyncCameraMovementWASD()
     {
         _wasdMoving = true;
-        var pos = transform.position;
-
-
-        //Debug.Log(halfCameraHeight);
-        //Debug.Log(halfCameraHeight*_camera.aspect);
-
         await UniTask.WaitUntil(() =>
         {
-            Vector2 _wasdVector2 = _inputActions.CameraInput.WASDMove.ReadValue<Vector2>();
-            Vector3 targetPoint = transform.position + (Vector3)_wasdVector2 * _wasdVectorMultiply;
-
-            /*if(targetPoint.y + halfCameraHeight - 3f  > _mapBorder.YMax || targetPoint.y - halfCameraHeight < _mapBorder.YMin - 3f)
-            {
-                Debug.Log((pos.y + halfCameraHeight) + " / " + _mapBorder.YMax);
-                targetPoint.y = transform.position.y;
-            }*/
+            Vector2 wasdVector2 = _inputActions.CameraInput.WASDMove.ReadValue<Vector2>();
+            Vector3 targetPoint = transform.position + (Vector3)wasdVector2 * _wasdVectorMultiply;
+            
             _moveTarget.position = targetPoint + Vector3.forward * 10;
-
-
+            
             targetPoint = CameraOnBordersPositonUpdate(targetPoint);
 
             float lerpValue = Time.deltaTime * _camera.orthographicSize*2f;
@@ -127,13 +115,12 @@ public class CameraMovement : MonoBehaviour
 
         var currentPosition = GetWorldPosition(_inputActions.CameraInput.MousePosition.ReadValue<Vector2>());
         var newPos = transform.position + mouseOldPosition - currentPosition;
-        //transform.position += mouseOldPosition - currentPosition;
-
         transform.position = CameraOnBordersPositonUpdate(newPos);
     }
 
     private Vector3 CameraOnBordersPositonUpdate(Vector3 pos)
     {
+        //TODO: maybe smth with less IF
         Vector3 newCamPos = pos;
 
         if (pos.y > _mapBorder.YMax - _camera.orthographicSize)
@@ -163,8 +150,7 @@ public class CameraMovement : MonoBehaviour
         {
             newCamPos.x = (_mapBorder.XMax + _mapBorder.XMin) / 2;
         }
-
-        //transform.position =
+        
         return newCamPos;
     }
 
@@ -177,6 +163,7 @@ public class CameraMovement : MonoBehaviour
         {
             var currentPosition = GetWorldPosition(_inputActions.CameraInput.MousePosition.ReadValue<Vector2>());
             Vector3 point = transform.position + dragStartPosition - currentPosition;
+            point = CameraOnBordersPositonUpdate(point);
             transform.position = Vector3.Lerp(transform.position, point, _cameraDragSpeed * Time.deltaTime);
 
             return _cancelTokenSource.IsCancellationRequested;
