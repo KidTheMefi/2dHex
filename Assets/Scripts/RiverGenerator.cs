@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using Interfaces;
 using UnityEngine;
 using Zenject;
 
@@ -22,10 +24,10 @@ public class RiverGenerator : IInitializable
     
     public void Initialize()
     {
-        _mapContinents.ContinentsGenereted += () => DrawRandomRivers(6);
+       // _mapContinents.ContinentsGenerated += () => DrawRandomRivers(6);
     }
     
-    public void DrawRandomRivers(int count)
+    public async UniTask DrawRandomRivers(int count)
     {
         if (_testRivers.Count != 0)
         {
@@ -44,10 +46,10 @@ public class RiverGenerator : IInitializable
                 DrawRandomRiver(continent);
             }
         }
-
+        await UniTask.Yield();
     }
 
-    public void DrawRandomRiver(Continent continent)
+    private void DrawRandomRiver(Continent continent)
     {
         List<Vector3> positions = new List<Vector3>();
 

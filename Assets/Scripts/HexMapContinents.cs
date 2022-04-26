@@ -3,14 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 using Random = UnityEngine.Random;
 
-public class HexMapContinents : IInitializable, IDisposable
+public class HexMapContinents : IRandomPassablePosition
 {
-    public event Action ContinentsGenereted = delegate { };
+    public event Action ContinentsGenerated = delegate { };
     private MapSetting _mapSetting;
     private Continent.Factory _continentFactory;
     
@@ -30,17 +31,9 @@ public class HexMapContinents : IInitializable, IDisposable
         _buttonFactory = buttonFactory;
     }
 
-    public async void GenerateStart()
+    
+    public async UniTask GenerateStart()  //was Void
     {
-        /*if (_testRivers.Count != 0)
-        {
-            foreach (var river in _testRivers)
-            {
-                Destroy(river.gameObject);
-            }
-            _testRivers.Clear();
-        }*/
-
         foreach (var hex in _hexStorage.HexToHexView())
         {
             hex.Key.SetLandTypeProperty(_mapSetting.DefaultLandTypeProperty);
@@ -49,9 +42,8 @@ public class HexMapContinents : IInitializable, IDisposable
         _allContinentsHexes?.Clear();
         _allContinents?.Clear();
         await CreateContinents();
-        ContinentsGenereted.Invoke();
+        ContinentsGenerated.Invoke();
     }
-
 
     private async UniTask  CreateContinents()
     {
@@ -69,28 +61,17 @@ public class HexMapContinents : IInitializable, IDisposable
             _allContinentsHexes.AddRange(newContinent.AllHexes);
             _allContinents.Add(newContinent);
         }
-        
         await UniTask.Yield();
+    }
 
-            /*List<Vector2Int> testPoints;
-    
-            foreach (var continent in _allContinents)
-            {
-                if (continent.LandTypes.TryGetValue(LandType.Forrest, out testPoints))
-                {
-                    Instantiate(_pathPointCircle, GetHexAtAxialCoordinate(testPoints[Random.Range(0, testPoints.Count)]).Position, Quaternion.identity);
-                }
-            }*/
-
+    public Vector2Int GetRandomStartPosition()
+    {
+        var random = _allContinentsHexes[ Random.Range(0,_allContinentsHexes.Count)];
+        while (!_hexStorage.GetHexAtAxialCoordinate(random).LandTypeProperty.IsPassable)
+        {
+            random = _allContinentsHexes[ Random.Range(0,_allContinentsHexes.Count)];
+        }
+        return random;
     }
     
-    public void Initialize()
-    {
-        var buttonUI = _buttonFactory.Create();
-        buttonUI.Init(GenerateStart);
-    }
-    public void Dispose()
-    {
-        
-    }
 }

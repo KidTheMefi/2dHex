@@ -14,11 +14,11 @@ public class LandTypeProperty : ScriptableObject
    
    [SerializeField] private string landName;
    [SerializeField] private LandType _landType;
-   [SerializeField] private bool _isPassible = true;
+   [SerializeField] private bool _isPassable = true;
    [SerializeField] private int _movementCost = 1;
    [SerializeField] private List<Sprite> _landTypeSprites;
 
-   public bool IsPassible => _isPassible;
+   public bool IsPassable => _isPassable;
    public string LandName => landName;
    public int MovementCost => _movementCost;
    public LandType LandType => _landType;
