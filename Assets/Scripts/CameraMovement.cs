@@ -21,17 +21,19 @@ public class CameraMovement : MonoBehaviour
     private float _cameraDragSpeed = 20f;
     private int _wasdVectorMultiply = 1;
 
-    [SerializeField] private float _cameraZoom;
-    [SerializeField] private float _maxZoom;
     [SerializeField] private float _minZoom;
+    [SerializeField] private float _cameraZoom;
+    private float _maxZoom;
+    
 
     private void Start()
     {
-        transform.position = new Vector3((_mapBorder.XMax + _mapBorder.XMin) , _mapBorder.YMax + _mapBorder.YMin, transform.position.z  )/2f;
+        transform.position = new Vector3((_mapBorder.XMax + _mapBorder.XMin), _mapBorder.YMax + _mapBorder.YMin, transform.position.z) / 2f;
 
-        _maxZoom = (_mapBorder.YMax - _mapBorder.YMin)/2;
-        
+        _maxZoom = (_mapBorder.YMax - _mapBorder.YMin) / 2;
+        _camera.orthographicSize = _maxZoom;
         _cameraZoom = _camera.orthographicSize;
+
         _inputActions = new TestInputActions();
         _inputActions.CameraInput.MiddleClickDown.started += MiddleMouseDown;
         _inputActions.CameraInput.MiddleClickDown.canceled += MouseUp;
@@ -65,12 +67,12 @@ public class CameraMovement : MonoBehaviour
         {
             Vector2 wasdVector2 = _inputActions.CameraInput.WASDMove.ReadValue<Vector2>();
             Vector3 targetPoint = transform.position + (Vector3)wasdVector2 * _wasdVectorMultiply;
-            
-            _moveTarget.position = targetPoint + Vector3.forward * 10;
-            
-            targetPoint = CameraOnBordersPositonUpdate(targetPoint);
 
-            float lerpValue = Time.deltaTime * _camera.orthographicSize*2f;
+            _moveTarget.position = targetPoint + Vector3.forward * 10;
+
+            targetPoint = CameraOnBordersPositionUpdate(targetPoint);
+
+            float lerpValue = Time.deltaTime * _camera.orthographicSize * 2f;
 
             transform.position = Vector3.Lerp(transform.position, targetPoint, lerpValue);
             return !_wasdMoving;
@@ -115,10 +117,10 @@ public class CameraMovement : MonoBehaviour
 
         var currentPosition = GetWorldPosition(_inputActions.CameraInput.MousePosition.ReadValue<Vector2>());
         var newPos = transform.position + mouseOldPosition - currentPosition;
-        transform.position = CameraOnBordersPositonUpdate(newPos);
+        transform.position = CameraOnBordersPositionUpdate(newPos);
     }
 
-    private Vector3 CameraOnBordersPositonUpdate(Vector3 pos)
+    private Vector3 CameraOnBordersPositionUpdate(Vector3 pos)
     {
         //TODO: maybe smth with less IF
         Vector3 newCamPos = pos;
@@ -136,7 +138,7 @@ public class CameraMovement : MonoBehaviour
         {
             newCamPos.y = (_mapBorder.YMax + _mapBorder.YMin) / 2;
         }
-        
+
         if (pos.x + _camera.orthographicSize * _camera.aspect > _mapBorder.XMax)
         {
             newCamPos.x = _mapBorder.XMax - _camera.orthographicSize * _camera.aspect;
@@ -150,7 +152,6 @@ public class CameraMovement : MonoBehaviour
         {
             newCamPos.x = (_mapBorder.XMax + _mapBorder.XMin) / 2;
         }
-        
         return newCamPos;
     }
 
@@ -163,7 +164,7 @@ public class CameraMovement : MonoBehaviour
         {
             var currentPosition = GetWorldPosition(_inputActions.CameraInput.MousePosition.ReadValue<Vector2>());
             Vector3 point = transform.position + dragStartPosition - currentPosition;
-            point = CameraOnBordersPositonUpdate(point);
+            point = CameraOnBordersPositionUpdate(point);
             transform.position = Vector3.Lerp(transform.position, point, _cameraDragSpeed * Time.deltaTime);
 
             return _cancelTokenSource.IsCancellationRequested;

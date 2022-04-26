@@ -64,8 +64,16 @@ PrefabInstance:
       value: 0.004538993
       objectReference: {fileID: 0}
     - target: {fileID: 5985073117833735123, guid: 61ae9e8102c622d499e76a9164cebbc2, type: 3}
+      propertyPath: m_SortingLayer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5985073117833735123, guid: 61ae9e8102c622d499e76a9164cebbc2, type: 3}
       propertyPath: m_SortingOrder
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5985073117833735123, guid: 61ae9e8102c622d499e76a9164cebbc2, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -721091861
       objectReference: {fileID: 0}
     - target: {fileID: 5985073117833735124, guid: 61ae9e8102c622d499e76a9164cebbc2, type: 3}
       propertyPath: m_Name

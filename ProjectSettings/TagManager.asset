@@ -41,6 +41,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: MapTiles
+    uniqueID: 1874658179
+    locked: 0
+  - name: MapObject
+    uniqueID: 3573875435
+    locked: 0
+  - name: DynamicMapObjects
+    uniqueID: 640394691
+    locked: 0
   - name: UI
     uniqueID: 2078035243
     locked: 0
