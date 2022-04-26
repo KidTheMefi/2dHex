@@ -15,6 +15,8 @@ public class HexMapGrid :  IInitializable, IHexStorage, IMapBorder
     private Dictionary<Hex, HexView> _hexToHexViews = new Dictionary<Hex, HexView>();
     private Dictionary<HexView, Hex> _hexViewToHex = new Dictionary<HexView, Hex>();
     
+    private float _borderIndent = 1f;
+    
     private Vector2Int _mapResolution;
     public HexMapGrid( MapSetting mapSetting, HexView.Factory hexViewFactory)
     {
@@ -130,9 +132,9 @@ public class HexMapGrid :  IInitializable, IHexStorage, IMapBorder
 
     public MapBorder GetMapBorderWorld()
     {
-        var minPoint = HexUtils.CalculatePosition(new Vector2Int(0, 0)) - Vector3.one;
+        var minPoint = HexUtils.CalculatePosition(new Vector2Int(0, 0)) - Vector3.one*_borderIndent;
         var maxPointOffset = HexUtils.OffsetOddToAxial(new Vector2Int(_mapSetting.MapResolution().x, _mapSetting.MapResolution().y));
-        var maxPoint = HexUtils.CalculatePosition(maxPointOffset) + Vector3.one;
+        var maxPoint = HexUtils.CalculatePosition(maxPointOffset) + Vector3.one*_borderIndent;
         return new MapBorder(minPoint, maxPoint);
     }
 

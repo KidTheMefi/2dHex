@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32c2e0653d108a14eaf77684963714ca, type: 3}
   m_Name: TestMap
   m_EditorClassIdentifier: 
-  _mapSize: 1
+  _mapSize: 2
   _DefaultlandTypeProperty: {fileID: 11400000, guid: ad5b1a47c47d5bf4fa5fbc3a1465dda3, type: 2}
   _continentsAtMap:
   - _percent: 20

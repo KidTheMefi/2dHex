@@ -13,10 +13,16 @@ public class GameInstaller : MonoInstaller
     {
         Container.BindInstance(_camera).AsSingle();
         Container.BindInstance(_canvas).AsSingle();
+        InstallInputSystem();
         InstallGameField();
         InstallPathFind();
         InstallMapGenerator();
         InstallMap();
+    }
+
+    private void InstallInputSystem()
+    {
+        Container.BindInterfacesAndSelfTo<TestInputActions>().AsSingle();
     }
 
     private void InstallGameField()
