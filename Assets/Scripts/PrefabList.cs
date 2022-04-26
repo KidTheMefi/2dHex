@@ -12,6 +12,7 @@ public class PrefabList
         [SerializeField] private GameObject _startPathPointCircle;
         [SerializeField] private GameObject _endPathPointCircle;
         [SerializeField] private TestButtonUI _buttonUIPrefab;
+        [SerializeField] private PlayerGroupView _playerGroupPrefab;
 
         public HexView HexViewPrefab => _hexViewPrefab;
         public TestButtonUI ButtonPrefab => _buttonUIPrefab;
@@ -19,5 +20,6 @@ public class PrefabList
         public GameObject PathPoint => _pathPointCircle;
         public GameObject StartPathPoint => _startPathPointCircle;
         public GameObject EndPathPoint => _endPathPointCircle;
-    
+        public PlayerGroupView PlayerGroupPrefab => _playerGroupPrefab;
+
 }

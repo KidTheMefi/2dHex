@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Interfaces;
 using Priority_Queue;
 using UnityEngine;
 
@@ -89,9 +90,7 @@ public class AStarSearch
                                 Debug.Log(starPathPos + " Unreachable from " + endPathPos);
                                 break;
                         }
-
                         newPath.Add(drawPathPoint);
-                        
                         foreach (var dir in HexUtils.AxialDirectionVectors)
                         {
                                 Vector2Int next = new Vector2Int(drawPathPoint.x + dir.x, drawPathPoint.y + dir.y);
@@ -102,8 +101,6 @@ public class AStarSearch
                                         return true;
                                 }
                         }
-                        
-                        
                 }
                 path = newPath;
                 if (path.Count == 0)
@@ -118,7 +115,7 @@ public class AStarSearch
                 foreach (var dir in HexUtils.AxialDirectionVectors)
                 {
                         Vector2Int next = new Vector2Int(axial.x + dir.x, axial.y + dir.y);
-                        if (_hexStorage.HexAtAxialCoordinateExist(next) && _hexStorage.GetHexAtAxialCoordinate(next).LandTypeProperty.IsPassible) 
+                        if (_hexStorage.HexAtAxialCoordinateExist(next) && _hexStorage.GetHexAtAxialCoordinate(next).LandTypeProperty.IsPassable) 
                         {
                                 yield return next;
                         }

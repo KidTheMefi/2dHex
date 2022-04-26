@@ -19,4 +19,5 @@ MonoBehaviour:
     _startPathPointCircle: {fileID: 4295881208535046092, guid: 22673af24c1b921448899b4d07677b59, type: 3}
     _endPathPointCircle: {fileID: 6069494507300514096, guid: fbea2edfa31dfa644b5e8c6dd1f6a0d2, type: 3}
     _buttonUIPrefab: {fileID: 6771151904382855701, guid: 65306d3ea55dde14fac2d8b86833c6ec, type: 3}
+    _playerGroupPrefab: {fileID: 7547169285816333529, guid: bed986b2fea5c404cb63c57fd61e0bb8, type: 3}
   MapSetting: {fileID: 11400000, guid: d778f19d9ad255b429cd0d2ba693f02d, type: 2}

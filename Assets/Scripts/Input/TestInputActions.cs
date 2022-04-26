@@ -57,6 +57,14 @@ public class @TestInputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""LeftClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""31c71d76-ea96-436a-83a9-08e459d1528b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -191,6 +199,17 @@ public class @TestInputActions : IInputActionCollection, IDisposable
                     ""action"": ""WASDPress"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d8fcf1f4-dbab-4dfb-a924-8ed6ee6c8194"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LeftClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -231,6 +250,7 @@ public class @TestInputActions : IInputActionCollection, IDisposable
         m_CameraInput_Scroll = m_CameraInput.FindAction("Scroll", throwIfNotFound: true);
         m_CameraInput_WASDMove = m_CameraInput.FindAction("WASDMove", throwIfNotFound: true);
         m_CameraInput_WASDPress = m_CameraInput.FindAction("WASDPress", throwIfNotFound: true);
+        m_CameraInput_LeftClick = m_CameraInput.FindAction("LeftClick", throwIfNotFound: true);
         // ActionKey
         m_ActionKey = asset.FindActionMap("ActionKey", throwIfNotFound: true);
         m_ActionKey_Jump = m_ActionKey.FindAction("Jump", throwIfNotFound: true);
@@ -288,6 +308,7 @@ public class @TestInputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_CameraInput_Scroll;
     private readonly InputAction m_CameraInput_WASDMove;
     private readonly InputAction m_CameraInput_WASDPress;
+    private readonly InputAction m_CameraInput_LeftClick;
     public struct CameraInputActions
     {
         private @TestInputActions m_Wrapper;
@@ -297,6 +318,7 @@ public class @TestInputActions : IInputActionCollection, IDisposable
         public InputAction @Scroll => m_Wrapper.m_CameraInput_Scroll;
         public InputAction @WASDMove => m_Wrapper.m_CameraInput_WASDMove;
         public InputAction @WASDPress => m_Wrapper.m_CameraInput_WASDPress;
+        public InputAction @LeftClick => m_Wrapper.m_CameraInput_LeftClick;
         public InputActionMap Get() { return m_Wrapper.m_CameraInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -321,6 +343,9 @@ public class @TestInputActions : IInputActionCollection, IDisposable
                 @WASDPress.started -= m_Wrapper.m_CameraInputActionsCallbackInterface.OnWASDPress;
                 @WASDPress.performed -= m_Wrapper.m_CameraInputActionsCallbackInterface.OnWASDPress;
                 @WASDPress.canceled -= m_Wrapper.m_CameraInputActionsCallbackInterface.OnWASDPress;
+                @LeftClick.started -= m_Wrapper.m_CameraInputActionsCallbackInterface.OnLeftClick;
+                @LeftClick.performed -= m_Wrapper.m_CameraInputActionsCallbackInterface.OnLeftClick;
+                @LeftClick.canceled -= m_Wrapper.m_CameraInputActionsCallbackInterface.OnLeftClick;
             }
             m_Wrapper.m_CameraInputActionsCallbackInterface = instance;
             if (instance != null)
@@ -340,6 +365,9 @@ public class @TestInputActions : IInputActionCollection, IDisposable
                 @WASDPress.started += instance.OnWASDPress;
                 @WASDPress.performed += instance.OnWASDPress;
                 @WASDPress.canceled += instance.OnWASDPress;
+                @LeftClick.started += instance.OnLeftClick;
+                @LeftClick.performed += instance.OnLeftClick;
+                @LeftClick.canceled += instance.OnLeftClick;
             }
         }
     }
@@ -384,6 +412,7 @@ public class @TestInputActions : IInputActionCollection, IDisposable
         void OnScroll(InputAction.CallbackContext context);
         void OnWASDMove(InputAction.CallbackContext context);
         void OnWASDPress(InputAction.CallbackContext context);
+        void OnLeftClick(InputAction.CallbackContext context);
     }
     public interface IActionKeyActions
     {

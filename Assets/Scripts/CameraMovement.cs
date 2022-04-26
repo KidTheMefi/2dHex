@@ -93,7 +93,6 @@ public class CameraMovement : MonoBehaviour
     private Vector3 GetWorldPosition(Vector2 screenPosition)
     {
         return _camera.ScreenToWorldPoint(screenPosition);
-
     }
 
     private void MiddleMouseDown(InputAction.CallbackContext callbackContext)
