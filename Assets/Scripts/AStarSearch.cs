@@ -33,11 +33,11 @@ public class AStarSearch
                                 break;
                         }
 
-                        if (HexUtils.AxialDistance(current, goal) == 1)
+                        /*if (HexUtils.AxialDistance(current, goal) == 1)
                         {
                                 cameFrom[goal] = current;
                                 return cameFrom;
-                        }
+                        }*/
                         
                         foreach (var next in PassibleNeighbors(current))
                         {
@@ -61,8 +61,10 @@ public class AStarSearch
                 
                 List<Vector2Int> newPath = new List<Vector2Int>(); 
                 Vector2Int drawPathPoint = endPathPos;
+                //newPath.Add(drawPathPoint);
                 while (!(drawPathPoint == starPathPos))
                 {
+                        
                         if (!AStarSearchCameFrom(starPathPos,endPathPos ).TryGetValue(drawPathPoint, out drawPathPoint))
                         {
                                 Debug.Log(starPathPos + " Unreachable from " + endPathPos);

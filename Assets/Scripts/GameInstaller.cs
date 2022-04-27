@@ -1,3 +1,4 @@
+using PlayerGroup;
 using UnityEngine;
 using Zenject;
 
@@ -36,6 +37,8 @@ public class GameInstaller : MonoInstaller
         Container.BindFactory<TestButtonUI, TestButtonUI.Factory>().FromComponentInNewPrefab(_prefabList.ButtonPrefab).UnderTransform(_canvas.transform);
         Container.BindFactory<RiverView, RiverView.Factory>().FromMonoPoolableMemoryPool(
             x => x.FromComponentInNewPrefab(_prefabList.RiverPrefab).UnderTransformGroup("RiverPool"));
+        Container.BindFactory<PathPoint, PathPoint.Factory>().FromMonoPoolableMemoryPool(
+            x => x.FromComponentInNewPrefab(_prefabList.PathPoint).UnderTransformGroup("PathFindPool"));
 
         Container.BindInterfacesAndSelfTo<HexMapGrid>().AsSingle();
 
@@ -47,6 +50,7 @@ public class GameInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<PlayerGroupModel>().AsSingle();
         Container.BindInterfacesAndSelfTo<PlayerSelectControl>().AsSingle();
         Container.BindInterfacesAndSelfTo<PlayerGroupMovement>().AsSingle();
+        Container.BindInterfacesAndSelfTo<PlayerPathFind>().AsSingle();
     }
     
     private void InstallPathFind()

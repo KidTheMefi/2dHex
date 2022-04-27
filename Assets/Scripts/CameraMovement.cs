@@ -25,6 +25,12 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] private float _cameraZoom;
     private float _maxZoom;
     
+    [Inject]
+    private void Init(IMapBorder mapBorder, TestInputActions inputActions)
+    {
+        _mapBorder = mapBorder.GetMapBorderWorld();
+        _inputActions = inputActions;
+    }
 
     private void Start()
     {
@@ -43,13 +49,6 @@ public class CameraMovement : MonoBehaviour
 
         _inputActions.CameraInput.Scroll.performed += Scroll;
         _inputActions.Enable();
-    }
-
-    [Inject]
-    private void Init(IMapBorder mapBorder, TestInputActions inputActions)
-    {
-        _mapBorder = mapBorder.GetMapBorderWorld();
-        _inputActions = inputActions;
     }
 
     private void CameraMoveWASD(InputAction.CallbackContext callbackContext)
@@ -93,19 +92,6 @@ public class CameraMovement : MonoBehaviour
     private Vector3 GetWorldPosition(Vector2 screenPosition)
     {
         return _camera.ScreenToWorldPoint(screenPosition);
-    }
-
-    private void MiddleMouseDown(InputAction.CallbackContext callbackContext)
-    {
-        AsyncCameraMovement().Forget();
-    }
-
-    private void MouseUp(InputAction.CallbackContext callbackContext)
-    {
-        if (callbackContext.performed || callbackContext.canceled)
-        {
-            _cancelTokenSource.Cancel();
-        }
     }
 
     private void CameraZoomSimple()
@@ -154,6 +140,20 @@ public class CameraMovement : MonoBehaviour
         return newCamPos;
     }
 
+    #region Mouse "Drag" Camera
+
+    private void MiddleMouseDown(InputAction.CallbackContext callbackContext)
+    {
+        AsyncCameraMovement().Forget();
+    }
+
+    private void MouseUp(InputAction.CallbackContext callbackContext)
+    {
+        if (callbackContext.performed || callbackContext.canceled)
+        {
+            _cancelTokenSource.Cancel();
+        }
+    }
     private async UniTask AsyncCameraMovement()
     {
         _cancelTokenSource = new CancellationTokenSource();
@@ -169,4 +169,7 @@ public class CameraMovement : MonoBehaviour
             return _cancelTokenSource.IsCancellationRequested;
         });
     }
+
+  #endregion
+    
 }

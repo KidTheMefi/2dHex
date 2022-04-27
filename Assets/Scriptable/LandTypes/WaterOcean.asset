@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   landName: WaterOcean
   _landType: 0
-  _isPassible: 0
+  _isPassable: 0
   _movementCost: 1
   _landTypeSprites:
   - {fileID: 21300000, guid: 53d3ee5bc3b9ea14f83bf26ac7fba65a, type: 3}

@@ -1,35 +1,59 @@
-using System.Collections;
-using System.Collections.Generic;
-using Interfaces;
-using UnityEngine;
 using Zenject;
 
-public class PlayerGroupMovement : IInitializable
+namespace PlayerGroup
 {
-    private MapGeneration _mapGeneration;
-    private IRandomPassablePosition _randomPassablePosition;
-    private PlayerGroupModel _playerGroupModel;
-    private PlayerGroupView _playerGroupView;
-    
-    public PlayerGroupMovement(MapGeneration mapGeneration, IRandomPassablePosition randomPassablePosition, PlayerGroupModel playerGroupModel, PlayerGroupView playerGroupView)
+    public class PlayerGroupMovement : IInitializable
     {
-        _mapGeneration = mapGeneration;
-        _randomPassablePosition = randomPassablePosition;
-        _playerGroupModel = playerGroupModel;
-        _playerGroupView = playerGroupView;
-    }
-    
-    public void Initialize()
-    {
-        _mapGeneration.MapGenerated += SpawnAtRandomPosition;
-    }
+        private MapGeneration _mapGeneration;
+        private PlayerGroupModel _playerGroupModel;
+        private PlayerGroupView _playerGroupView;
+        private HexMouseController _hexMouseController;
+        private PlayerPathFind _playerPathFind;
 
-    private void SpawnAtRandomPosition()
-    {
-        var axialPos = _randomPassablePosition.GetRandomStartPosition();
-        _playerGroupModel.SetAxialPosition(axialPos);
-        _playerGroupView.transform.position = HexUtils.CalculatePosition(axialPos);
+        public PlayerGroupMovement(MapGeneration mapGeneration, PlayerGroupModel playerGroupModel, PlayerGroupView playerGroupView, HexMouseController hexMouseController, PlayerPathFind playerPathFind)
+        {
+            _mapGeneration = mapGeneration;
+            _playerGroupModel = playerGroupModel;
+            _playerGroupView = playerGroupView;
+            _hexMouseController = hexMouseController;
+            _playerPathFind = playerPathFind;
+        }
+
+        public void Initialize()
+        {
+            _mapGeneration.MapGenerated += SpawnAtRandomPosition;
+            _playerGroupModel.Selected += EnablePathFind;
+            _playerGroupModel.StateChanged += GroupStateChange;
+
+        }
+
+        private void GroupStateChange(PlayerState state)
+        {
+            switch (state)
+            {
+                case PlayerState.Waiting:
+                    {
+                        EnablePathFind(_playerGroupModel.IsSelected);
+                        break;
+                    }
+                default:
+                    return;
+            }
+        }
+
+        private void EnablePathFind(bool enable)
+        {
+            if (_playerGroupModel.State == PlayerState.Waiting)
+            {
+                _playerPathFind.PathFindEnable(enable);
+            }
+        }
+
+        private void SpawnAtRandomPosition()
+        {
+            var axialPos = _mapGeneration.GetRandomStartPosition();
+            _playerGroupModel.SetAxialPosition(axialPos);
+            _playerGroupView.transform.position = HexUtils.CalculatePosition(axialPos);
+        }
     }
-
-
 }

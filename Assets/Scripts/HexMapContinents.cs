@@ -5,18 +5,18 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using Interfaces;
 using UnityEngine;
-using UnityEngine.UI;
-using Zenject;
 using Random = UnityEngine.Random;
 
-public class HexMapContinents : IRandomPassablePosition
+
+public class HexMapContinents
 {
     public event Action ContinentsGenerated = delegate { };
     private MapSetting _mapSetting;
     private Continent.Factory _continentFactory;
     
     private List<Vector2Int> _allContinentsHexes = new List<Vector2Int>();
-    
+    public List<Vector2Int> AllContinentsHexes => _allContinentsHexes;
+
     private List<Continent> _allContinents;
     private IHexStorage _hexStorage;
     private TestButtonUI.Factory _buttonFactory;
@@ -63,15 +63,4 @@ public class HexMapContinents : IRandomPassablePosition
         }
         await UniTask.Yield();
     }
-
-    public Vector2Int GetRandomStartPosition()
-    {
-        var random = _allContinentsHexes[ Random.Range(0,_allContinentsHexes.Count)];
-        while (!_hexStorage.GetHexAtAxialCoordinate(random).LandTypeProperty.IsPassable)
-        {
-            random = _allContinentsHexes[ Random.Range(0,_allContinentsHexes.Count)];
-        }
-        return random;
-    }
-    
 }

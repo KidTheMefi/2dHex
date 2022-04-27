@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   landName: Snow mountaine
   _landType: 4
-  _isPassible: 0
+  _isPassable: 0
   _movementCost: 1
   _landTypeSprites:
   - {fileID: 21300000, guid: fcfee1f0b2383ee4b8287438c4db8025, type: 3}

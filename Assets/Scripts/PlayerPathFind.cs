@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Interfaces;
+using PlayerGroup;
 using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
@@ -10,72 +12,102 @@ public class PlayerPathFind : IInitializable
 {
     private IHexStorage _hexStorage;
     private AStarSearch _pathFind;
+    private PlayerGroupModel _playerGroupModel;
+    private HexMouseController _hexMouseController;
+    private PathPoint.Factory _pathPointFactory;
 
-    private Vector2Int _starPoint;
-    private List<Vector2Int> _tutorPath;
-    
-    public PlayerPathFind(IHexStorage hexStorage, AStarSearch pathFind)
+    //private Vector2Int _starPoint;
+    //private List<Vector2Int> _pathCoordinates = new List<Vector2Int>();
+    private Dictionary<Vector2Int, PathPoint> _pathPointsAtCoordinates = new Dictionary<Vector2Int, PathPoint>();
+
+    public PlayerPathFind(IHexStorage hexStorage, AStarSearch pathFind, PlayerGroupModel playerGroupModel, HexMouseController hexMouseController, PathPoint.Factory pathPointFactory)
     {
         _hexStorage = hexStorage;
         _pathFind = pathFind;
+        _playerGroupModel = playerGroupModel;
+        _hexMouseController = hexMouseController;
+        _pathPointFactory = pathPointFactory;
+    }
+
+    public void PathFindEnable(bool isEnable)
+    {
+        if (isEnable)
+        {
+            _hexMouseController.HighlightedHexChanged += PathFindTest;
+        }
+        else
+        {
+            EndPathFind();
+        }
+    }
+
+    private void EndPathFind()
+    {
+        _hexMouseController.HighlightedHexChanged -= PathFindTest;
+        ClearPath();
+    }
+
+    private void ClearPath()
+    {
+        foreach (var point in _pathPointsAtCoordinates)
+        {
+            point.Value.Dispose();
+        }
+       _pathPointsAtCoordinates.Clear();
+        //_pathCoordinates.Clear();
+        //await UniTask.Yield();
+    }
+    
+    private async void PathFindTest(Vector2Int target)
+    {
+        var starPathPos = _playerGroupModel.AxialPosition;
+        var endPathPos = target;
+        
+       //var asa =  _pathPointsAtCoordinates[endPathPos];
+
+        List<Vector2Int> unusedPoint = new List<Vector2Int>();
+
+        if (_pathFind.TryPathFind(starPathPos, endPathPos, out var newPathCoordinates))
+        {
+            newPathCoordinates.Add(endPathPos);
+            foreach (var point in _pathPointsAtCoordinates)
+            {
+                if (!newPathCoordinates.Contains(point.Key))
+                {
+                    point.Value.Dispose();
+                    unusedPoint.Add(point.Key);
+                }
+            }
+
+            foreach (var point in unusedPoint)
+            {
+                _pathPointsAtCoordinates.Remove(point);
+            }
+
+            foreach (var coordinate in _pathPointsAtCoordinates)
+            {
+                newPathCoordinates.Remove(coordinate.Key);
+            }
+
+            foreach (var pathCoordinate in newPathCoordinates)
+            {
+                if (pathCoordinate != starPathPos)
+                {
+                    var hex = _hexStorage.GetHexAtAxialCoordinate(pathCoordinate);
+                    var point = _pathPointFactory.Create();
+                    point.SetPathPoint(hex.Position, hex.LandTypeProperty.MovementCost.ToString());
+                    _pathPointsAtCoordinates.Add(pathCoordinate, point);
+                }
+            }
+        }
+        else
+        {
+             ClearPath();
+        }
     }
     
     public void Initialize()
     {
-        foreach (var hex in _hexStorage.HexToHexView())
-        {
-            
-        }
+        //throw new NotImplementedException();
     }
-
-    public void ClickOnStartPoint(HexView hexView)
-    {
-        if (_hexStorage.HexViewToHex().TryGetValue(hexView, out var hex))
-        {
-           // _starPoint = _hexStorage.
-        }
-    }
-    
-    public void SelectEndPoint(HexView hexView)
-    {
-        
-    }
-    
-/*
-    public void PathFindTest()
-    {
-        if (_tutorPath != null)
-        {
-            foreach (var pathPoint in _tutorPath)
-            {
-                _hexToHexViews[GetHexAtAxialCoordinate(pathPoint)].SetMeshRendererActive(false);
-            }
-        }
-
-        foreach (var point in _pathPoints)
-        {
-            Destroy(point);
-        }
-
-        var starPathPos = _allContinentsHexes[Random.Range(0, _allContinentsHexes.Count)];
-        var endPathPos = _allContinentsHexes[Random.Range(0, _allContinentsHexes.Count)];
-
-        _pathPoints.Add(Instantiate(_startPathPointCircle, _hexStorage.GetHexAtAxialCoordinate(starPathPos).Position, Quaternion.identity));
-        _pathPoints.Add(Instantiate(_endPathPointCircle, _hexStorage.GetHexAtAxialCoordinate(endPathPos).Position, Quaternion.identity));
-
-        if (_pathFind.TryPathFind(starPathPos, endPathPos, out _tutorPath))
-        {
-            foreach (var pathPoint in _tutorPath)
-            {
-                var hex = _hexStorage.GetHexAtAxialCoordinate(pathPoint);
-
-                //_pathPoints.Add(Instantiate(_pathPointCircle, hex.Position(), Quaternion.identity));
-
-                _hexToHexViews[hex].TextAtHex(hex.LandTypeProperty.MovementCost.ToString());
-                _hexToHexViews[hex].SetMeshRendererActive(true);
-            }
-        }
-    }
-*/
-    
 }
