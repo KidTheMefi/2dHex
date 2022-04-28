@@ -27,7 +27,8 @@ public class GameInstaller : MonoInstaller
     private void InstallInputSystem()
     {
         Container.BindInterfacesAndSelfTo<TestInputActions>().AsSingle();
-        Container.BindInterfacesAndSelfTo<HexMouseController>().AsSingle();
+        Container.BindInterfacesAndSelfTo<CameraMovement>().AsSingle();
+        Container.BindInterfacesAndSelfTo<HexMouse>().AsSingle();
     }
 
     private void InstallGameField()

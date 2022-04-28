@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using Interfaces;
 using PlayerGroup;
@@ -13,57 +14,41 @@ public class PlayerPathFind : IInitializable
     private IHexStorage _hexStorage;
     private AStarSearch _pathFind;
     private PlayerGroupModel _playerGroupModel;
-    private HexMouseController _hexMouseController;
+    private IHexMouseEvents _hexMouse;
     private PathPoint.Factory _pathPointFactory;
-
-    //private Vector2Int _starPoint;
-    //private List<Vector2Int> _pathCoordinates = new List<Vector2Int>();
+    
     private Dictionary<Vector2Int, PathPoint> _pathPointsAtCoordinates = new Dictionary<Vector2Int, PathPoint>();
 
-    public PlayerPathFind(IHexStorage hexStorage, AStarSearch pathFind, PlayerGroupModel playerGroupModel, HexMouseController hexMouseController, PathPoint.Factory pathPointFactory)
+    private List<Vector2Int> _path;
+    public List<Vector2Int> Path => _path; 
+    
+    public PlayerPathFind(IHexStorage hexStorage, AStarSearch pathFind, PlayerGroupModel playerGroupModel, IHexMouseEvents hexMouse, PathPoint.Factory pathPointFactory)
     {
         _hexStorage = hexStorage;
         _pathFind = pathFind;
         _playerGroupModel = playerGroupModel;
-        _hexMouseController = hexMouseController;
+        _hexMouse = hexMouse;
         _pathPointFactory = pathPointFactory;
     }
-
-    public void PathFindEnable(bool isEnable)
+    
+    public void Initialize()
     {
-        if (isEnable)
-        {
-            _hexMouseController.HighlightedHexChanged += PathFindTest;
-        }
-        else
-        {
-            EndPathFind();
-        }
+        _hexMouse.HighlightedHexClicked += PathFindTest;
     }
 
-    private void EndPathFind()
-    {
-        _hexMouseController.HighlightedHexChanged -= PathFindTest;
-        ClearPath();
-    }
-
-    private void ClearPath()
+    public void ClearPath()
     {
         foreach (var point in _pathPointsAtCoordinates)
         {
             point.Value.Dispose();
         }
-       _pathPointsAtCoordinates.Clear();
-        //_pathCoordinates.Clear();
-        //await UniTask.Yield();
+        _pathPointsAtCoordinates.Clear();
     }
-    
-    private async void PathFindTest(Vector2Int target)
+
+    public void PathFindTest(Vector2Int target) // maybe TODO: smth with that
     {
         var starPathPos = _playerGroupModel.AxialPosition;
         var endPathPos = target;
-        
-       //var asa =  _pathPointsAtCoordinates[endPathPos];
 
         List<Vector2Int> unusedPoint = new List<Vector2Int>();
 
@@ -102,12 +87,7 @@ public class PlayerPathFind : IInitializable
         }
         else
         {
-             ClearPath();
+            ClearPath();
         }
-    }
-    
-    public void Initialize()
-    {
-        //throw new NotImplementedException();
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class HexUtils
 {
 
+    private static readonly float VerticalMultiplyer = 0.75f;
     private static readonly float WIDTH_MULTIPLIER = Mathf.Sqrt(3); // it just work)))
     private static readonly float HexRadius = 0.5f; //or size
     public static readonly Vector2Int[] AxialDirectionVectors =
@@ -159,7 +160,7 @@ public class HexUtils
         float height = HexRadius * 2;
         float width = WIDTH_MULTIPLIER * HexRadius;
 
-        float vert = height * 0.75f; 
+        float vert = height * VerticalMultiplyer; 
         float horiz = width;
 
         return new Vector3(horiz * (axialCoordinate.x + axialCoordinate.y / 2f), vert * axialCoordinate.y, 0);

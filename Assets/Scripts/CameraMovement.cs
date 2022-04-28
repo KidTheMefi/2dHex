@@ -1,54 +1,63 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
 
-public class CameraMovement : MonoBehaviour
-{
-    [SerializeField] private Camera _camera;
-    [SerializeField] private Transform _moveTarget;
-
-    private CancellationTokenSource _cancelTokenSource = new CancellationTokenSource();
+public class CameraMovement : IInitializable
+{ 
+    private Camera _camera;
     private TestInputActions _inputActions;
+    private HexMouse _hexMouse;
 
     private MapBorder _mapBorder;
     private bool _wasdMoving = false;
     private float _cameraDragSpeed = 20f;
     private int _wasdVectorMultiply = 1;
 
-    [SerializeField] private float _minZoom;
-    [SerializeField] private float _cameraZoom;
+    private float _minZoom=3;
+    private float _cameraZoom;
     private float _maxZoom;
     
-    [Inject]
-    private void Init(IMapBorder mapBorder, TestInputActions inputActions)
+    public CameraMovement(IMapBorder mapBorder, TestInputActions inputActions, Camera camera, HexMouse hexMouse)
     {
         _mapBorder = mapBorder.GetMapBorderWorld();
         _inputActions = inputActions;
+        _camera = camera;
+        _hexMouse = hexMouse;
     }
 
-    private void Start()
+    public void Initialize()
     {
-        transform.position = new Vector3((_mapBorder.XMax + _mapBorder.XMin), _mapBorder.YMax + _mapBorder.YMin, transform.position.z) / 2f;
+        _camera.transform.position = new Vector3((_mapBorder.XMax + _mapBorder.XMin), _mapBorder.YMax + _mapBorder.YMin, _camera.transform.position.z) / 2f;
 
         _maxZoom = (_mapBorder.YMax - _mapBorder.YMin) / 2;
         _camera.orthographicSize = _maxZoom;
         _cameraZoom = _camera.orthographicSize;
 
         _inputActions = new TestInputActions();
-        _inputActions.CameraInput.MiddleClickDown.started += MiddleMouseDown;
-        _inputActions.CameraInput.MiddleClickDown.canceled += MouseUp;
+        /*_inputActions.CameraInput.MiddleClickDown.started += MiddleMouseDown;
+        _inputActions.CameraInput.MiddleClickDown.canceled += MouseUp;*/
 
         _inputActions.CameraInput.WASDPress.started += CameraMoveWASD;
         _inputActions.CameraInput.WASDPress.canceled += x => _wasdMoving = false;
+        
+        _inputActions.CameraInput.MousePosition.performed += context =>  MouseToHexUpdate();
+        _inputActions.CameraInput.LeftClick.performed += context => MouseHexClicked();
 
         _inputActions.CameraInput.Scroll.performed += Scroll;
         _inputActions.Enable();
+    }
+
+
+    private void MouseHexClicked()
+    {
+        _hexMouse.MouseHexClicked();
+    }
+    private void MouseToHexUpdate()
+    {
+        var mousePosition = _camera.ScreenToWorldPoint(_inputActions.CameraInput.MousePosition.ReadValue<Vector2>());
+        _hexMouse.MouseHexHighlighted(mousePosition);
     }
 
     private void CameraMoveWASD(InputAction.CallbackContext callbackContext)
@@ -65,15 +74,14 @@ public class CameraMovement : MonoBehaviour
         await UniTask.WaitUntil(() =>
         {
             Vector2 wasdVector2 = _inputActions.CameraInput.WASDMove.ReadValue<Vector2>();
-            Vector3 targetPoint = transform.position + (Vector3)wasdVector2 * _wasdVectorMultiply;
-
-            _moveTarget.position = targetPoint + Vector3.forward * 10;
+            Vector3 targetPoint = _camera.transform.position + (Vector3)wasdVector2 * _wasdVectorMultiply;
 
             targetPoint = CameraOnBordersPositionUpdate(targetPoint);
 
             float lerpValue = Time.deltaTime * _camera.orthographicSize * 2f;
 
-            transform.position = Vector3.Lerp(transform.position, targetPoint, lerpValue);
+            _camera.transform.position = Vector3.Lerp(_camera.transform.position, targetPoint, lerpValue);
+            MouseToHexUpdate();
             return !_wasdMoving;
         });
     }
@@ -101,8 +109,9 @@ public class CameraMovement : MonoBehaviour
         _camera.orthographicSize = _cameraZoom;
 
         var currentPosition = GetWorldPosition(_inputActions.CameraInput.MousePosition.ReadValue<Vector2>());
-        var newPos = transform.position + mouseOldPosition - currentPosition;
-        transform.position = CameraOnBordersPositionUpdate(newPos);
+        var newPos = _camera.transform.position + mouseOldPosition - currentPosition;
+        _camera.transform.position = CameraOnBordersPositionUpdate(newPos);
+        MouseToHexUpdate();
     }
 
     private Vector3 CameraOnBordersPositionUpdate(Vector3 pos)
@@ -142,6 +151,7 @@ public class CameraMovement : MonoBehaviour
 
     #region Mouse "Drag" Camera
 
+    /*
     private void MiddleMouseDown(InputAction.CallbackContext callbackContext)
     {
         AsyncCameraMovement().Forget();
@@ -169,7 +179,8 @@ public class CameraMovement : MonoBehaviour
             return _cancelTokenSource.IsCancellationRequested;
         });
     }
-
+*/
   #endregion
+
     
 }

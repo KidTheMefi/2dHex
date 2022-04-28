@@ -1,3 +1,5 @@
+using Interfaces;
+using UnityEngine;
 using Zenject;
 
 namespace PlayerGroup
@@ -7,45 +9,38 @@ namespace PlayerGroup
         private MapGeneration _mapGeneration;
         private PlayerGroupModel _playerGroupModel;
         private PlayerGroupView _playerGroupView;
-        private HexMouseController _hexMouseController;
+        private IHexMouseEvents _hexMouse;
         private PlayerPathFind _playerPathFind;
 
-        public PlayerGroupMovement(MapGeneration mapGeneration, PlayerGroupModel playerGroupModel, PlayerGroupView playerGroupView, HexMouseController hexMouseController, PlayerPathFind playerPathFind)
+        public PlayerGroupMovement(MapGeneration mapGeneration, PlayerGroupModel playerGroupModel, PlayerGroupView playerGroupView, IHexMouseEvents hexMouse, PlayerPathFind playerPathFind)
         {
             _mapGeneration = mapGeneration;
             _playerGroupModel = playerGroupModel;
             _playerGroupView = playerGroupView;
-            _hexMouseController = hexMouseController;
+            _hexMouse = hexMouse;
             _playerPathFind = playerPathFind;
         }
 
         public void Initialize()
         {
             _mapGeneration.MapGenerated += SpawnAtRandomPosition;
-            _playerGroupModel.Selected += EnablePathFind;
             _playerGroupModel.StateChanged += GroupStateChange;
+            _hexMouse.HighlightedHexClicked += PathFind;
 
         }
-
         private void GroupStateChange(PlayerState state)
         {
-            switch (state)
+            if (state != PlayerState.Waiting)
             {
-                case PlayerState.Waiting:
-                    {
-                        EnablePathFind(_playerGroupModel.IsSelected);
-                        break;
-                    }
-                default:
-                    return;
+                _playerPathFind.ClearPath();
             }
         }
 
-        private void EnablePathFind(bool enable)
+        private void PathFind(Vector2Int target)
         {
             if (_playerGroupModel.State == PlayerState.Waiting)
             {
-                _playerPathFind.PathFindEnable(enable);
+                _playerPathFind.PathFindTest(target);
             }
         }
 

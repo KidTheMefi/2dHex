@@ -9,17 +9,17 @@ public class PlayerSelectControl : IInitializable, IDisposable
 {
     private PlayerGroupModel _playerGroupModel;
     private PlayerGroupView _playerGroupView;
-    private HexMouseController _hexMouseController;
+    private HexMouse _hexMouse;
     
-    public PlayerSelectControl(PlayerGroupModel playerGroupModel, PlayerGroupView playerGroupView, HexMouseController hexMouseController)
+    public PlayerSelectControl(PlayerGroupModel playerGroupModel, PlayerGroupView playerGroupView, HexMouse hexMouse)
     {
         _playerGroupModel = playerGroupModel;
         _playerGroupView = playerGroupView;
-        _hexMouseController = hexMouseController;
+        _hexMouse = hexMouse;
     }
     public void Initialize()
     {
-        _hexMouseController.HighlightedHexClicked += Selected;
+        _hexMouse.HighlightedHexClicked += Selected;
     }
 
     private void Selected(Vector2Int axial)
@@ -38,6 +38,6 @@ public class PlayerSelectControl : IInitializable, IDisposable
     
     public void Dispose()
     {
-        _hexMouseController.HighlightedHexClicked -= Selected;
+        _hexMouse.HighlightedHexClicked -= Selected;
     }
 }

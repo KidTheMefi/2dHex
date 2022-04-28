@@ -1,10 +1,12 @@
 using System;
+using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Triggers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
 
-public class HexView : MonoBehaviour
+public class HexView : MonoBehaviour, IAsyncOnMouseEnterHandler
 {
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private TextMeshPro _coordinate;
@@ -29,4 +31,9 @@ public class HexView : MonoBehaviour
         
     }
 
+    public UniTask OnMouseEnterAsync()
+    {
+        throw new NotImplementedException();
+    }
+    
 }
