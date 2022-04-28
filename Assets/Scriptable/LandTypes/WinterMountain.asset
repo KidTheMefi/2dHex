@@ -15,7 +15,8 @@ MonoBehaviour:
   landName: Snow mountaine
   _landType: 4
   _isPassable: 0
-  _movementCost: 1
+  _movementTimeCost: 3
+  _movementEnergyCost: 3
   _landTypeSprites:
   - {fileID: 21300000, guid: fcfee1f0b2383ee4b8287438c4db8025, type: 3}
   - {fileID: 21300000, guid: 2840ea72146ed1248b56b2a804059e3f, type: 3}

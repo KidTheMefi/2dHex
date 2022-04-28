@@ -15,7 +15,8 @@ MonoBehaviour:
   landName: Mountain
   _landType: 4
   _isPassable: 0
-  _movementCost: 1
+  _movementTimeCost: 3
+  _movementEnergyCost: 3
   _landTypeSprites:
   - {fileID: 21300000, guid: c34b1c1c3ff726f48b8d8e8df2b38756, type: 3}
   - {fileID: 21300000, guid: 7c9b92d8a4399e241ac991cc5e01bf7f, type: 3}

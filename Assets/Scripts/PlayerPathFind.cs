@@ -1,41 +1,28 @@
-using System;
-using System.Collections;
+
 using System.Collections.Generic;
 using System.Linq;
-using Cysharp.Threading.Tasks;
 using Interfaces;
 using PlayerGroup;
 using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
 
-public class PlayerPathFind : IInitializable
+public class PlayerPathFind 
 {
     private IHexStorage _hexStorage;
     private AStarSearch _pathFind;
     private PlayerGroupModel _playerGroupModel;
-    private IHexMouseEvents _hexMouse;
     private PathPoint.Factory _pathPointFactory;
     
-    private Dictionary<Vector2Int, PathPoint> _pathPointsAtCoordinates = new Dictionary<Vector2Int, PathPoint>();
-
-    private List<Vector2Int> _path;
-    public List<Vector2Int> Path => _path; 
+    private Dictionary<Hex, PathPoint> _pathPointsAtCoordinates = new Dictionary<Hex, PathPoint>();
     
-    public PlayerPathFind(IHexStorage hexStorage, AStarSearch pathFind, PlayerGroupModel playerGroupModel, IHexMouseEvents hexMouse, PathPoint.Factory pathPointFactory)
+    public PlayerPathFind(IHexStorage hexStorage, AStarSearch pathFind, PlayerGroupModel playerGroupModel, PathPoint.Factory pathPointFactory)
     {
         _hexStorage = hexStorage;
         _pathFind = pathFind;
         _playerGroupModel = playerGroupModel;
-        _hexMouse = hexMouse;
         _pathPointFactory = pathPointFactory;
     }
-    
-    public void Initialize()
-    {
-        _hexMouse.HighlightedHexClicked += PathFindTest;
-    }
-
     public void ClearPath()
     {
         foreach (var point in _pathPointsAtCoordinates)
@@ -45,16 +32,25 @@ public class PlayerPathFind : IInitializable
         _pathPointsAtCoordinates.Clear();
     }
 
+    public Hex[] GetPath()
+    {
+        return _pathPointsAtCoordinates.Keys.ToArray();
+    }
+    
     public void PathFindTest(Vector2Int target) // maybe TODO: smth with that
     {
         var starPathPos = _playerGroupModel.AxialPosition;
         var endPathPos = target;
 
-        List<Vector2Int> unusedPoint = new List<Vector2Int>();
+        List<Hex> unusedPoint = new List<Hex>();
 
         if (_pathFind.TryPathFind(starPathPos, endPathPos, out var newPathCoordinates))
         {
-            newPathCoordinates.Add(endPathPos);
+            ClearPath();
+            newPathCoordinates.Insert(0,_hexStorage.GetHexAtAxialCoordinate(endPathPos));
+            newPathCoordinates.Reverse();
+            /*
+            
             foreach (var point in _pathPointsAtCoordinates)
             {
                 if (!newPathCoordinates.Contains(point.Key))
@@ -72,15 +68,15 @@ public class PlayerPathFind : IInitializable
             foreach (var coordinate in _pathPointsAtCoordinates)
             {
                 newPathCoordinates.Remove(coordinate.Key);
-            }
+            }*/
 
             foreach (var pathCoordinate in newPathCoordinates)
             {
-                if (pathCoordinate != starPathPos)
+                if (pathCoordinate.AxialCoordinate != starPathPos)
                 {
-                    var hex = _hexStorage.GetHexAtAxialCoordinate(pathCoordinate);
+                    var hex = pathCoordinate;
                     var point = _pathPointFactory.Create();
-                    point.SetPathPoint(hex.Position, hex.LandTypeProperty.MovementCost.ToString());
+                    point.SetPathPoint(hex.Position, hex.LandTypeProperty.MovementTimeCost.ToString());
                     _pathPointsAtCoordinates.Add(pathCoordinate, point);
                 }
             }

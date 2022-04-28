@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   landName: Desert
   _landType: 1
-  _isPassible: 1
-  _movementCost: 1
+  _isPassable: 1
+  _movementTimeCost: 3
+  _movementEnergyCost: 4
   _landTypeSprites:
   - {fileID: 21300000, guid: 076430ce5e1f1c9489d13a91b2140793, type: 3}
   - {fileID: 21300000, guid: 683e96164d2b77f479f49387b1a26a40, type: 3}

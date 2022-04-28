@@ -1,5 +1,8 @@
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using Interfaces;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using Zenject;
 
 namespace PlayerGroup
@@ -26,6 +29,7 @@ namespace PlayerGroup
             _mapGeneration.MapGenerated += SpawnAtRandomPosition;
             _playerGroupModel.StateChanged += GroupStateChange;
             _hexMouse.HighlightedHexClicked += PathFind;
+            _hexMouse.HighlightedHexDoubleClicked += i => StartMove().Forget() ;
 
         }
         private void GroupStateChange(PlayerState state)
@@ -49,6 +53,22 @@ namespace PlayerGroup
             var axialPos = _mapGeneration.GetRandomStartPosition();
             _playerGroupModel.SetAxialPosition(axialPos);
             _playerGroupView.transform.position = HexUtils.CalculatePosition(axialPos);
+        }
+
+        private async UniTask StartMove()
+        {
+            var path = _playerPathFind.GetPath();
+            if (_playerGroupModel.State == PlayerState.Waiting && path.Length>0)
+            {
+                _playerGroupModel.ChangePlayerState(PlayerState.Moving);
+                foreach (var pathPoint in path)
+                {
+                    await _playerGroupView.transform.DOMove(pathPoint.Position, 0.1f * pathPoint.LandTypeProperty.MovementTimeCost).SetEase(Ease.Linear);
+                    _playerGroupModel.SetAxialPosition(pathPoint.AxialCoordinate);
+                }
+                await UniTask.Yield();
+                _playerGroupModel.ChangePlayerState(PlayerState.Waiting);
+            }
         }
     }
 }

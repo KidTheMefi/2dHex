@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   landName: Hill
   _landType: 3
-  _isPassible: 1
-  _movementCost: 5
+  _isPassable: 1
+  _movementTimeCost: 4
+  _movementEnergyCost: 4
   _landTypeSprites:
   - {fileID: 21300000, guid: f93d42fad32d9934ca012e423cb584fa, type: 3}
   - {fileID: 21300000, guid: c66413e6cd8fc9b49a38c2daf86036c5, type: 3}

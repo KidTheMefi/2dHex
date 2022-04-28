@@ -24,6 +24,7 @@ public class Hex
 
     public Hex(Vector2Int axialCoordinate)
     {
+        AxialCoordinate = axialCoordinate;
         Position = HexUtils.CalculatePosition(axialCoordinate);
     }
 

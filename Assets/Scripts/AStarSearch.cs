@@ -39,10 +39,10 @@ public class AStarSearch
                                 return cameFrom;
                         }*/
                         
-                        foreach (var next in PassibleNeighbors(current))
+                        foreach (var next in PassableNeighbors(current))
                         {
                                 int newCost = costSoFar[current]
-                                        +_hexStorage.GetHexAtAxialCoordinate(current).LandTypeProperty.MovementCost;
+                                        +_hexStorage.GetHexAtAxialCoordinate(current).LandTypeProperty.MovementTimeCost;
                                 if (!costSoFar.ContainsKey(next)
                                     || newCost < costSoFar[next])
                                 {
@@ -56,10 +56,10 @@ public class AStarSearch
                 return cameFrom;
         }
                 
-        public bool TryPathFind(Vector2Int starPathPos, Vector2Int endPathPos, out List<Vector2Int> path)
+        public bool TryPathFind(Vector2Int starPathPos, Vector2Int endPathPos, out List<Hex> path)
         {
                 
-                List<Vector2Int> newPath = new List<Vector2Int>(); 
+                List<Hex> newPath = new List<Hex>(); 
                 Vector2Int drawPathPoint = endPathPos;
                 //newPath.Add(drawPathPoint);
                 while (!(drawPathPoint == starPathPos))
@@ -70,7 +70,7 @@ public class AStarSearch
                                 Debug.Log(starPathPos + " Unreachable from " + endPathPos);
                                 break;
                         }
-                        newPath.Add(drawPathPoint);
+                        newPath.Add(_hexStorage.GetHexAtAxialCoordinate(drawPathPoint));
                 }
                 path = newPath;
                 if (path.Count == 0)
@@ -112,7 +112,7 @@ public class AStarSearch
                 return true;
         }
         
-        private IEnumerable<Vector2Int> PassibleNeighbors(Vector2Int axial)
+        private IEnumerable<Vector2Int> PassableNeighbors(Vector2Int axial)
         {
                 foreach (var dir in HexUtils.AxialDirectionVectors)
                 {

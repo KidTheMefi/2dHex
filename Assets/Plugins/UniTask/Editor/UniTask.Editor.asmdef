@@ -1,7 +1,9 @@
 {
     "name": "UniTask.Editor",
+    "rootNamespace": "",
     "references": [
-        "UniTask"
+        "UniTask",
+        "UniTask.DOTween"
     ],
     "includePlatforms": [
         "Editor"

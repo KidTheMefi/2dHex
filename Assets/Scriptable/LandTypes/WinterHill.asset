@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   landName: Snow Hill
   _landType: 3
-  _isPassible: 1
-  _movementCost: 6
+  _isPassable: 1
+  _movementTimeCost: 5
+  _movementEnergyCost: 5
   _landTypeSprites:
   - {fileID: 21300000, guid: c568405f8f1489045a00048079397f8f, type: 3}
   - {fileID: 21300000, guid: caa9febafff334f4ea31d32ba612ef7b, type: 3}

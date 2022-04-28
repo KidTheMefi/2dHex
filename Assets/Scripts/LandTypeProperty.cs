@@ -15,14 +15,16 @@ public class LandTypeProperty : ScriptableObject
    [SerializeField] private string landName;
    [SerializeField] private LandType _landType;
    [SerializeField] private bool _isPassable = true;
-   [SerializeField] private int _movementCost = 1;
+   [SerializeField] private int _movementTimeCost = 1;
+   [SerializeField] private int _movementEnergyCost = 1;
    [SerializeField] private List<Sprite> _landTypeSprites;
 
    public bool IsPassable => _isPassable;
    public string LandName => landName;
-   public int MovementCost => _movementCost;
+   public int MovementTimeCost => _movementTimeCost;
+   public int MovementEnergyCost => _movementEnergyCost;
    public LandType LandType => _landType;
-   
+
    public Sprite GetSprite()
    {
       Assert.IsNotNull(_landTypeSprites, "There are no sprites in LandTypeProperty " + landName);

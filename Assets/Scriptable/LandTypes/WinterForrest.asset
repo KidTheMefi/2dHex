@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   landName: Snow forrest
   _landType: 2
-  _isPassible: 1
-  _movementCost: 4
+  _isPassable: 1
+  _movementTimeCost: 6
+  _movementEnergyCost: 4
   _landTypeSprites:
   - {fileID: 21300000, guid: ce869ff7620dcd444adc82d23a4b8b56, type: 3}
   - {fileID: 21300000, guid: 6706a07d20950e54e910b364cf01867a, type: 3}
