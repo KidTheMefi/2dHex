@@ -6,6 +6,7 @@ public class GameInstaller : MonoInstaller
 {
     [SerializeField] private Camera _camera;
     [SerializeField] private Canvas _canvas;
+    [SerializeField] private GameObject _buttonsParent;
     [SerializeField] private Transform _hexHighlight;
     
     [Inject]
@@ -35,11 +36,14 @@ public class GameInstaller : MonoInstaller
     {
         Container.BindFactory<HexView, HexView.Factory>().FromComponentInNewPrefab(_prefabList.HexViewPrefab).WithGameObjectName("tile").UnderTransformGroup("HexGridMap");
         Container.BindFactory<Continent, Continent.Factory>();
-        Container.BindFactory<TestButtonUI, TestButtonUI.Factory>().FromComponentInNewPrefab(_prefabList.ButtonPrefab).UnderTransform(_canvas.transform);
+        Container.BindFactory<TestButtonUI, TestButtonUI.Factory>().FromComponentInNewPrefab(_prefabList.ButtonPrefab).UnderTransform(_buttonsParent.transform);
+        
+        
         Container.BindFactory<RiverView, RiverView.Factory>().FromMonoPoolableMemoryPool(
-            x => x.FromComponentInNewPrefab(_prefabList.RiverPrefab).UnderTransformGroup("RiverPool"));
+            x => x.WithInitialSize(15).FromComponentInNewPrefab(_prefabList.RiverPrefab).UnderTransformGroup("RiverPool"));
+        
         Container.BindFactory<PathPoint, PathPoint.Factory>().FromMonoPoolableMemoryPool(
-            x => x.FromComponentInNewPrefab(_prefabList.PathPoint).UnderTransformGroup("PathFindPool"));
+            x => x.WithInitialSize(50).FromComponentInNewPrefab(_prefabList.PathPoint).UnderTransformGroup("PathFindPool"));
 
         Container.BindInterfacesAndSelfTo<HexMapGrid>().AsSingle();
 
@@ -49,9 +53,9 @@ public class GameInstaller : MonoInstaller
     {
         Container.Bind<PlayerGroupView>().FromComponentInNewPrefab(_prefabList.PlayerGroupPrefab).WithGameObjectName("Player").AsSingle();
         Container.BindInterfacesAndSelfTo<PlayerGroupModel>().AsSingle();
-        Container.BindInterfacesAndSelfTo<PlayerSelectControl>().AsSingle();
         Container.BindInterfacesAndSelfTo<PlayerGroupMovement>().AsSingle();
         Container.BindInterfacesAndSelfTo<PlayerPathFind>().AsSingle();
+        Container.BindInterfacesAndSelfTo<FieldOfView>().AsSingle();
     }
     
     private void InstallPathFind()

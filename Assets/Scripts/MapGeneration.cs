@@ -11,9 +11,8 @@ public class MapGeneration : IInitializable, IRandomPassablePosition
     private RiverGenerator _riverGenerator;
     private TestButtonUI.Factory _buttonFactory;
     private IHexStorage _hexStorage;
-    
-    
-    public MapGeneration( HexMapContinents hexMapContinents, RiverGenerator riverGenerator, TestButtonUI.Factory buttonFactory, IHexStorage hexStorage)
+
+    public MapGeneration(HexMapContinents hexMapContinents, RiverGenerator riverGenerator, TestButtonUI.Factory buttonFactory, IHexStorage hexStorage)
     {
         _hexMapContinents = hexMapContinents;
         _riverGenerator = riverGenerator;
@@ -25,8 +24,20 @@ public class MapGeneration : IInitializable, IRandomPassablePosition
 
     public void Initialize()
     {
-        var buttonUI = _buttonFactory.Create();
-        buttonUI.Init(GenerateStart);
+        var generateWorldButton = _buttonFactory.Create();
+        generateWorldButton.Init(GenerateStart, "Generate map");
+        
+        var fogButton = _buttonFactory.Create();
+        fogButton.Init(Fog, "Fog");
+        
+    }
+    
+    private void Fog()
+    {
+        foreach (var hex in _hexStorage.HexToHexView().Values)
+        {
+            hex.ChangeFogStatus();
+        }
     }
     
     private async void GenerateStart()

@@ -40,11 +40,11 @@ namespace PlayerGroup
             }
         }
 
-        private void PathFind(Vector2Int target)
+        private async void PathFind(Vector2Int target)
         {
             if (_playerGroupModel.State == PlayerState.Waiting)
             {
-                _playerPathFind.PathFindTest(target);
+                await _playerPathFind.PathFindTest(target);
             }
         }
 
@@ -60,6 +60,7 @@ namespace PlayerGroup
             var path = _playerPathFind.GetPath();
             if (_playerGroupModel.State == PlayerState.Waiting && path.Length>0)
             {
+                Debug.Log("start move");
                 _playerGroupModel.ChangePlayerState(PlayerState.Moving);
                 foreach (var pathPoint in path)
                 {

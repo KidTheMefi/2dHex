@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Interfaces;
 using Priority_Queue;
 using UnityEngine;
@@ -7,13 +8,19 @@ using UnityEngine;
 public class AStarSearch 
 {
         private IHexStorage _hexStorage;
-        
         public AStarSearch(IHexStorage hexStorage)
         {
                 _hexStorage = hexStorage;
         }
+        
+        private async UniTask<Dictionary<Vector2Int, Vector2Int>> PlayerPathFindAsync(Vector2Int start, Vector2Int goal)
+        {
+                var cameFrom = AStarSearchCameFrom(start, goal);
+                await UniTask.Yield();
+                return cameFrom;
+        }
 
-        private Dictionary<Vector2Int, Vector2Int> AStarSearchCameFrom(Vector2Int start, Vector2Int goal)
+        private  Dictionary<Vector2Int, Vector2Int> AStarSearchCameFrom(Vector2Int start, Vector2Int goal)
         {
                 Dictionary<Vector2Int, Vector2Int> cameFrom = new Dictionary<Vector2Int, Vector2Int>();
                 Dictionary<Vector2Int, int> costSoFar = new Dictionary<Vector2Int, int>();
@@ -56,28 +63,22 @@ public class AStarSearch
                 return cameFrom;
         }
                 
-        public bool TryPathFind(Vector2Int starPathPos, Vector2Int endPathPos, out List<Hex> path)
+        public async UniTask<List<Hex>> TryPathFind(Vector2Int starPathPos, Vector2Int endPathPos)
         {
-                
+                var pathDictionary = await PlayerPathFindAsync(starPathPos, endPathPos);
                 List<Hex> newPath = new List<Hex>(); 
                 Vector2Int drawPathPoint = endPathPos;
-                //newPath.Add(drawPathPoint);
+                
                 while (!(drawPathPoint == starPathPos))
                 {
-                        
-                        if (!AStarSearchCameFrom(starPathPos,endPathPos ).TryGetValue(drawPathPoint, out drawPathPoint))
+                        if (!pathDictionary.TryGetValue(drawPathPoint, out drawPathPoint))
                         {
                                 Debug.Log(starPathPos + " Unreachable from " + endPathPos);
                                 break;
                         }
                         newPath.Add(_hexStorage.GetHexAtAxialCoordinate(drawPathPoint));
                 }
-                path = newPath;
-                if (path.Count == 0)
-                {
-                        return false;
-                }
-                return true;
+                return  newPath;
         }
         
         public bool TryPathFindForRiver(Vector2Int starPathPos, Vector2Int endPathPos, out List<Vector2Int> path)

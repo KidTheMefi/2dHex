@@ -12,11 +12,13 @@ namespace PlayerGroup
 
     public class PlayerGroupModel
     {
+        public event Action<Vector2Int, int> PositionChanged = delegate(Vector2Int i, int i1) { };
         public event Action<PlayerState> StateChanged = delagate => { };
         public event Action<bool> Selected = delagate => { };
         private Vector2Int _axialPosition;
         private bool _selected;
         private PlayerState _state = PlayerState.Waiting;
+        private int _visionRadius = 3;
 
         public bool IsSelected => _selected; 
         public Vector2Int AxialPosition => _axialPosition;
@@ -44,6 +46,7 @@ namespace PlayerGroup
         public void SetAxialPosition(Vector2Int pos)
         {
             _axialPosition = pos;
+            PositionChanged?.Invoke(pos, _visionRadius);
         }
     }
 }

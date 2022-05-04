@@ -114,6 +114,7 @@ public class HexMapGrid :  IInitializable, IHexStorage, IMapBorder
         }
         return false;
     }
+    
     public Dictionary<Hex, HexView> HexToHexView()
     {
         return _hexToHexViews;

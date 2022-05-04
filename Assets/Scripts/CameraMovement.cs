@@ -12,7 +12,7 @@ public class CameraMovement : IInitializable
 
     private MapBorder _mapBorder;
     private bool _wasdMoving = false;
-    private float _cameraDragSpeed = 20f;
+    //private float _cameraDragSpeed = 20f;
     private int _wasdVectorMultiply = 1;
 
     private float _minZoom=3;
@@ -151,12 +151,12 @@ public class CameraMovement : IInitializable
 
     #region Mouse "Drag" Camera
 
-    /*
-    private void MiddleMouseDown(InputAction.CallbackContext callbackContext)
+    
+    /*private void MiddleMouseDown(InputAction.CallbackContext callbackContext)
     {
         AsyncCameraMovement().Forget();
     }
-
+    
     private void MouseUp(InputAction.CallbackContext callbackContext)
     {
         if (callbackContext.performed || callbackContext.canceled)
@@ -168,18 +168,18 @@ public class CameraMovement : IInitializable
     {
         _cancelTokenSource = new CancellationTokenSource();
         var dragStartPosition = GetWorldPosition(_inputActions.CameraInput.MousePosition.ReadValue<Vector2>());
-
+    
         await UniTask.WaitUntil(() =>
         {
             var currentPosition = GetWorldPosition(_inputActions.CameraInput.MousePosition.ReadValue<Vector2>());
             Vector3 point = transform.position + dragStartPosition - currentPosition;
             point = CameraOnBordersPositionUpdate(point);
             transform.position = Vector3.Lerp(transform.position, point, _cameraDragSpeed * Time.deltaTime);
-
+    
             return _cancelTokenSource.IsCancellationRequested;
         });
-    }
-*/
+    }*/
+
   #endregion
 
     

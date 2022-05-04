@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -8,16 +9,19 @@ using Zenject;
 public class TestButtonUI : MonoBehaviour
 {
     [SerializeField]
-    private Button button;
+    private Button _button;
+    [SerializeField]
+    private TextMeshProUGUI _buttonText;
 
-    public void Init(Action action)
+    public void Init(Action action, string buttonText = "button")
     {
-        button.onClick.AddListener(action.Invoke);
+        _button.onClick.AddListener(action.Invoke);
+        _buttonText.text = buttonText;
     }
 
     private void OnDestroy()
     {
-        //button.onClick?.RemoveAllListeners();
+        _button.onClick?.RemoveAllListeners();
     }
 
     public class Factory : PlaceholderFactory<TestButtonUI>

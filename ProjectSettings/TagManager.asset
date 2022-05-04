@@ -50,6 +50,12 @@ TagManager:
   - name: DynamicMapObjects
     uniqueID: 640394691
     locked: 0
+  - name: MapTilesInvisible
+    uniqueID: 770178013
+    locked: 0
+  - name: Fog
+    uniqueID: 4124335593
+    locked: 0
   - name: UI
     uniqueID: 2078035243
     locked: 0

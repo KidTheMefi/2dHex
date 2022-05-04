@@ -16,7 +16,7 @@ MonoBehaviour:
   _landType: 1
   _isPassable: 1
   _movementTimeCost: 4
-  _movementEnergyCost: 4
+  _movementEnergyCost: 3
   _landTypeSprites:
   - {fileID: 21300000, guid: ff3928b9719effb48a913d4a1db5e24c, type: 3}
   - {fileID: 21300000, guid: d23f013cf6c6ea34db8be8f8964052cb, type: 3}
