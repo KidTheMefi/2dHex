@@ -8,8 +8,7 @@ using Zenject;
 public class Hex 
 {
     public event Action<Hex, Sprite> LandTypeSpriteChanged = delegate { };
-    public event Action<Hex> OnMouseEnter = delegate { };
-    
+
     public readonly Vector2Int AxialCoordinate;
     public readonly Vector3 Position;
     

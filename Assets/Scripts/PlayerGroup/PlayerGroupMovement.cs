@@ -3,6 +3,7 @@ using DG.Tweening;
 using Interfaces;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
+using UnityEngine.InputSystem.Utilities;
 using Zenject;
 
 namespace PlayerGroup
@@ -60,16 +61,21 @@ namespace PlayerGroup
             var path = _playerPathFind.GetPath();
             if (_playerGroupModel.State == PlayerState.Waiting && path.Length>0)
             {
-                Debug.Log("start move");
                 _playerGroupModel.ChangePlayerState(PlayerState.Moving);
                 foreach (var pathPoint in path)
                 {
-                    await _playerGroupView.transform.DOMove(pathPoint.Position, 0.1f * pathPoint.LandTypeProperty.MovementTimeCost).SetEase(Ease.Linear);
+                    _playerGroupModel.SetTargetMovePosition(pathPoint.AxialCoordinate);
+                    await _playerGroupView.transform.DOMove(pathPoint.Position, GameTime.MovementTimeModificator * pathPoint.LandTypeProperty.MovementTimeCost).SetEase(Ease.Linear);
                     _playerGroupModel.SetAxialPosition(pathPoint.AxialCoordinate);
                 }
                 await UniTask.Yield();
                 _playerGroupModel.ChangePlayerState(PlayerState.Waiting);
             }
         }
+
+        /*private async UniTask Movement(Vector3 moveTo)
+        {
+            
+        }*/
     }
 }

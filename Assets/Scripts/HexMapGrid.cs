@@ -19,7 +19,7 @@ public class HexMapGrid :  IInitializable, IHexStorage, IMapBorder
     private float _borderIndent = 1f;
     
     private Vector2Int _mapResolution;
-    public HexMapGrid( MapSetting mapSetting, HexView.Factory hexViewFactory)
+    public HexMapGrid(MapSetting mapSetting, HexView.Factory hexViewFactory)
     {
         _mapSetting = mapSetting;
         _hexViewFactory = hexViewFactory;
