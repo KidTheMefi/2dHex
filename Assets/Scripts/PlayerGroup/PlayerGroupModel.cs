@@ -16,11 +16,11 @@ namespace PlayerGroup
         public event Action<PlayerState> StateChanged = delagate => { };
         public event Action<bool> Selected = delagate => { };
         private Vector2Int _axialPosition;
-        private bool _selected;
         private PlayerState _state = PlayerState.Waiting;
         private int _visionRadius = 3;
+        private Vector2Int _targetMovePosition;
 
-        public bool IsSelected => _selected; 
+        public Vector2Int TargetMovePosition => _targetMovePosition;
         public Vector2Int AxialPosition => _axialPosition;
         public PlayerState State => _state;
 
@@ -34,17 +34,14 @@ namespace PlayerGroup
             }
         }
 
-        public void Select(bool select)
+        public void SetTargetMovePosition(Vector2Int pos)
         {
-            if (_selected != select)
-            {
-                _selected = select;
-                Selected?.Invoke(_selected);
-            }
+            _targetMovePosition = pos;
         }
 
         public void SetAxialPosition(Vector2Int pos)
         {
+            _targetMovePosition = pos;
             _axialPosition = pos;
             PositionChanged?.Invoke(pos, _visionRadius);
         }

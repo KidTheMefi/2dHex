@@ -31,7 +31,7 @@ public class FieldOfView : IInitializable
         switch (_hexStorage.GetHexAtAxialCoordinate(center).LandTypeProperty.LandType)
         {
             case LandType.Forrest:
-                if (radiusActual>1)
+                if (radiusActual > 1)
                 {
                     radiusActual--;
                 }
@@ -42,25 +42,32 @@ public class FieldOfView : IInitializable
             default:
                 break;
         }
-        
+
         List<Hex> hexThatCanBeSee = new List<Hex>();
         var ring = HexUtils.GetAxialRingWithRadius(center, radiusActual);
-        
-        foreach (var hexCoordinate in ring)
+
+        foreach (var hexInRing in ring)
         {
-            var line = _hexStorage.GetHexesAtAxialCoordinates(HexUtils.GetAxialLine(center, hexCoordinate));
-            foreach (var hex in line)
+            var line = HexUtils.GetAxialLine(center, hexInRing);
+
+            foreach (var hexCoordinate in line)
             {
-                if (!hexThatCanBeSee.Contains(hex))
+                if (_hexStorage.HexAtAxialCoordinateExist(hexCoordinate))
                 {
-                    hexThatCanBeSee.Add(hex);
-                    _currentOpenedHexes.Remove(hex);
-                }
-                
-                _hexStorage.HexToHexView()[hex].SetHexVisible(false);
-                if (hex.LandTypeProperty.LandType == LandType.Mountain)
-                {
-                    break;
+                    var hex = _hexStorage.GetHexAtAxialCoordinate(hexCoordinate);
+
+                    if (!hexThatCanBeSee.Contains(hex))
+                    {
+                        hexThatCanBeSee.Add(hex);
+                        _currentOpenedHexes.Remove(hex);
+                    }
+
+                    _hexStorage.HexToHexView()[hex].SetHexVisible(false);
+                    if (hex.LandTypeProperty.LandType == LandType.Mountain)
+                    {
+                        break;
+                    }
+
                 }
             }
         }
@@ -71,7 +78,7 @@ public class FieldOfView : IInitializable
         }
 
         _currentOpenedHexes = hexThatCanBeSee;
-        
+
         await UniTask.Yield();
     }
 }

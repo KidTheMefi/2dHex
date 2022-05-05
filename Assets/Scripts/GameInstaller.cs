@@ -1,3 +1,4 @@
+using Enemies;
 using PlayerGroup;
 using UnityEngine;
 using Zenject;
@@ -23,6 +24,7 @@ public class GameInstaller : MonoInstaller
         InstallPathFind();
         InstallMap();
         InstallPlayerGroup();
+        InstallEnemies();
     }
 
     private void InstallInputSystem()
@@ -70,4 +72,17 @@ public class GameInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<HexMapContinents>().AsSingle();
         Container.BindInterfacesAndSelfTo<RiverGenerator>().AsSingle();
     }
+    private void InstallEnemies()
+    {
+        Container.BindInterfacesAndSelfTo<EnemySpawner>().AsSingle();
+        Container.BindFactory<Vector2Int, EnemyFacade, EnemyFacade.Factory>()
+            .FromPoolableMemoryPool<Vector2Int, EnemyFacade, EnemyFacadePool>(poolBinder => poolBinder
+                .WithInitialSize(3)
+                .FromSubContainerResolve()
+                .ByNewPrefabInstaller<EnemyInstaller>(_prefabList.EnemyFacade)
+                .UnderTransformGroup("Enemies"));
+    }
+}
+ class EnemyFacadePool : MonoPoolableMemoryPool<Vector2Int, IMemoryPool, EnemyFacade>
+{
 }
