@@ -76,7 +76,6 @@ namespace PlayerGroup
             if (_playerGroupModel.State == PlayerState.Waiting && path.Length > 0)
             {
                 Debug.Log("player Start move");
-               // _gameTime.Play().Forget();
                 _playerGroupModel.ChangePlayerState(PlayerState.Moving);
                 foreach (var pathPoint in path)
                 {
@@ -86,14 +85,8 @@ namespace PlayerGroup
                     _movementQueue = HexUtils.VectorSeparation(_playerGroupView.transform.position, pathPoint.Position, pathPoint.LandTypeProperty.MovementTimeCost);
                     _gameTime.DoTick();
                     await UniTask.WaitUntil(() => hexReached);
-                    //await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
-                    //_gameTime.TimeGoFor(pathPoint.LandTypeProperty.MovementTimeCost).Forget();
-                    //await _playerGroupView.transform.DOMove(pathPoint.Position, GameTime.MovementTimeModificator * pathPoint.LandTypeProperty.MovementTimeCost).SetEase(Ease.Linear);
                     _playerGroupModel.SetAxialPosition(pathPoint.AxialCoordinate);
                 }
-                //_gameTime.Pause();
-
-                //await UniTask.Yield();
                 _playerGroupModel.ChangePlayerState(PlayerState.Waiting);
             }
         }
@@ -117,13 +110,12 @@ namespace PlayerGroup
 
         private async UniTask OnGameTick()
         {
-            MovingToHex().Forget();
-        }
-
-
-        /*private async UniTask Movement(Vector3 moveTo)
-        {
+            if (_playerGroupModel.State == PlayerState.Moving)
+            {
+                MovingToHex().Forget();
+            }
             
-        }*/
+        }
+        
     }
 }

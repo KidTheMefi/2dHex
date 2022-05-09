@@ -6,16 +6,16 @@ using UnityEngine;
 
 public class TimeClock : MonoBehaviour
 {
-   [SerializeField]
-   private Transform _arrow;
+    [SerializeField]
+    private Transform _arrow;
 
-   public async UniTask Tick()
-   {
-      var targetRotation = _arrow.eulerAngles + Vector3.back * 30;
-      if (targetRotation.z <= -360)
-      {
-         targetRotation.z = 0;
-      }
-      await _arrow.DORotateQuaternion(Quaternion.Euler(targetRotation), GameTime.MovementTimeModificator).SetEase(Ease.Linear);
-   }
+    public async UniTask Tick()
+    {
+        var targetRotation = _arrow.eulerAngles + Vector3.back * 30;
+        if (targetRotation.z <= -360)
+        {
+            targetRotation.z = 0;
+        }
+        await _arrow.DORotateQuaternion(Quaternion.Euler(targetRotation), GameTime.MovementTimeModificator).SetEase(Ease.Linear);
+    }
 }

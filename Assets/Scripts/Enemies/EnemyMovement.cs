@@ -21,7 +21,9 @@ namespace Enemies
 
         private Tween _movement;
         private Queue<Vector3> _movementQueue = new Queue<Vector3>();
-        private bool hexReached;
+        private Queue<Hex> _path = new Queue<Hex>();
+        private Vector2Int _target;
+        private bool _hexReached;
 
         public EnemyMovement(
             EnemyModel enemyModel,
@@ -42,98 +44,89 @@ namespace Enemies
 
         public void Initialize()
         {
-            _gameTime.Tick += ()=> MovingToHex().Forget(); ;
-             Movement();
-        }
-        
-        private async UniTask Movement()
-        {
-            
-            for (int i = 0; i < 100; i++)
-            {
-                var target =  FindNewTarget();
-                await MoveToTarget(target);
-            }
+            _gameTime.Tick += () => MovingOnTick().Forget();
+            MoveToNextHex().Forget();
         }
 
-        private Vector2Int FindNewTarget()
+        private async UniTask FindNewPath()
         {
-            if (PlayerNear(out var player))
-            {
-                return player;
-            }
-
-            var hexes = HexUtils.GetAxialAreaAtRange(_enemyModel.AxialPosition, 6);
+            var hexes = HexUtils.GetAxialAreaAtRange(_enemyModel.AxialPosition, _enemyModel.ViewRadius);
             var target = hexes[Random.Range(0, hexes.Count)];
             while (!_hexStorage.HexAtAxialCoordinateExist(target))
             {
                 target = hexes[Random.Range(0, hexes.Count)];
             }
-            return target;
+            _target = target;
+            _path = await PathFind(_target);
         }
 
-        private bool PlayerNear(out Vector2Int target)
+        private async UniTask CheckForEnemyNear()
         {
             var distanceToPlayer = HexUtils.AxialDistance(_playerGroupModel.AxialPosition, _enemyModel.AxialPosition);
-            target = _playerGroupModel.TargetMovePosition;
-            if (distanceToPlayer < _enemyModel.ViewRadius)
+
+            if (distanceToPlayer < _enemyModel.ViewRadius && _target != _playerGroupModel.TargetMovePosition)
             {
-                return true;
+                _target = _playerGroupModel.TargetMovePosition;
+                _path = await PathFind(_target);
             }
-            return false;
         }
 
-        private async UniTask MoveToTarget(Vector2Int target)
+        private async  UniTask MoveToNextHex()
         {
-            var path = await PathFind(target);
-
-            //await UniTask.WaitUntil(() => _gameTime.IsPlay);
-            
-                foreach (var hex in path)
+            if (_path.Count != 0)
             {
-                hexReached = false;
-                _movementQueue = HexUtils.VectorSeparation(_enemyView.transform.position, hex.Position, hex.LandTypeProperty.MovementTimeCost);
-                await UniTask.WaitUntil(() => hexReached);
-                _enemyModel.AxialPosition = hex.AxialCoordinate;
-                if (PlayerNear(out var player) && player != target)
-                {
-                    return;
-                }
-                
-                /*_movement = _enemyView.transform.DOMove(hex.Position, GameTime.MovementTimeModificator * hex.LandTypeProperty.MovementTimeCost).SetEase(Ease.Linear);
-                await _movement;
-                
-                if (PlayerNear(out var player) && player != target)
-                {
-                    return;
-                }*/
+                await CheckForEnemyNear();
+
+                var hex = _path.Dequeue();
+                _target = hex.AxialCoordinate;
+                _movementQueue = HexUtils.VectorSeparation(HexUtils.CalculatePosition(_enemyModel.AxialPosition), hex.Position, hex.LandTypeProperty.MovementTimeCost);
+            }
+            else
+            {
+                await FindNewPath();
+                MoveToNextHex().Forget();
             }
         }
 
-        private async UniTask MovingToHex()
+        private async UniTask MovingOnTick()
         {
             if (_movementQueue.Count != 0)
             {
-                await  _enemyView.transform.DOMove(_movementQueue.Dequeue(), GameTime.MovementTimeModificator).SetEase(Ease.Linear);
+                bool isLast = false;
+                var moveTo = _movementQueue.Dequeue();
+                _movement = _enemyView.transform.DOMove(moveTo, GameTime.MovementTimeModificator).SetEase(Ease.Linear);
                 if (_movementQueue.Count == 0)
                 {
-                    hexReached = true;
+                    _enemyModel.AxialPosition = _target;
+                    await MoveToNextHex();
+                    isLast = true;
+                }
+                await _movement;
+                if (isLast)
+                {
+                    _hexReached = true;
                 }
             }
         }
-        
-        private async UniTask<List<Hex>> PathFind(Vector2Int target)
+
+        private async UniTask<Queue<Hex>> PathFind(Vector2Int target)
         {
             var starPathPos = _enemyModel.AxialPosition;
             var endPathPos = target;
             var pathList = await _aStarSearch.TryPathFind(starPathPos, endPathPos);
+            Queue<Hex> path = new Queue<Hex>();
 
             if (pathList.Count != 0)
             {
                 pathList.Reverse();
                 pathList.Add(_hexStorage.GetHexAtAxialCoordinate(endPathPos));
+                pathList.RemoveAt(0);
             }
-            return pathList;
+            foreach (var hex in pathList)
+            {
+                path.Enqueue(hex);
+            }
+            return path;
         }
 
 
