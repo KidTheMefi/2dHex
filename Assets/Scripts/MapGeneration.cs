@@ -12,26 +12,24 @@ public class MapGeneration : IInitializable, IRandomPassablePosition
     private TestButtonUI.Factory _buttonFactory;
     private IHexStorage _hexStorage;
 
-    public MapGeneration(HexMapContinents hexMapContinents, RiverGenerator riverGenerator, TestButtonUI.Factory buttonFactory, IHexStorage hexStorage)
+    public MapGeneration(
+        HexMapContinents hexMapContinents,
+        RiverGenerator riverGenerator,
+        TestButtonUI.Factory buttonFactory,
+        IHexStorage hexStorage)
     {
         _hexMapContinents = hexMapContinents;
         _riverGenerator = riverGenerator;
         _buttonFactory = buttonFactory;
         _hexStorage = hexStorage;
     }
-
-
-
+    
     public void Initialize()
     {
-        var generateWorldButton = _buttonFactory.Create();
-        generateWorldButton.Init(GenerateStart, "Generate map");
-        
-        var fogButton = _buttonFactory.Create();
-        fogButton.Init(Fog, "Fog");
-        
+        var generateWorldButton = _buttonFactory.Create(GenerateStart, "Generate map");
+        var fogButton = _buttonFactory.Create(Fog, "Fog");
     }
-    
+
     private void Fog()
     {
         foreach (var hex in _hexStorage.HexToHexView().Values)
@@ -39,21 +37,21 @@ public class MapGeneration : IInitializable, IRandomPassablePosition
             hex.ChangeFogStatus();
         }
     }
-    
+
     private async void GenerateStart()
     {
         await _hexMapContinents.GenerateStart();
         await _riverGenerator.DrawRandomRivers(6);
-        
+
         MapGenerated.Invoke();
     }
-    
+
     public Vector2Int GetRandomStartPosition()
     {
-        var random = _hexMapContinents.AllContinentsHexes[ Random.Range(0,_hexMapContinents.AllContinentsHexes.Count)];
+        var random = _hexMapContinents.AllContinentsHexes[Random.Range(0, _hexMapContinents.AllContinentsHexes.Count)];
         while (!_hexStorage.GetHexAtAxialCoordinate(random).LandTypeProperty.IsPassable)
         {
-            random = _hexMapContinents.AllContinentsHexes[ Random.Range(0,_hexMapContinents.AllContinentsHexes.Count)];
+            random = _hexMapContinents.AllContinentsHexes[Random.Range(0, _hexMapContinents.AllContinentsHexes.Count)];
         }
         return random;
     }

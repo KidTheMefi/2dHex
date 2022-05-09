@@ -1,9 +1,9 @@
+using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Interfaces;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
-using UnityEngine.InputSystem.Utilities;
 using Zenject;
 
 namespace PlayerGroup
@@ -15,14 +15,26 @@ namespace PlayerGroup
         private PlayerGroupView _playerGroupView;
         private IHexMouseEvents _hexMouse;
         private PlayerPathFind _playerPathFind;
+        private GameTime _gameTime;
 
-        public PlayerGroupMovement(MapGeneration mapGeneration, PlayerGroupModel playerGroupModel, PlayerGroupView playerGroupView, IHexMouseEvents hexMouse, PlayerPathFind playerPathFind)
+        private Tween _movementTween;
+        private Queue<Vector3> _movementQueue = new Queue<Vector3>();
+        private bool hexReached;
+
+        public PlayerGroupMovement(
+            MapGeneration mapGeneration,
+            PlayerGroupModel playerGroupModel,
+            PlayerGroupView playerGroupView,
+            IHexMouseEvents hexMouse,
+            PlayerPathFind playerPathFind,
+            GameTime gameTime)
         {
             _mapGeneration = mapGeneration;
             _playerGroupModel = playerGroupModel;
             _playerGroupView = playerGroupView;
             _hexMouse = hexMouse;
             _playerPathFind = playerPathFind;
+            _gameTime = gameTime;
         }
 
         public void Initialize()
@@ -30,7 +42,8 @@ namespace PlayerGroup
             _mapGeneration.MapGenerated += SpawnAtRandomPosition;
             _playerGroupModel.StateChanged += GroupStateChange;
             _hexMouse.HighlightedHexClicked += PathFind;
-            _hexMouse.HighlightedHexDoubleClicked += i => StartMove().Forget() ;
+            _hexMouse.HighlightedHexDoubleClicked += i => StartMove().Forget();
+            _gameTime.Tick += () => OnGameTick().Forget();
 
         }
         private void GroupStateChange(PlayerState state)
@@ -58,20 +71,55 @@ namespace PlayerGroup
 
         private async UniTask StartMove()
         {
+            
             var path = _playerPathFind.GetPath();
-            if (_playerGroupModel.State == PlayerState.Waiting && path.Length>0)
+            if (_playerGroupModel.State == PlayerState.Waiting && path.Length > 0)
             {
+                Debug.Log("player Start move");
+               // _gameTime.Play().Forget();
                 _playerGroupModel.ChangePlayerState(PlayerState.Moving);
                 foreach (var pathPoint in path)
                 {
+                    
+                    hexReached = false;
                     _playerGroupModel.SetTargetMovePosition(pathPoint.AxialCoordinate);
-                    await _playerGroupView.transform.DOMove(pathPoint.Position, GameTime.MovementTimeModificator * pathPoint.LandTypeProperty.MovementTimeCost).SetEase(Ease.Linear);
+                    _movementQueue = HexUtils.VectorSeparation(_playerGroupView.transform.position, pathPoint.Position, pathPoint.LandTypeProperty.MovementTimeCost);
+                    _gameTime.DoTick();
+                    await UniTask.WaitUntil(() => hexReached);
+                    //await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
+                    //_gameTime.TimeGoFor(pathPoint.LandTypeProperty.MovementTimeCost).Forget();
+                    //await _playerGroupView.transform.DOMove(pathPoint.Position, GameTime.MovementTimeModificator * pathPoint.LandTypeProperty.MovementTimeCost).SetEase(Ease.Linear);
                     _playerGroupModel.SetAxialPosition(pathPoint.AxialCoordinate);
                 }
-                await UniTask.Yield();
+                //_gameTime.Pause();
+
+                //await UniTask.Yield();
                 _playerGroupModel.ChangePlayerState(PlayerState.Waiting);
             }
         }
+
+        private async UniTask MovingToHex()
+        {
+            if (_movementQueue.Count != 0)
+            {
+                await  _playerGroupView.transform.DOMove(_movementQueue.Dequeue(), GameTime.MovementTimeModificator).SetEase(Ease.Linear);
+                
+                if (_movementQueue.Count != 0)
+                {
+                    _gameTime.DoTick();
+                }
+                else
+                {
+                    hexReached = true;
+                }
+            }
+        }
+
+        private async UniTask OnGameTick()
+        {
+            MovingToHex().Forget();
+        }
+
 
         /*private async UniTask Movement(Vector3 moveTo)
         {

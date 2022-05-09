@@ -13,7 +13,8 @@ public class TestButtonUI : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _buttonText;
 
-    public void Init(Action action, string buttonText = "button")
+    [Inject]
+    public void Construct(Action action, string buttonText = "button")
     {
         _button.onClick.AddListener(action.Invoke);
         _buttonText.text = buttonText;
@@ -24,8 +25,8 @@ public class TestButtonUI : MonoBehaviour
         _button.onClick?.RemoveAllListeners();
     }
 
-    public class Factory : PlaceholderFactory<TestButtonUI>
+    public class Factory : PlaceholderFactory<Action, string, TestButtonUI>
     {
-        
+       
     }
 }

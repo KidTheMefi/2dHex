@@ -165,4 +165,16 @@ public class HexUtils
 
         return new Vector3(horiz * (axialCoordinate.x + axialCoordinate.y / 2f), vert * axialCoordinate.y, 0);
     }
+    
+    public static Queue<Vector3> VectorSeparation(Vector3 start, Vector3 end, int number) // weird naming?
+    {
+        var vectorPiece = (end - start) / number;
+        Queue<Vector3> result = new Queue<Vector3>();
+        for (int i = 1; i < number; i++)
+        {
+            result.Enqueue(start+vectorPiece*i);
+        }
+        result.Enqueue(end);
+        return result;
+    }
 }

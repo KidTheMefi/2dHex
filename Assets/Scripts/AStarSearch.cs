@@ -73,7 +73,7 @@ public class AStarSearch
                 {
                         if (!pathDictionary.TryGetValue(drawPathPoint, out drawPathPoint))
                         {
-                                Debug.Log(starPathPos + " Unreachable from " + endPathPos);
+                                //Debug.Log(starPathPos + " Unreachable from " + endPathPos);
                                 break;
                         }
                         newPath.Add(_hexStorage.GetHexAtAxialCoordinate(drawPathPoint));
@@ -90,7 +90,7 @@ public class AStarSearch
                 {
                         if (!AStarSearchCameFrom(starPathPos,endPathPos ).TryGetValue(drawPathPoint, out drawPathPoint))
                         {
-                                Debug.Log(starPathPos + " Unreachable from " + endPathPos);
+                                //Debug.Log(starPathPos + " Unreachable from " + endPathPos);
                                 break;
                         }
                         newPath.Add(drawPathPoint);

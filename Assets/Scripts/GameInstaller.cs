@@ -1,5 +1,7 @@
+using System;
 using Enemies;
 using PlayerGroup;
+using TestMovementScripts;
 using UnityEngine;
 using Zenject;
 
@@ -9,6 +11,8 @@ public class GameInstaller : MonoInstaller
     [SerializeField] private Canvas _canvas;
     [SerializeField] private GameObject _buttonsParent;
     [SerializeField] private Transform _hexHighlight;
+    [SerializeField] private TestMovement _testMovement;
+    [SerializeField] private TimeClock _clock;
     
     [Inject]
     private PrefabList _prefabList = null;
@@ -18,7 +22,10 @@ public class GameInstaller : MonoInstaller
         Container.BindInstance(_camera).AsSingle();
         Container.BindInstance(_canvas).AsSingle();
         Container.BindInstance(_hexHighlight).WithId("hexHighlight").AsSingle();
-        
+        Container.BindInstance(_testMovement).AsSingle();
+        Container.BindInstance(_clock).AsSingle();
+
+        Container.BindInterfacesAndSelfTo<GameTime>().AsSingle();
         InstallInputSystem();
         InstallGameField();
         InstallPathFind();
@@ -38,7 +45,7 @@ public class GameInstaller : MonoInstaller
     {
         Container.BindFactory<HexView, HexView.Factory>().FromComponentInNewPrefab(_prefabList.HexViewPrefab).WithGameObjectName("tile").UnderTransformGroup("HexGridMap");
         Container.BindFactory<Continent, Continent.Factory>();
-        Container.BindFactory<TestButtonUI, TestButtonUI.Factory>().FromComponentInNewPrefab(_prefabList.ButtonPrefab).UnderTransform(_buttonsParent.transform);
+        Container.BindFactory<Action, string, TestButtonUI, TestButtonUI.Factory>().FromComponentInNewPrefab(_prefabList.ButtonPrefab).UnderTransform(_buttonsParent.transform);
         
         
         Container.BindFactory<RiverView, RiverView.Factory>().FromMonoPoolableMemoryPool(

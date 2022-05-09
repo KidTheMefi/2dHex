@@ -62,7 +62,7 @@ public class PlayerPathFind
                     timeCost += pathCoordinate.LandTypeProperty.MovementTimeCost;
                 }
             }
-            Debug.Log(String.Format("Energy cost: {0} // Time cost:{1}", energyCost, timeCost));
+            //Debug.Log(String.Format("Energy cost: {0} // Time cost:{1}", energyCost, timeCost));
         }
         else
         {

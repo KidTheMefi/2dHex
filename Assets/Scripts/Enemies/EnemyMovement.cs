@@ -17,40 +17,46 @@ namespace Enemies
         private AStarSearch _aStarSearch;
         private IHexStorage _hexStorage;
         private PlayerGroupModel _playerGroupModel;
+        private GameTime _gameTime;
 
         private Tween _movement;
+        private Queue<Vector3> _movementQueue = new Queue<Vector3>();
+        private bool hexReached;
 
         public EnemyMovement(
             EnemyModel enemyModel,
             EnemyView enemyView,
             PlayerGroupModel playerGroupModel,
             AStarSearch aStarSearch,
-            IHexStorage hexStorage)
+            IHexStorage hexStorage,
+            GameTime gameTime)
         {
             _enemyView = enemyView;
             _enemyModel = enemyModel;
             _aStarSearch = aStarSearch;
             _hexStorage = hexStorage;
+            _gameTime = gameTime;
             _playerGroupModel = playerGroupModel;
         }
 
 
         public void Initialize()
         {
-            Movement();
+            _gameTime.Tick += ()=> MovingToHex().Forget(); ;
+             Movement();
         }
         
         private async UniTask Movement()
         {
-            //await UniTask.Delay(5000);
+            
             for (int i = 0; i < 100; i++)
             {
-                var target = await FindNewTarget();
+                var target =  FindNewTarget();
                 await MoveToTarget(target);
             }
         }
 
-        private async UniTask<Vector2Int> FindNewTarget()
+        private Vector2Int FindNewTarget()
         {
             if (PlayerNear(out var player))
             {
@@ -63,7 +69,6 @@ namespace Enemies
             {
                 target = hexes[Random.Range(0, hexes.Count)];
             }
-            await UniTask.Yield();
             return target;
         }
 
@@ -82,18 +87,41 @@ namespace Enemies
         {
             var path = await PathFind(target);
 
-            foreach (var hex in path)
+            //await UniTask.WaitUntil(() => _gameTime.IsPlay);
+            
+                foreach (var hex in path)
             {
-                _movement = _enemyView.transform.DOMove(hex.Position, GameTime.MovementTimeModificator * hex.LandTypeProperty.MovementTimeCost).SetEase(Ease.Linear);
-                await _movement;
+                hexReached = false;
+                _movementQueue = HexUtils.VectorSeparation(_enemyView.transform.position, hex.Position, hex.LandTypeProperty.MovementTimeCost);
+                await UniTask.WaitUntil(() => hexReached);
                 _enemyModel.AxialPosition = hex.AxialCoordinate;
                 if (PlayerNear(out var player) && player != target)
                 {
                     return;
                 }
+                
+                /*_movement = _enemyView.transform.DOMove(hex.Position, GameTime.MovementTimeModificator * hex.LandTypeProperty.MovementTimeCost).SetEase(Ease.Linear);
+                await _movement;
+                
+                if (PlayerNear(out var player) && player != target)
+                {
+                    return;
+                }*/
             }
         }
 
+        private async UniTask MovingToHex()
+        {
+            if (_movementQueue.Count != 0)
+            {
+                await  _enemyView.transform.DOMove(_movementQueue.Dequeue(), GameTime.MovementTimeModificator).SetEase(Ease.Linear);
+                if (_movementQueue.Count == 0)
+                {
+                    hexReached = true;
+                }
+            }
+        }
+        
         private async UniTask<List<Hex>> PathFind(Vector2Int target)
         {
             var starPathPos = _enemyModel.AxialPosition;
@@ -105,9 +133,6 @@ namespace Enemies
                 pathList.Reverse();
                 pathList.Add(_hexStorage.GetHexAtAxialCoordinate(endPathPos));
             }
-
-
-            //await UniTask.Yield();
             return pathList;
         }
 
