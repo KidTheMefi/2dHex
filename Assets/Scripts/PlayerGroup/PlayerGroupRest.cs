@@ -5,7 +5,7 @@ using Zenject;
 
 namespace PlayerGroup
 {
-    public class PlayerGroupWaiting : IInitializable
+    public class PlayerGroupRest : IInitializable, IPlayerGroupState
     {
         private PlayerGroupModel _playerGroupModel;
         private PlayerUIEnergy _playerUIEnergy;
@@ -14,7 +14,7 @@ namespace PlayerGroup
 
         private bool _sleep = false;
         
-        public PlayerGroupWaiting(PlayerGroupModel playerGroupModel, PlayerGroupView playerGroupView, GameTime gameTime, PlayerUIEnergy playerUIEnergy)
+        public PlayerGroupRest(PlayerGroupModel playerGroupModel, PlayerGroupView playerGroupView, GameTime gameTime, PlayerUIEnergy playerUIEnergy)
         {
             _playerGroupModel = playerGroupModel;
             _playerGroupView = playerGroupView;
@@ -45,7 +45,7 @@ namespace PlayerGroup
                 _gameTime.DoTick();
                 await UniTask.Delay(TimeSpan.FromSeconds(GameTime.MovementTimeModificator));
             }
-            _playerGroupModel.ChangePlayerState(PlayerState.Waiting);
+            _playerGroupModel.ChangePlayerState(PlayerState.Idle);
         }
         
         private void Rest()
@@ -62,8 +62,16 @@ namespace PlayerGroup
                 }
             }
         }
-        
-        private async UniTask OnGameTick()
+
+        public void EnterState()
+        {
+            throw new NotImplementedException();
+        }
+        public void ExitState()
+        {
+            throw new NotImplementedException();
+        }
+        public async UniTask OnGameTick()
         {
             Rest();
         }

@@ -67,7 +67,7 @@ public class GameInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<PlayerGroupSpawn>().AsSingle();
         Container.BindInterfacesAndSelfTo<PlayerPathFind>().AsSingle();
         Container.BindInterfacesAndSelfTo<FieldOfView>().AsSingle();
-        Container.BindInterfacesAndSelfTo<PlayerGroupWaiting>().AsSingle();
+        Container.BindInterfacesAndSelfTo<PlayerGroupRest>().AsSingle();
     }
     
     private void InstallPathFind()

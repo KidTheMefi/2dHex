@@ -48,7 +48,7 @@ namespace UI
 
         private void OnStartButtonClick()
         {
-            if (_playerGroupModel.State == PlayerState.Waiting)
+            if (_playerGroupModel.State == PlayerState.Idle)
             {
                 StartRest?.Invoke(Mathf.RoundToInt(_restSlider.value), _sleep);
             }

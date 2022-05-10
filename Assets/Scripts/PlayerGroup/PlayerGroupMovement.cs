@@ -8,7 +8,7 @@ using Zenject;
 
 namespace PlayerGroup
 {
-    public class PlayerGroupMovement : IInitializable
+    public class PlayerGroupMovement : IInitializable, IPlayerGroupState
     {
         private PlayerGroupModel _playerGroupModel;
         private PlayerGroupView _playerGroupView;
@@ -45,7 +45,7 @@ namespace PlayerGroup
         }
         private void GroupStateChange(PlayerState state)
         {
-            if (state != PlayerState.Waiting)
+            if (state != PlayerState.Idle)
             {
                 //_playerPathFind.ClearPath();
             }
@@ -53,7 +53,7 @@ namespace PlayerGroup
 
         private async void PathFind(Vector2Int target)
         {
-            if (_playerGroupModel.State == PlayerState.Waiting)
+            if (_playerGroupModel.State == PlayerState.Idle)
             {
                 await _playerPathFind.PathFindTest(target);
             }
@@ -61,7 +61,7 @@ namespace PlayerGroup
 
         private void OnDoubleClick()
         {
-            if (_playerGroupModel.State == PlayerState.Waiting)
+            if (_playerGroupModel.State == PlayerState.Idle)
             {
                 StartMove().Forget();
             }
@@ -88,14 +88,14 @@ namespace PlayerGroup
                     EnergyLossAt(pathPoint).Forget();
                     await UniTask.WaitUntil(() => _hexReached);
                     _playerPathFind.RemovePoint(pathPoint);
-                    _playerGroupModel.SetAxialPosition(pathPoint.AxialCoordinate, true);
+                    _playerGroupModel.SetAxialPosition(pathPoint.AxialCoordinate);
                     
                     if (_stopMoving)
                     {
                         break;
                     }
                 }
-                _playerGroupModel.ChangePlayerState(PlayerState.Waiting);
+                _playerGroupModel.ChangePlayerState(PlayerState.Idle);
             }
         }
 
@@ -126,7 +126,15 @@ namespace PlayerGroup
             }
         }
 
-        private async UniTask OnGameTick()
+        public void EnterState()
+        {
+            throw new NotImplementedException();
+        }
+        public void ExitState()
+        {
+            throw new NotImplementedException();
+        }
+        public async UniTask OnGameTick()
         {
             if (_playerGroupModel.State == PlayerState.Moving)
             {

@@ -5,10 +5,7 @@ using UnityEngine;
 
 namespace PlayerGroup
 {
-    public enum PlayerState
-    {
-        Moving, Event, Waiting, Rest
-    }
+
 
     public class PlayerGroupModel
     {
@@ -18,7 +15,7 @@ namespace PlayerGroup
         public event Action<PlayerState> StateChanged = delagate => { };
         
         private Vector2Int _axialPosition;
-        private PlayerState _state = PlayerState.Waiting;
+        private PlayerState _state = PlayerState.Idle;
         private int _visionRadius = 3;
         private int _energy = 48;
         private int _energyMax = 48;
@@ -55,12 +52,8 @@ namespace PlayerGroup
             _targetMovePosition = pos;
         }
 
-        public void SetAxialPosition(Vector2Int pos, bool asTarget = false)
+        public void SetAxialPosition(Vector2Int pos)
         {
-            if (asTarget)
-            {
-                _targetMovePosition = pos;
-            }
             _axialPosition = pos;
             PositionChanged?.Invoke(pos, _visionRadius);
         }

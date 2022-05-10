@@ -19,7 +19,7 @@ namespace PlayerGroup
         private void SpawnAtRandomPosition()
         {
             var axialPos = _mapGeneration.GetRandomStartPosition();
-            _playerGroupModel.SetAxialPosition(axialPos, true);
+            _playerGroupModel.SetAxialPosition(axialPos);
             _playerGroupView.transform.position = HexUtils.CalculatePosition(axialPos);
         }
         public void Initialize()
