@@ -20,25 +20,4 @@ public class GameTime
         Tick.Invoke();
         _clock.Tick().Forget();
     }
-    
-    /*public async UniTask Play()
-    {
-        if (!timePlay)
-        {
-            timePlay = true;
-            while (timePlay)
-            {
-                Tick.Invoke();
-                await _clock.Tick();
-                //await UniTask.Delay(TimeSpan.FromSeconds(MovementTimeModificator*1.1f));
-            }
-        }
-    }
-
-    public void Pause()
-    {
-        timePlay = false;
-    }
-*/
-    
 }

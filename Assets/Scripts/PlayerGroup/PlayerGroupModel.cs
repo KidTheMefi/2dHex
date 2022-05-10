@@ -7,23 +7,39 @@ namespace PlayerGroup
 {
     public enum PlayerState
     {
-        Moving, Event, FinishedMove, Waiting
+        Moving, Event, Waiting, Rest
     }
 
     public class PlayerGroupModel
     {
         public event Action<Vector2Int, int> PositionChanged = delegate(Vector2Int i, int i1) { };
+        
+        public event Action<int> EnergyChanged = delegate(int i) { };
         public event Action<PlayerState> StateChanged = delagate => { };
-        public event Action<bool> Selected = delagate => { };
+        
         private Vector2Int _axialPosition;
         private PlayerState _state = PlayerState.Waiting;
         private int _visionRadius = 3;
+        private int _energy = 48;
+        private int _energyMax = 48;
+        private int _minSleepTime = 8;
         private Vector2Int _targetMovePosition;
 
+
+        public int Energy => _energy;
+        public int MaxEnergy => _energyMax;
+        public int MinTimeSleed => _minSleepTime;
         public Vector2Int TargetMovePosition => _targetMovePosition;
         public Vector2Int AxialPosition => _axialPosition;
         public PlayerState State => _state;
 
+        public void ChangeEnergy(int energy)
+        {
+            _energy += energy;
+            _energy = _energy > _energyMax ? _energyMax : _energy < 0 ? 0 : _energy;
+            EnergyChanged.Invoke(_energy);
+        }
+        
         public void ChangePlayerState(PlayerState state)
         {
             // ReSharper disable once RedundantCheckBeforeAssignment
@@ -39,9 +55,12 @@ namespace PlayerGroup
             _targetMovePosition = pos;
         }
 
-        public void SetAxialPosition(Vector2Int pos)
+        public void SetAxialPosition(Vector2Int pos, bool asTarget = false)
         {
-            _targetMovePosition = pos;
+            if (asTarget)
+            {
+                _targetMovePosition = pos;
+            }
             _axialPosition = pos;
             PositionChanged?.Invoke(pos, _visionRadius);
         }

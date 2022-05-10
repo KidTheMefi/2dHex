@@ -10,7 +10,6 @@ namespace PlayerGroup
 {
     public class PlayerGroupMovement : IInitializable
     {
-        private MapGeneration _mapGeneration;
         private PlayerGroupModel _playerGroupModel;
         private PlayerGroupView _playerGroupView;
         private IHexMouseEvents _hexMouse;
@@ -19,17 +18,16 @@ namespace PlayerGroup
 
         private Tween _movementTween;
         private Queue<Vector3> _movementQueue = new Queue<Vector3>();
-        private bool hexReached;
+        private bool _hexReached;
+        private bool _stopMoving;
 
         public PlayerGroupMovement(
-            MapGeneration mapGeneration,
             PlayerGroupModel playerGroupModel,
             PlayerGroupView playerGroupView,
             IHexMouseEvents hexMouse,
             PlayerPathFind playerPathFind,
             GameTime gameTime)
         {
-            _mapGeneration = mapGeneration;
             _playerGroupModel = playerGroupModel;
             _playerGroupView = playerGroupView;
             _hexMouse = hexMouse;
@@ -39,10 +37,9 @@ namespace PlayerGroup
 
         public void Initialize()
         {
-            _mapGeneration.MapGenerated += SpawnAtRandomPosition;
             _playerGroupModel.StateChanged += GroupStateChange;
             _hexMouse.HighlightedHexClicked += PathFind;
-            _hexMouse.HighlightedHexDoubleClicked += i => StartMove().Forget();
+            _hexMouse.HighlightedHexDoubleClicked += i => OnDoubleClick();
             _gameTime.Tick += () => OnGameTick().Forget();
 
         }
@@ -50,7 +47,7 @@ namespace PlayerGroup
         {
             if (state != PlayerState.Waiting)
             {
-                _playerPathFind.ClearPath();
+                //_playerPathFind.ClearPath();
             }
         }
 
@@ -62,35 +59,56 @@ namespace PlayerGroup
             }
         }
 
-        private void SpawnAtRandomPosition()
+        private void OnDoubleClick()
         {
-            var axialPos = _mapGeneration.GetRandomStartPosition();
-            _playerGroupModel.SetAxialPosition(axialPos);
-            _playerGroupView.transform.position = HexUtils.CalculatePosition(axialPos);
+            if (_playerGroupModel.State == PlayerState.Waiting)
+            {
+                StartMove().Forget();
+            }
+            else
+            {
+                _stopMoving = true;
+            }
         }
-
+        
         private async UniTask StartMove()
         {
-            
             var path = _playerPathFind.GetPath();
-            if (_playerGroupModel.State == PlayerState.Waiting && path.Length > 0)
+            if (path.Length > 0)
             {
                 Debug.Log("player Start move");
                 _playerGroupModel.ChangePlayerState(PlayerState.Moving);
                 foreach (var pathPoint in path)
                 {
-                    
-                    hexReached = false;
+                    _hexReached = false;
+                    _stopMoving = false;
                     _playerGroupModel.SetTargetMovePosition(pathPoint.AxialCoordinate);
                     _movementQueue = HexUtils.VectorSeparation(_playerGroupView.transform.position, pathPoint.Position, pathPoint.LandTypeProperty.MovementTimeCost);
                     _gameTime.DoTick();
-                    await UniTask.WaitUntil(() => hexReached);
-                    _playerGroupModel.SetAxialPosition(pathPoint.AxialCoordinate);
+                    EnergyLossAt(pathPoint).Forget();
+                    await UniTask.WaitUntil(() => _hexReached);
+                    _playerPathFind.RemovePoint(pathPoint);
+                    _playerGroupModel.SetAxialPosition(pathPoint.AxialCoordinate, true);
+                    
+                    if (_stopMoving)
+                    {
+                        break;
+                    }
                 }
                 _playerGroupModel.ChangePlayerState(PlayerState.Waiting);
             }
         }
 
+        private async UniTask EnergyLossAt(Hex hex)
+        {
+            float delay = hex.LandTypeProperty.MovementTimeCost * GameTime.MovementTimeModificator / hex.LandTypeProperty.MovementEnergyCost;
+            for (int i = 0; i < hex.LandTypeProperty.MovementEnergyCost; i++)
+            {
+                _playerGroupModel.ChangeEnergy(-1);
+                await UniTask.Delay(TimeSpan.FromSeconds(delay));
+            }
+        }
+        
         private async UniTask MovingToHex()
         {
             if (_movementQueue.Count != 0)
@@ -103,7 +121,7 @@ namespace PlayerGroup
                 }
                 else
                 {
-                    hexReached = true;
+                    _hexReached = true;
                 }
             }
         }
@@ -116,6 +134,5 @@ namespace PlayerGroup
             }
             
         }
-        
     }
 }

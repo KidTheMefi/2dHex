@@ -16,6 +16,7 @@ MonoBehaviour:
     _hexViewPrefab: {fileID: 7269950964969118158, guid: ed268553b9d91e24b94a3263879f9169, type: 3}
     _riverPrefab: {fileID: 1379518327861520324, guid: bc5d527b457404d4798972d2c5d05696, type: 3}
     _buttonUIPrefab: {fileID: 6771151904382855701, guid: 65306d3ea55dde14fac2d8b86833c6ec, type: 3}
+    _playerUIEnergy: {fileID: 2983910622383491208, guid: 720e87b6f66ed844988542c289ea4cd2, type: 3}
     _playerGroupPrefab: {fileID: 7547169285816333529, guid: bed986b2fea5c404cb63c57fd61e0bb8, type: 3}
     _pathPointPrefab: {fileID: 5405044973312703767, guid: fc17834ead85dd048ad20463c39bdcc4, type: 3}
     _enemyPrefab: {fileID: 4111478005896853196, guid: cba0ebc83d69a82408b5c5ba1d649cd6, type: 3}

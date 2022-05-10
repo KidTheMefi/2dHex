@@ -33,6 +33,12 @@ public class PlayerPathFind
         _pathPointsAtCoordinates.Clear();
     }
 
+    public void RemovePoint(Hex hex)
+    {
+        _pathPointsAtCoordinates[hex].Dispose();
+        _pathPointsAtCoordinates.Remove(hex);
+    }
+    
     public Hex[] GetPath()
     {
         return _pathPointsAtCoordinates.Keys.ToArray();
@@ -55,14 +61,24 @@ public class PlayerPathFind
             {
                 if (pathCoordinate.AxialCoordinate != starPathPos)
                 {
-                    var point = _pathPointFactory.Create();
-                    point.SetPathPoint(pathCoordinate.Position, pathCoordinate.LandTypeProperty.MovementTimeCost.ToString());
-                    _pathPointsAtCoordinates.Add(pathCoordinate, point);
                     energyCost += pathCoordinate.LandTypeProperty.MovementEnergyCost;
                     timeCost += pathCoordinate.LandTypeProperty.MovementTimeCost;
+
+                    if (energyCost > _playerGroupModel.Energy)
+                    {
+                        
+                        break;
+                    }
+                    
+                    var point = _pathPointFactory.Create();
+                    var text = String.Format("{0}|{1}", pathCoordinate.LandTypeProperty.MovementEnergyCost.ToString(), pathCoordinate.LandTypeProperty.MovementTimeCost.ToString());
+                    point.SetPathPoint(pathCoordinate.Position, text);
+                    _pathPointsAtCoordinates.Add(pathCoordinate, point);
+                   
                 }
             }
-            //Debug.Log(String.Format("Energy cost: {0} // Time cost:{1}", energyCost, timeCost));
+            //Debug.Log(energyCost);
+            Debug.Log(String.Format("Energy cost: {0} // Time cost:{1}", energyCost, timeCost));
         }
         else
         {

@@ -1,7 +1,7 @@
 using System;
 using Enemies;
 using PlayerGroup;
-using TestMovementScripts;
+using UI;
 using UnityEngine;
 using Zenject;
 
@@ -11,19 +11,20 @@ public class GameInstaller : MonoInstaller
     [SerializeField] private Canvas _canvas;
     [SerializeField] private GameObject _buttonsParent;
     [SerializeField] private Transform _hexHighlight;
-    [SerializeField] private TestMovement _testMovement;
     [SerializeField] private TimeClock _clock;
+    [SerializeField] private PanelScript _panel;
     
     [Inject]
     private PrefabList _prefabList = null;
     
     public override void InstallBindings()
     {
+        
         Container.BindInstance(_camera).AsSingle();
         Container.BindInstance(_canvas).AsSingle();
         Container.BindInstance(_hexHighlight).WithId("hexHighlight").AsSingle();
-        Container.BindInstance(_testMovement).AsSingle();
         Container.BindInstance(_clock).AsSingle();
+        Container.BindInstance(_panel).AsSingle();
 
         Container.BindInterfacesAndSelfTo<GameTime>().AsSingle();
         InstallInputSystem();
@@ -32,6 +33,8 @@ public class GameInstaller : MonoInstaller
         InstallMap();
         InstallPlayerGroup();
         InstallEnemies();
+        InstallUI();
+        
     }
 
     private void InstallInputSystem()
@@ -45,8 +48,6 @@ public class GameInstaller : MonoInstaller
     {
         Container.BindFactory<HexView, HexView.Factory>().FromComponentInNewPrefab(_prefabList.HexViewPrefab).WithGameObjectName("tile").UnderTransformGroup("HexGridMap");
         Container.BindFactory<Continent, Continent.Factory>();
-        Container.BindFactory<Action, string, TestButtonUI, TestButtonUI.Factory>().FromComponentInNewPrefab(_prefabList.ButtonPrefab).UnderTransform(_buttonsParent.transform);
-        
         
         Container.BindFactory<RiverView, RiverView.Factory>().FromMonoPoolableMemoryPool(
             x => x.WithInitialSize(15).FromComponentInNewPrefab(_prefabList.RiverPrefab).UnderTransformGroup("RiverPool"));
@@ -63,8 +64,10 @@ public class GameInstaller : MonoInstaller
         Container.Bind<PlayerGroupView>().FromComponentInNewPrefab(_prefabList.PlayerGroupPrefab).WithGameObjectName("Player").AsSingle();
         Container.BindInterfacesAndSelfTo<PlayerGroupModel>().AsSingle();
         Container.BindInterfacesAndSelfTo<PlayerGroupMovement>().AsSingle();
+        Container.BindInterfacesAndSelfTo<PlayerGroupSpawn>().AsSingle();
         Container.BindInterfacesAndSelfTo<PlayerPathFind>().AsSingle();
         Container.BindInterfacesAndSelfTo<FieldOfView>().AsSingle();
+        Container.BindInterfacesAndSelfTo<PlayerGroupWaiting>().AsSingle();
     }
     
     private void InstallPathFind()
@@ -88,6 +91,12 @@ public class GameInstaller : MonoInstaller
                 .FromSubContainerResolve()
                 .ByNewPrefabInstaller<EnemyInstaller>(_prefabList.EnemyFacade)
                 .UnderTransformGroup("Enemies"));
+    }
+
+    private void InstallUI()
+    {
+        Container.BindFactory<Action, string, TestButtonUI, TestButtonUI.Factory>().FromComponentInNewPrefab(_prefabList.ButtonPrefab).UnderTransform(_buttonsParent.transform);
+        Container.Bind<PlayerUIEnergy>().FromComponentInNewPrefab(_prefabList.PlayerUIEnergy).UnderTransform(_canvas.transform).AsSingle().NonLazy();
     }
 }
  class EnemyFacadePool : MonoPoolableMemoryPool<Vector2Int, IMemoryPool, EnemyFacade>

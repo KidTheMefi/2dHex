@@ -45,7 +45,7 @@ namespace Enemies
         public void Initialize()
         {
             _gameTime.Tick += () => MovingOnTick().Forget();
-            MoveToNextHex().Forget();
+            CheckNextHex().Forget();
         }
 
         private async UniTask FindNewPath()
@@ -71,7 +71,7 @@ namespace Enemies
             }
         }
 
-        private async  UniTask MoveToNextHex()
+        private async  UniTask CheckNextHex()
         {
             if (_path.Count != 0)
             {
@@ -84,7 +84,7 @@ namespace Enemies
             else
             {
                 await FindNewPath();
-                MoveToNextHex().Forget();
+                CheckNextHex().Forget();
             }
         }
 
@@ -98,7 +98,7 @@ namespace Enemies
                 if (_movementQueue.Count == 0)
                 {
                     _enemyModel.AxialPosition = _target;
-                    await MoveToNextHex();
+                    await CheckNextHex();
                     isLast = true;
                 }
                 await _movement;
@@ -106,6 +106,10 @@ namespace Enemies
                 {
                     _hexReached = true;
                 }
+            }
+            else
+            {
+                Debug.Log("player reached");
             }
         }
 
@@ -128,7 +132,6 @@ namespace Enemies
             }
             return path;
         }
-
 
         public void Dispose()
         {

@@ -9,6 +9,7 @@ public class CameraMovement : IInitializable
     private Camera _camera;
     private TestInputActions _inputActions;
     private HexMouse _hexMouse;
+    private PanelScript _panelScript;
 
     private MapBorder _mapBorder;
     private bool _wasdMoving = false;
@@ -18,13 +19,15 @@ public class CameraMovement : IInitializable
     private float _minZoom=3;
     private float _cameraZoom;
     private float _maxZoom;
+    private bool _mouseOnHexes;
     
-    public CameraMovement(IMapBorder mapBorder, TestInputActions inputActions, Camera camera, HexMouse hexMouse)
+    public CameraMovement(IMapBorder mapBorder, TestInputActions inputActions, Camera camera, HexMouse hexMouse, PanelScript panelScript)
     {
         _mapBorder = mapBorder.GetMapBorderWorld();
         _inputActions = inputActions;
         _camera = camera;
         _hexMouse = hexMouse;
+        _panelScript = panelScript;
     }
 
     public void Initialize()
@@ -34,10 +37,9 @@ public class CameraMovement : IInitializable
         _maxZoom = (_mapBorder.YMax - _mapBorder.YMin) / 2;
         _camera.orthographicSize = _maxZoom;
         _cameraZoom = _camera.orthographicSize;
+        _panelScript.MouseOnPanel += b => { _mouseOnHexes = b;};
 
         _inputActions = new TestInputActions();
-        /*_inputActions.CameraInput.MiddleClickDown.started += MiddleMouseDown;
-        _inputActions.CameraInput.MiddleClickDown.canceled += MouseUp;*/
 
         _inputActions.CameraInput.WASDPress.started += CameraMoveWASD;
         _inputActions.CameraInput.WASDPress.canceled += x => _wasdMoving = false;
@@ -47,17 +49,27 @@ public class CameraMovement : IInitializable
 
         _inputActions.CameraInput.Scroll.performed += Scroll;
         _inputActions.Enable();
+        /*_inputActions.CameraInput.MiddleClickDown.started += MiddleMouseDown;
+         _inputActions.CameraInput.MiddleClickDown.canceled += MouseUp;*/
     }
 
 
     private void MouseHexClicked()
     {
-        _hexMouse.MouseHexClicked();
+        if (_mouseOnHexes)
+        {
+            _hexMouse.MouseHexClicked();
+        }
     }
+    
     private void MouseToHexUpdate()
     {
-        var mousePosition = _camera.ScreenToWorldPoint(_inputActions.CameraInput.MousePosition.ReadValue<Vector2>());
-        _hexMouse.MouseHexHighlighted(mousePosition);
+        if (_mouseOnHexes)
+        {
+            var mousePosition = _camera.ScreenToWorldPoint(_inputActions.CameraInput.MousePosition.ReadValue<Vector2>());
+            _hexMouse.MouseHexHighlighted(mousePosition);
+        }
+        
     }
 
     private void CameraMoveWASD(InputAction.CallbackContext callbackContext)
