@@ -17,15 +17,15 @@ namespace PlayerGroup
         private Vector2Int _axialPosition;
         private PlayerState _state = PlayerState.Idle;
         private int _visionRadius = 3;
-        private int _energy = 48;
-        private int _energyMax = 48;
+        private int _energy = 64;
+        private int _energyMax = 64;
         private int _minSleepTime = 8;
         private Vector2Int _targetMovePosition;
 
 
         public int Energy => _energy;
         public int MaxEnergy => _energyMax;
-        public int MinTimeSleed => _minSleepTime;
+        public int MinTimeSleepHours => _minSleepTime;
         public Vector2Int TargetMovePosition => _targetMovePosition;
         public Vector2Int AxialPosition => _axialPosition;
         public PlayerState State => _state;

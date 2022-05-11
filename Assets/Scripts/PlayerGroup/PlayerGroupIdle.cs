@@ -39,6 +39,7 @@ public class PlayerGroupIdle : IPlayerGroupState//, IInitializable
     
     public async UniTask OnGameTick()
     {
+        await UniTask.Yield();
         Debug.LogWarning("GameTick on Idle state!");
         throw new System.NotImplementedException();
     }

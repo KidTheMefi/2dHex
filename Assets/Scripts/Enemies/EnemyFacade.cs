@@ -47,6 +47,7 @@ namespace Enemies
         public void OnDespawned()
         {
             _pool = null;
+            _movement.Dispose();
         }
         public void OnSpawned(Vector2Int axialPosition, IMemoryPool pool)
         {

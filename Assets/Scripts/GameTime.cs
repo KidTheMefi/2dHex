@@ -20,4 +20,11 @@ public class GameTime
         Tick.Invoke();
         _clock.Tick().Forget();
     }
+    
+    public static string ConvertToHoursAndMinutes(float value)
+    {
+        int hours = Mathf.FloorToInt(value / 4);
+        int minute = Mathf.RoundToInt(value % 4)*15;
+        return hours + ":" + minute.ToString("D2");
+    }
 }

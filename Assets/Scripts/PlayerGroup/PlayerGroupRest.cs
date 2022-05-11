@@ -44,11 +44,7 @@ namespace PlayerGroup
         private async UniTask StartRestAsync(int hours, bool sleep = false)
         {
             _playerUIEnergy.SetRestSliderInteractable(false);
-            if (sleep)
-            {
-                _sleep = true;
-            }
-
+            _sleep = sleep;
             for (int i = 0; i < hours; i++)
             {
                 _gameTime.DoTick();
@@ -85,6 +81,7 @@ namespace PlayerGroup
         public async UniTask OnGameTick()
         {
             Rest();
+            await UniTask.Yield();
         }
     }
 }

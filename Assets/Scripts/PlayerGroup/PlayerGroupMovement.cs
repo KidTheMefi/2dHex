@@ -105,6 +105,7 @@ namespace PlayerGroup
         }
         public async UniTask OnGameTick()
         {
+            await UniTask.Yield();
             MovingToHex().Forget();
         }
     }

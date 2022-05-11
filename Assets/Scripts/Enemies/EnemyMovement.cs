@@ -43,8 +43,8 @@ namespace Enemies
 
         public void Initialize()
         {
-            _gameTime.Tick += () => MovingOnTick().Forget();
-            CheckNextHex().Forget();
+            _gameTime.Tick += MovingOnTick;
+            //CheckNextHex().Forget();
         }
 
         private async UniTask FindNewPath()
@@ -100,31 +100,21 @@ namespace Enemies
             }
         }
 
-        private async UniTask MovingOnTick()
+        private void MovingOnTick()
         {
             if (_movementQueue.Count != 0)
             {
-                bool isLast = false;
                 var moveTo = _movementQueue.Dequeue();
                 _movement = _enemyView.transform.DOMove(moveTo, GameTime.MovementTimeModificator).SetEase(Ease.Linear);
                 if (_movementQueue.Count == 0)
                 {
                     _enemyModel.AxialPosition = _target;
-                    await CheckNextHex();
-                    isLast = true;
-                }
-                await _movement;
-                if (isLast)
-                {
-                    if (_enemyModel.AxialPosition == _playerGroupModel.TargetMovePosition)
-                    {
-                        Debug.Log("Catch");
-                    }
+                    CheckNextHex().Forget();
                 }
             }
             else
             {
-                Debug.Log("player reached");
+                CheckNextHex().Forget();
             }
         }
 
@@ -147,10 +137,12 @@ namespace Enemies
             }
             return path;
         }
-
+        
         public void Dispose()
         {
             _movement.Kill();
+            _movementQueue.Clear();
+            _path.Clear();
         }
     }
 }

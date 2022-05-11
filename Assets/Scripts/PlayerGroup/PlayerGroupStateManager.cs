@@ -40,13 +40,13 @@ namespace PlayerGroup
         public void Initialize()
         {
             Debug.Log("Initialize");
-            _gameTime.Tick += ()=> OnGameTick().Forget();
+            _gameTime.Tick += OnGameTick;
             Assert.IsNull(_currentStateHandler);
             ChangeState(PlayerState.Idle);
             
         }
         
-        private async UniTask OnGameTick()
+        private void OnGameTick()
         {
             _currentStateHandler.OnGameTick();
         }

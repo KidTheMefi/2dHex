@@ -65,7 +65,7 @@ namespace UI
         public void AddRestSliderValue(int value)
         {
             _restSlider.value += value;
-            _restText.text = _restSlider.value.ToString();
+            _restText.text = GameTime.ConvertToHoursAndMinutes(_restSlider.value);
         }
 
         private void OnStartButtonClick()
@@ -86,17 +86,20 @@ namespace UI
         {
             if (_sleep)
             {
-                _restSlider.value = _restSlider.value < _playerGroupModel.MinTimeSleed ? _playerGroupModel.MinTimeSleed : _restSlider.value;
+                _restSlider.value = _restSlider.value < _playerGroupModel.MinTimeSleepHours*4 ? _playerGroupModel.MinTimeSleepHours*4 : _restSlider.value;
             }
-            _restText.text = _restSlider.value.ToString();
+
+            _restText.text = GameTime.ConvertToHoursAndMinutes(_restSlider.value);
         }
+
+        
         
         private void OnRestToggleClick(bool sleep)
         {
             _sleep = sleep;
             if (_sleep)
             {
-                _restSlider.value = _restSlider.value < _playerGroupModel.MinTimeSleed ? _playerGroupModel.MinTimeSleed : _restSlider.value;
+                _restSlider.value = _restSlider.value < _playerGroupModel.MinTimeSleepHours ? _playerGroupModel.MinTimeSleepHours : _restSlider.value;
             }
         }
 

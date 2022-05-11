@@ -11,7 +11,7 @@ public class TimeClock : MonoBehaviour
 
     public async UniTask Tick()
     {
-        var targetRotation = _arrow.eulerAngles + Vector3.back * 30;
+        var targetRotation = _arrow.eulerAngles + Vector3.back * 7.5f;
         if (targetRotation.z <= -360)
         {
             targetRotation.z = 0;
