@@ -1,75 +1,86 @@
 using System;
 using Cysharp.Threading.Tasks;
 using UI;
+using UnityEngine;
 using Zenject;
 
 namespace PlayerGroup
 {
-    public class PlayerGroupRest : IInitializable, IPlayerGroupState
+    public class PlayerGroupRest : IPlayerGroupState
     {
         private PlayerGroupModel _playerGroupModel;
         private PlayerUIEnergy _playerUIEnergy;
+        private PlayerGroupStateManager _playerGroupStateManager;
         private PlayerGroupView _playerGroupView;
         private GameTime _gameTime;
 
         private bool _sleep = false;
-        
-        public PlayerGroupRest(PlayerGroupModel playerGroupModel, PlayerGroupView playerGroupView, GameTime gameTime, PlayerUIEnergy playerUIEnergy)
+
+        public PlayerGroupRest(
+            PlayerGroupModel playerGroupModel,
+            PlayerGroupView playerGroupView,
+            GameTime gameTime,
+            PlayerUIEnergy playerUIEnergy,
+            PlayerGroupStateManager playerGroupStateManager)
         {
             _playerGroupModel = playerGroupModel;
             _playerGroupView = playerGroupView;
             _gameTime = gameTime;
             _playerUIEnergy = playerUIEnergy;
+            _playerGroupStateManager = playerGroupStateManager;
+
+            _playerUIEnergy.SetActionAtButton(StartRest);
         }
 
-        public void Initialize()
+        private void StartRest(int hours, bool sleep = false)
         {
-            _gameTime.Tick += ()=>OnGameTick().Forget();
-            _playerUIEnergy.SetAction(StartRestAsync);
+            if (_playerGroupStateManager.CurrentState == PlayerState.Idle)
+            {
+                _playerGroupStateManager.ChangeState(PlayerState.Rest);
+                StartRestAsync(hours, sleep).Forget();
+            }
         }
 
-        private void StartRestAsync(int hours, bool sleep = false)
+        private async UniTask StartRestAsync(int hours, bool sleep = false)
         {
-            StartRest(hours,sleep).Forget();
-        }
-        private async UniTask StartRest(int hours, bool sleep = false)
-        {
-            _playerGroupModel.ChangePlayerState(PlayerState.Rest);
+            _playerUIEnergy.SetRestSliderInteractable(false);
             if (sleep)
             {
                 _sleep = true;
             }
-            
+
             for (int i = 0; i < hours; i++)
             {
                 _gameTime.DoTick();
                 await UniTask.Delay(TimeSpan.FromSeconds(GameTime.MovementTimeModificator));
             }
-            _playerGroupModel.ChangePlayerState(PlayerState.Idle);
+            _playerUIEnergy.SetRestSliderInteractable(true);
+            _playerGroupStateManager.ChangeState(PlayerState.Idle);
         }
-        
+
         private void Rest()
         {
-            if (_playerGroupModel.State== PlayerState.Rest)
+            if (_sleep)
             {
-                if (_sleep)
-                {
-                    _playerGroupModel.ChangeEnergy(+2);
-                }
-                else
-                {
-                    _playerGroupModel.ChangeEnergy(+1);
-                }
+                _playerGroupModel.ChangeEnergy(+2);
             }
+            else
+            {
+                _playerGroupModel.ChangeEnergy(+1);
+            }
+            _playerUIEnergy.AddRestSliderValue(-1);
+
         }
 
         public void EnterState()
         {
-            throw new NotImplementedException();
+            Debug.Log("Entered Rest state");
+
+            //_playerUIEnergy.SetAction(StartRest);
         }
         public void ExitState()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
         public async UniTask OnGameTick()
         {

@@ -8,15 +8,14 @@ using Zenject;
 
 namespace PlayerGroup
 {
-    public class PlayerGroupMovement : IInitializable, IPlayerGroupState
+    public class PlayerGroupMovement : IPlayerGroupState
     {
         private PlayerGroupModel _playerGroupModel;
         private PlayerGroupView _playerGroupView;
-        private IHexMouseEvents _hexMouse;
         private PlayerPathFind _playerPathFind;
+        private PlayerGroupStateManager _playerGroupStateManager;
         private GameTime _gameTime;
-
-        private Tween _movementTween;
+        
         private Queue<Vector3> _movementQueue = new Queue<Vector3>();
         private bool _hexReached;
         private bool _stopMoving;
@@ -25,50 +24,21 @@ namespace PlayerGroup
             PlayerGroupModel playerGroupModel,
             PlayerGroupView playerGroupView,
             IHexMouseEvents hexMouse,
-            PlayerPathFind playerPathFind,
-            GameTime gameTime)
+            GameTime gameTime, 
+            PlayerGroupStateManager playerGroupStateManager, 
+            PlayerPathFind playerPathFind)
         {
             _playerGroupModel = playerGroupModel;
             _playerGroupView = playerGroupView;
-            _hexMouse = hexMouse;
-            _playerPathFind = playerPathFind;
             _gameTime = gameTime;
-        }
-
-        public void Initialize()
-        {
-            _playerGroupModel.StateChanged += GroupStateChange;
-            _hexMouse.HighlightedHexClicked += PathFind;
-            _hexMouse.HighlightedHexDoubleClicked += i => OnDoubleClick();
-            _gameTime.Tick += () => OnGameTick().Forget();
-
-        }
-        private void GroupStateChange(PlayerState state)
-        {
-            if (state != PlayerState.Idle)
-            {
-                //_playerPathFind.ClearPath();
-            }
-        }
-
-        private async void PathFind(Vector2Int target)
-        {
-            if (_playerGroupModel.State == PlayerState.Idle)
-            {
-                await _playerPathFind.PathFindTest(target);
-            }
+            _playerGroupStateManager = playerGroupStateManager;
+            _playerPathFind = playerPathFind;
         }
 
         private void OnDoubleClick()
         {
-            if (_playerGroupModel.State == PlayerState.Idle)
-            {
-                StartMove().Forget();
-            }
-            else
-            {
-                _stopMoving = true;
-            }
+            //TODO 
+            //_stopMoving = true;
         }
         
         private async UniTask StartMove()
@@ -77,7 +47,6 @@ namespace PlayerGroup
             if (path.Length > 0)
             {
                 Debug.Log("player Start move");
-                _playerGroupModel.ChangePlayerState(PlayerState.Moving);
                 foreach (var pathPoint in path)
                 {
                     _hexReached = false;
@@ -95,8 +64,8 @@ namespace PlayerGroup
                         break;
                     }
                 }
-                _playerGroupModel.ChangePlayerState(PlayerState.Idle);
             }
+            _playerGroupStateManager.ChangeState(PlayerState.Idle);
         }
 
         private async UniTask EnergyLossAt(Hex hex)
@@ -128,19 +97,15 @@ namespace PlayerGroup
 
         public void EnterState()
         {
-            throw new NotImplementedException();
+            Debug.Log("Entered Movement state");
+            StartMove().Forget();
         }
         public void ExitState()
         {
-            throw new NotImplementedException();
         }
         public async UniTask OnGameTick()
         {
-            if (_playerGroupModel.State == PlayerState.Moving)
-            {
-                MovingToHex().Forget();
-            }
-            
+            MovingToHex().Forget();
         }
     }
 }

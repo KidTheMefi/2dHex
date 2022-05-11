@@ -8,7 +8,7 @@ public class HexMouse : IHexMouseEvents
 {
     public event Action<Vector2Int> HighlightedHexChanged;
     public event Action<Vector2Int> HighlightedHexClicked;
-    public event Action<Vector2Int> HighlightedHexDoubleClicked;
+    public event Action HighlightedHexDoubleClicked;
     private IHexStorage _iHexStorage;
 
     private Vector2Int _currentHexHighlight;
@@ -44,7 +44,7 @@ public class HexMouse : IHexMouseEvents
         }
         else
         {
-            HighlightedHexDoubleClicked?.Invoke(_currentHexHighlight);
+            HighlightedHexDoubleClicked?.Invoke();
         }
         
         _hexClicked = _currentHexHighlight;

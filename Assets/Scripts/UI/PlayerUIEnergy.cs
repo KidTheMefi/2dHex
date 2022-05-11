@@ -40,10 +40,32 @@ namespace UI
             EnergyInit();
         }
 
-        public void SetAction(Action<int, bool> action)
+        public void SetActionAtButton(Action<int, bool> action)
         {
             StartRest = action;
             _restStartButton.onClick.AddListener(OnStartButtonClick);
+        }
+
+        public void SetRestSliderInteractable(bool value)
+        {
+            if (value)
+            {
+                _restSlider.onValueChanged.AddListener(OnRestSliderValueChange);
+            }
+            else
+            {
+                _restSlider.onValueChanged.RemoveListener(OnRestSliderValueChange);
+            }
+            _restStartButton.interactable = value;
+            _restSlider.interactable = value;
+            _restToggle.interactable = value;
+            
+        }
+
+        public void AddRestSliderValue(int value)
+        {
+            _restSlider.value += value;
+            _restText.text = _restSlider.value.ToString();
         }
 
         private void OnStartButtonClick()

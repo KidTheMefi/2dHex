@@ -34,5 +34,11 @@ namespace PlayerGroup
             get => _playerGroupModel.TargetMovePosition;
             set => _playerGroupModel.SetTargetMovePosition(value);
         }
+        
+        public Vector3 Position
+        {
+            get => _playerGroupView.transform.position;
+            set => _playerGroupView.transform.position = value;
+        }
     }
 }

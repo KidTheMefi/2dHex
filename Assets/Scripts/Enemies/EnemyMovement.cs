@@ -23,7 +23,6 @@ namespace Enemies
         private Queue<Vector3> _movementQueue = new Queue<Vector3>();
         private Queue<Hex> _path = new Queue<Hex>();
         private Vector2Int _target;
-        private bool _hexReached;
 
         public EnemyMovement(
             EnemyModel enemyModel,
@@ -71,18 +70,31 @@ namespace Enemies
             }
         }
 
-        private async  UniTask CheckNextHex()
+        private async UniTask CheckNextHex()
         {
+            await CheckForEnemyNear();
+            
             if (_path.Count != 0)
             {
-                await CheckForEnemyNear();
+                
 
+                /*if (_path.Count == 0)
+                {
+                    Debug.LogWarning("Player reached");
+                }*/
+                
                 var hex = _path.Dequeue();
                 _target = hex.AxialCoordinate;
                 _movementQueue = HexUtils.VectorSeparation(HexUtils.CalculatePosition(_enemyModel.AxialPosition), hex.Position, hex.LandTypeProperty.MovementTimeCost);
             }
             else
             {
+                if (_enemyModel.AxialPosition == _playerGroupModel.AxialPosition)
+                {
+                    Debug.LogWarning("Player reached");
+                    return;
+                }
+                //Debug.Log("_path.Count  = 0");
                 await FindNewPath();
                 CheckNextHex().Forget();
             }
@@ -104,7 +116,10 @@ namespace Enemies
                 await _movement;
                 if (isLast)
                 {
-                    _hexReached = true;
+                    if (_enemyModel.AxialPosition == _playerGroupModel.TargetMovePosition)
+                    {
+                        Debug.Log("Catch");
+                    }
                 }
             }
             else

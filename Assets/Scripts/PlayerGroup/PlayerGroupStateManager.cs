@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using ModestTree;
@@ -16,21 +15,18 @@ namespace PlayerGroup
     public class PlayerGroupStateManager : IInitializable
     {
         private IPlayerGroupState _currentStateHandler;
-        private PlayerState _currentState = PlayerState.Idle;
+        private PlayerState _currentState = PlayerState.Event;
         private GameTime _gameTime;
         List<IPlayerGroupState> _states;
         
         [Inject]
         public void Construct(
-            IPlayerGroupState currentStateHandler,
             PlayerGroupIdle idle,
             PlayerGroupMovement movement,
             PlayerGroupRest rest,
             PlayerGroupEvent groupEvent,
             GameTime gameTime)
         {
-            _currentStateHandler = currentStateHandler;
-
             _states = new List<IPlayerGroupState>
             {
                 // This needs to follow the enum order
@@ -43,12 +39,14 @@ namespace PlayerGroup
 
         public void Initialize()
         {
+            Debug.Log("Initialize");
             _gameTime.Tick += ()=> OnGameTick().Forget();
+            Assert.IsNull(_currentStateHandler);
             ChangeState(PlayerState.Idle);
             
         }
         
-        public async UniTask OnGameTick()
+        private async UniTask OnGameTick()
         {
             _currentStateHandler.OnGameTick();
         }
@@ -57,7 +55,7 @@ namespace PlayerGroup
         {
             if (_currentState == state)
             {
-                // Already in state
+                Debug.Log("_currentState == state");
                 return;
             }
 

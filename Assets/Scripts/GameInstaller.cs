@@ -63,11 +63,20 @@ public class GameInstaller : MonoInstaller
     {
         Container.Bind<PlayerGroupView>().FromComponentInNewPrefab(_prefabList.PlayerGroupPrefab).WithGameObjectName("Player").AsSingle();
         Container.BindInterfacesAndSelfTo<PlayerGroupModel>().AsSingle();
-        Container.BindInterfacesAndSelfTo<PlayerGroupMovement>().AsSingle();
+        
+        Container.Bind<PlayerGroupMovement>().AsSingle();
+        Container.Bind<PlayerGroupIdle>().AsSingle();
+        //Container.Bind(typeof(IInitializable),typeof(PlayerGroupIdle)).To<PlayerGroupIdle>().AsSingle();
+        //Container.Bind(typeof(PlayerGroupIdle), typeof(IInitializable)).To<PlayerGroupIdle>().AsSingle();
+        Container.Bind<PlayerGroupEvent>().AsSingle();
+        Container.Bind<PlayerGroupRest>().AsSingle();
+        
         Container.BindInterfacesAndSelfTo<PlayerGroupSpawn>().AsSingle();
         Container.BindInterfacesAndSelfTo<PlayerPathFind>().AsSingle();
         Container.BindInterfacesAndSelfTo<FieldOfView>().AsSingle();
-        Container.BindInterfacesAndSelfTo<PlayerGroupRest>().AsSingle();
+        Container.BindInterfacesAndSelfTo<PlayerGroupFacade>().AsSingle();
+        Container.BindInterfacesAndSelfTo<PlayerGroupStateManager>().AsSingle();
+        
     }
     
     private void InstallPathFind()
