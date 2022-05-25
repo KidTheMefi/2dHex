@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 using Zenject;
 
 public class CameraMovement : IInitializable
-{ 
+{
     private Camera _camera;
     private TestInputActions _inputActions;
     private HexMouse _hexMouse;
@@ -13,13 +13,13 @@ public class CameraMovement : IInitializable
 
     private MapBorder _mapBorder;
     private bool _wasdMoving = false;
+
     //private float _cameraDragSpeed = 20f;
     private int _wasdVectorMultiply = 1;
 
-    private float _minZoom=3;
+    private float _minZoom = 3;
     private float _cameraZoom;
     private float _maxZoom;
-    private bool _mouseOnHexes;
     
     public CameraMovement(IMapBorder mapBorder, TestInputActions inputActions, Camera camera, HexMouse hexMouse, PanelScript panelScript)
     {
@@ -37,39 +37,45 @@ public class CameraMovement : IInitializable
         _maxZoom = (_mapBorder.YMax - _mapBorder.YMin) / 2;
         _camera.orthographicSize = _maxZoom;
         _cameraZoom = _camera.orthographicSize;
-        _panelScript.MouseOnPanel += b => { _mouseOnHexes = b;};
-
-        _inputActions = new TestInputActions();
+        _panelScript.MouseOnPanel += MouseOnPanel;
 
         _inputActions.CameraInput.WASDPress.started += CameraMoveWASD;
         _inputActions.CameraInput.WASDPress.canceled += x => _wasdMoving = false;
-        
-        _inputActions.CameraInput.MousePosition.performed += context =>  MouseToHexUpdate();
+
+        _inputActions.CameraInput.MousePosition.performed += context => MouseToHexUpdate();
         _inputActions.CameraInput.LeftClick.performed += context => MouseHexClicked();
 
         _inputActions.CameraInput.Scroll.performed += Scroll;
+        _inputActions.CameraInput.Scroll.Enable();
         _inputActions.Enable();
-        /*_inputActions.CameraInput.MiddleClickDown.started += MiddleMouseDown;
-         _inputActions.CameraInput.MiddleClickDown.canceled += MouseUp;*/
+
     }
 
+
+    private void MouseOnPanel(bool value)
+    {
+        _hexMouse.EnableHexHighlight(value);
+        if (value)
+        {
+            _inputActions.CameraInput.MousePosition.Enable();
+            _inputActions.CameraInput.LeftClick.Enable();
+        }
+        else
+        {
+            _inputActions.CameraInput.MousePosition.Disable();
+            _inputActions.CameraInput.LeftClick.Disable();
+        }
+    }
 
     private void MouseHexClicked()
     {
-        if (_mouseOnHexes)
-        {
-            _hexMouse.MouseHexClicked();
-        }
+        _hexMouse.MouseHexClicked();
     }
-    
+
     private void MouseToHexUpdate()
     {
-        if (_mouseOnHexes)
-        {
-            var mousePosition = _camera.ScreenToWorldPoint(_inputActions.CameraInput.MousePosition.ReadValue<Vector2>());
-            _hexMouse.MouseHexHighlighted(mousePosition);
-        }
-        
+        var mousePosition = _camera.ScreenToWorldPoint(_inputActions.CameraInput.MousePosition.ReadValue<Vector2>());
+        _hexMouse.MouseHexHighlighted(mousePosition);
     }
 
     private void CameraMoveWASD(InputAction.CallbackContext callbackContext)
@@ -163,7 +169,6 @@ public class CameraMovement : IInitializable
 
     #region Mouse "Drag" Camera
 
-    
     /*private void MiddleMouseDown(InputAction.CallbackContext callbackContext)
     {
         AsyncCameraMovement().Forget();
@@ -194,5 +199,5 @@ public class CameraMovement : IInitializable
 
   #endregion
 
-    
+
 }

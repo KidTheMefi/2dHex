@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Enemies;
 using UI;
 using UnityEngine;
 
@@ -15,6 +12,7 @@ public class PrefabList
         [SerializeField] private PlayerGroupView _playerGroupPrefab;
         [SerializeField] private PathPoint _pathPointPrefab;
         [SerializeField] private GameObject _enemyPrefab;
+        [SerializeField] private HexHighlight _hexHighlightPrefab;
 
         public HexView HexViewPrefab => _hexViewPrefab;
         public TestButtonUI ButtonPrefab => _buttonUIPrefab;
@@ -23,5 +21,6 @@ public class PrefabList
         public PathPoint PathPoint => _pathPointPrefab;
         public GameObject EnemyFacade => _enemyPrefab;
         public PlayerUIEnergy PlayerUIEnergy => _playerUIEnergy;
+        public HexHighlight HexHighlight => _hexHighlightPrefab;
 
 }

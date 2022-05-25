@@ -1,5 +1,7 @@
 using System;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
+using GameTime;
 using UI;
 using UnityEngine;
 using Zenject;
@@ -12,14 +14,14 @@ namespace PlayerGroup
         private PlayerUIEnergy _playerUIEnergy;
         private PlayerGroupStateManager _playerGroupStateManager;
         private PlayerGroupView _playerGroupView;
-        private GameTime _gameTime;
+        private GameTime.GameTime _gameTime;
 
         private bool _sleep = false;
 
         public PlayerGroupRest(
             PlayerGroupModel playerGroupModel,
             PlayerGroupView playerGroupView,
-            GameTime gameTime,
+            GameTime.GameTime gameTime,
             PlayerUIEnergy playerUIEnergy,
             PlayerGroupStateManager playerGroupStateManager)
         {
@@ -45,10 +47,22 @@ namespace PlayerGroup
         {
             _playerUIEnergy.SetRestSliderInteractable(false);
             _sleep = sleep;
+
+            if (_sleep)
+            {
+                _gameTime.SetTimeState(TimeStates.Sleep);
+            }
+            else
+            {
+                _gameTime.SetTimeState(TimeStates.Rest);
+            }
+            
             for (int i = 0; i < hours; i++)
             {
                 _gameTime.DoTick();
-                await UniTask.Delay(TimeSpan.FromSeconds(GameTime.MovementTimeModificator));
+
+                await DOVirtual.DelayedCall(_gameTime.TickSeconds, () => { });
+                //await UniTask.Delay(TimeSpan.FromSeconds(_gameTime.TickSeconds));
             }
             _playerUIEnergy.SetRestSliderInteractable(true);
             _playerGroupStateManager.ChangeState(PlayerState.Idle);
@@ -76,7 +90,7 @@ namespace PlayerGroup
         }
         public void ExitState()
         {
-            //throw new NotImplementedException();
+            _gameTime.SetTimeState(TimeStates.Default);
         }
         public async UniTask OnGameTick()
         {

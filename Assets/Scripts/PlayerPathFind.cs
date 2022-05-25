@@ -5,8 +5,6 @@ using Cysharp.Threading.Tasks;
 using Interfaces;
 using PlayerGroup;
 using UnityEngine;
-using Zenject;
-using Random = UnityEngine.Random;
 
 public class PlayerPathFind
 {
@@ -66,19 +64,18 @@ public class PlayerPathFind
 
                     if (energyCost > _playerGroupModel.Energy)
                     {
-                        
                         break;
                     }
                     
                     var point = _pathPointFactory.Create();
-                    var text = String.Format("{0}|{1}", pathCoordinate.LandTypeProperty.MovementEnergyCost.ToString(), pathCoordinate.LandTypeProperty.MovementTimeCost.ToString());
+                    var text = String.Format("{0}", pathCoordinate.LandTypeProperty.MovementEnergyCost.ToString());
+                    //var text = String.Format("{0}|{1}", pathCoordinate.LandTypeProperty.MovementEnergyCost.ToString(), pathCoordinate.LandTypeProperty.MovementTimeCost.ToString());
                     point.SetPathPoint(pathCoordinate.Position, text);
                     _pathPointsAtCoordinates.Add(pathCoordinate, point);
                    
                 }
             }
-            //Debug.Log(energyCost);
-            Debug.Log(String.Format("Energy cost: {0} // Time cost:{1}", energyCost, GameTime.ConvertToHoursAndMinutes(timeCost)));
+            Debug.Log(String.Format("Energy cost: {0} // Time cost:{1}", energyCost, GameTime.GameTime.ConvertTicksToHoursAndMinutes(timeCost)));
         }
         else
         {

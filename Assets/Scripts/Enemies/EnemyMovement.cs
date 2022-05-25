@@ -17,7 +17,7 @@ namespace Enemies
         private AStarSearch _aStarSearch;
         private IHexStorage _hexStorage;
         private PlayerGroupModel _playerGroupModel;
-        private GameTime _gameTime;
+        private GameTime.GameTime _gameTime;
 
         private Tween _movement;
         private Queue<Vector3> _movementQueue = new Queue<Vector3>();
@@ -30,7 +30,7 @@ namespace Enemies
             PlayerGroupModel playerGroupModel,
             AStarSearch aStarSearch,
             IHexStorage hexStorage,
-            GameTime gameTime)
+            GameTime.GameTime gameTime)
         {
             _enemyView = enemyView;
             _enemyModel = enemyModel;
@@ -76,13 +76,6 @@ namespace Enemies
             
             if (_path.Count != 0)
             {
-                
-
-                /*if (_path.Count == 0)
-                {
-                    Debug.LogWarning("Player reached");
-                }*/
-                
                 var hex = _path.Dequeue();
                 _target = hex.AxialCoordinate;
                 _movementQueue = HexUtils.VectorSeparation(HexUtils.CalculatePosition(_enemyModel.AxialPosition), hex.Position, hex.LandTypeProperty.MovementTimeCost);
@@ -105,7 +98,7 @@ namespace Enemies
             if (_movementQueue.Count != 0)
             {
                 var moveTo = _movementQueue.Dequeue();
-                _movement = _enemyView.transform.DOMove(moveTo, GameTime.MovementTimeModificator).SetEase(Ease.Linear);
+                _movement = _enemyView.transform.DOMove(moveTo, _gameTime.TickSeconds).SetEase(Ease.Linear);
                 if (_movementQueue.Count == 0)
                 {
                     _enemyModel.AxialPosition = _target;

@@ -65,6 +65,14 @@ public class @TestInputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""aeabcf32-4654-471f-965d-e22e4920bbed"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -210,6 +218,17 @@ public class @TestInputActions : IInputActionCollection, IDisposable
                     ""action"": ""LeftClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""70c2e2ff-11e0-45d7-8c05-7d8560e9eba4"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -251,6 +270,7 @@ public class @TestInputActions : IInputActionCollection, IDisposable
         m_CameraInput_WASDMove = m_CameraInput.FindAction("WASDMove", throwIfNotFound: true);
         m_CameraInput_WASDPress = m_CameraInput.FindAction("WASDPress", throwIfNotFound: true);
         m_CameraInput_LeftClick = m_CameraInput.FindAction("LeftClick", throwIfNotFound: true);
+        m_CameraInput_Pause = m_CameraInput.FindAction("Pause", throwIfNotFound: true);
         // ActionKey
         m_ActionKey = asset.FindActionMap("ActionKey", throwIfNotFound: true);
         m_ActionKey_Jump = m_ActionKey.FindAction("Jump", throwIfNotFound: true);
@@ -309,6 +329,7 @@ public class @TestInputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_CameraInput_WASDMove;
     private readonly InputAction m_CameraInput_WASDPress;
     private readonly InputAction m_CameraInput_LeftClick;
+    private readonly InputAction m_CameraInput_Pause;
     public struct CameraInputActions
     {
         private @TestInputActions m_Wrapper;
@@ -319,6 +340,7 @@ public class @TestInputActions : IInputActionCollection, IDisposable
         public InputAction @WASDMove => m_Wrapper.m_CameraInput_WASDMove;
         public InputAction @WASDPress => m_Wrapper.m_CameraInput_WASDPress;
         public InputAction @LeftClick => m_Wrapper.m_CameraInput_LeftClick;
+        public InputAction @Pause => m_Wrapper.m_CameraInput_Pause;
         public InputActionMap Get() { return m_Wrapper.m_CameraInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -346,6 +368,9 @@ public class @TestInputActions : IInputActionCollection, IDisposable
                 @LeftClick.started -= m_Wrapper.m_CameraInputActionsCallbackInterface.OnLeftClick;
                 @LeftClick.performed -= m_Wrapper.m_CameraInputActionsCallbackInterface.OnLeftClick;
                 @LeftClick.canceled -= m_Wrapper.m_CameraInputActionsCallbackInterface.OnLeftClick;
+                @Pause.started -= m_Wrapper.m_CameraInputActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_CameraInputActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_CameraInputActionsCallbackInterface.OnPause;
             }
             m_Wrapper.m_CameraInputActionsCallbackInterface = instance;
             if (instance != null)
@@ -368,6 +393,9 @@ public class @TestInputActions : IInputActionCollection, IDisposable
                 @LeftClick.started += instance.OnLeftClick;
                 @LeftClick.performed += instance.OnLeftClick;
                 @LeftClick.canceled += instance.OnLeftClick;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
             }
         }
     }
@@ -413,6 +441,7 @@ public class @TestInputActions : IInputActionCollection, IDisposable
         void OnWASDMove(InputAction.CallbackContext context);
         void OnWASDPress(InputAction.CallbackContext context);
         void OnLeftClick(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
     public interface IActionKeyActions
     {

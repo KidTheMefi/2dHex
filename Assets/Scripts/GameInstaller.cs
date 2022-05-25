@@ -1,5 +1,6 @@
 using System;
 using Enemies;
+using GameTime;
 using PlayerGroup;
 using UI;
 using UnityEngine;
@@ -10,8 +11,9 @@ public class GameInstaller : MonoInstaller
     [SerializeField] private Camera _camera;
     [SerializeField] private Canvas _canvas;
     [SerializeField] private GameObject _buttonsParent;
-    [SerializeField] private Transform _hexHighlight;
+    //[SerializeField] private Transform _hexHighlight;
     [SerializeField] private TimeClock _clock;
+    [SerializeField] private NightMask _nightMask;
     [SerializeField] private PanelScript _panel;
     
     [Inject]
@@ -22,11 +24,13 @@ public class GameInstaller : MonoInstaller
         
         Container.BindInstance(_camera).AsSingle();
         Container.BindInstance(_canvas).AsSingle();
-        Container.BindInstance(_hexHighlight).WithId("hexHighlight").AsSingle();
+        //Container.BindInstance(_hexHighlight).WithId("hexHighlight").AsSingle();
         Container.BindInstance(_clock).AsSingle();
+        Container.BindInstance(_nightMask).AsSingle();
         Container.BindInstance(_panel).AsSingle();
+        Container.Bind<HexHighlight>().FromComponentInNewPrefab(_prefabList.HexHighlight).WithGameObjectName("hexHighlight").AsSingle();
 
-        Container.BindInterfacesAndSelfTo<GameTime>().AsSingle();
+        Container.BindInterfacesAndSelfTo<GameTime.GameTime>().AsSingle();
         InstallInputSystem();
         InstallGameField();
         InstallPathFind();
@@ -104,6 +108,7 @@ public class GameInstaller : MonoInstaller
 
     private void InstallUI()
     {
+        Container.BindInterfacesAndSelfTo<PauseMenu>().AsSingle();
         Container.BindFactory<Action, string, TestButtonUI, TestButtonUI.Factory>().FromComponentInNewPrefab(_prefabList.ButtonPrefab).UnderTransform(_buttonsParent.transform);
         Container.Bind<PlayerUIEnergy>().FromComponentInNewPrefab(_prefabList.PlayerUIEnergy).UnderTransform(_canvas.transform).AsSingle().NonLazy();
     }

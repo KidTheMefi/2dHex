@@ -11,14 +11,12 @@ public enum BiomType
 public class ContinentSettings : ScriptableObject
 {
     [SerializeField] private BiomType _biomType;
-    [SerializeField] private int _minHexesCount;
     [SerializeField] private List<ContinentLandTypeSetting> _landsTypeSettings;
     [SerializeField] private LandTypeProperty _defaultLandType;
     
     public BiomType BiomType => _biomType;
     public List<ContinentLandTypeSetting> Lands => _landsTypeSettings;
     public LandTypeProperty DefaultLandType => _defaultLandType;
-    public int HexCount => _minHexesCount;
 }
 
 [Serializable]

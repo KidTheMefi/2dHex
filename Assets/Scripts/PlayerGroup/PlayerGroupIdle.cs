@@ -8,52 +8,70 @@ using Zenject;
 
 public class PlayerGroupIdle : IPlayerGroupState//, IInitializable
 {
+    private Vector2Int _pathTarget;
+    private Vector2Int _unclickable = new Vector2Int(999,999);
+
     private PlayerPathFind _playerPathFind;
-    private PlayerGroupModel _playerGroupModel;
     private IHexMouseEvents _hexMouse;
     private PlayerGroupStateManager _playerGroupStateManager;
     public PlayerGroupIdle(
         PlayerPathFind playerPathFind,
-        PlayerGroupModel playerGroupModel,
         IHexMouseEvents hexMouse,
         PlayerGroupStateManager playerGroupStateManager)
     {
         _playerPathFind = playerPathFind;
-        _playerGroupModel = playerGroupModel;
         _hexMouse = hexMouse;
         _playerGroupStateManager = playerGroupStateManager;
     }
 
-    private async void PathFind(Vector2Int target)
+    private async UniTask PathFind(Vector2Int target)
     {
-        if (_playerGroupStateManager.CurrentState == PlayerState.Idle)
-        {
+        /*if (_playerGroupStateManager.CurrentState == PlayerState.Idle)
+        {*/
             await _playerPathFind.PathFindTest(target);
-        }
+        /*}*/
     }
     
     private void OnDoubleClick()
     {
-        _playerGroupStateManager.ChangeState(PlayerState.Moving);
+        if (_playerPathFind.GetPath().Length!=0)
+        {
+            _playerGroupStateManager.ChangeState(PlayerState.Moving);
+        }
     }
     
-    public async UniTask OnGameTick()
+    public UniTask OnGameTick()
     {
-        await UniTask.Yield();
         Debug.LogWarning("GameTick on Idle state!");
         throw new System.NotImplementedException();
     }
 
+    public void MouseHexClicked(Vector2Int hex)
+    {
+        if (hex != _pathTarget)
+        {
+            PathFind(hex).Forget();
+            _pathTarget = hex;
+        }
+        else 
+        {
+            OnDoubleClick();
+            _pathTarget = _unclickable;
+        }
+    }
+    
     public void EnterState()
     {
         Debug.Log("Entered Idle state");
-        _hexMouse.HighlightedHexClicked += PathFind;
-        _hexMouse.HighlightedHexDoubleClicked += OnDoubleClick;
+        _hexMouse.HighlightedHexClicked += MouseHexClicked;
+        //_hexMouse.HighlightedHexClicked += PathFind;
+        //_hexMouse.HighlightedHexDoubleClicked += OnDoubleClick;
     }
     public void ExitState()
     {
-        _hexMouse.HighlightedHexClicked -= PathFind;
-        _hexMouse.HighlightedHexDoubleClicked -= OnDoubleClick;
+        _hexMouse.HighlightedHexClicked -= MouseHexClicked;
+        //_hexMouse.HighlightedHexClicked -= PathFind;
+        //_hexMouse.HighlightedHexDoubleClicked -= OnDoubleClick;
     }
     
 }

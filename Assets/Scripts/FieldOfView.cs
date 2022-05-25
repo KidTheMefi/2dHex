@@ -1,6 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using GameTime;
 using Interfaces;
 using PlayerGroup;
 using UnityEngine;
@@ -10,12 +10,15 @@ public class FieldOfView : IInitializable
 {
     private IHexStorage _hexStorage;
     private PlayerGroupModel _playerGroupModel;
+    private INightTime _night;
+
 
     private List<Hex> _currentOpenedHexes = new List<Hex>();
-    public FieldOfView(IHexStorage hexStorage, PlayerGroupModel playerGroupModel)
+    public FieldOfView(IHexStorage hexStorage, PlayerGroupModel playerGroupModel, INightTime night)
     {
         _hexStorage = hexStorage;
         _playerGroupModel = playerGroupModel;
+        _night = night;
     }
 
 
@@ -23,18 +26,21 @@ public class FieldOfView : IInitializable
     {
         //_playerGroupModel.PositionChanged += UpdateFieldOfView;
         _playerGroupModel.PositionChanged += (center, radius) => UpdateFieldOfView(center, radius).Forget();
+        _night.NightTimeChange += () => UpdateFieldOfView(_playerGroupModel.AxialPosition, _playerGroupModel.VisionRadius).Forget();
     }
 
     private async UniTask UpdateFieldOfView(Vector2Int center, int radius)
     {
         int radiusActual = radius;
+        if (_night.IsNightTime())
+        {
+            radiusActual--;
+        }
+        
         switch (_hexStorage.GetHexAtAxialCoordinate(center).LandTypeProperty.LandType)
         {
             case LandType.Forrest:
-                if (radiusActual > 1)
-                {
-                    radiusActual--;
-                }
+                radiusActual--;
                 break;
             case LandType.Hill:
                 radiusActual++;
@@ -42,6 +48,8 @@ public class FieldOfView : IInitializable
             default:
                 break;
         }
+
+        radiusActual = radiusActual < 1 ? 1 : radiusActual;
 
         List<Hex> hexThatCanBeSee = new List<Hex>();
         var ring = HexUtils.GetAxialRingWithRadius(center, radiusActual);

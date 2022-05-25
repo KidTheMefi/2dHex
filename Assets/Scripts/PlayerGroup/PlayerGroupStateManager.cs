@@ -16,7 +16,7 @@ namespace PlayerGroup
     {
         private IPlayerGroupState _currentStateHandler;
         private PlayerState _currentState = PlayerState.Event;
-        private GameTime _gameTime;
+        private GameTime.GameTime _gameTime;
         List<IPlayerGroupState> _states;
         
         [Inject]
@@ -25,7 +25,7 @@ namespace PlayerGroup
             PlayerGroupMovement movement,
             PlayerGroupRest rest,
             PlayerGroupEvent groupEvent,
-            GameTime gameTime)
+            GameTime.GameTime gameTime)
         {
             _states = new List<IPlayerGroupState>
             {

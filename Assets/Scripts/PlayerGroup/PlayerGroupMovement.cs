@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using Interfaces;
 using UnityEngine;
-using Zenject;
 
 namespace PlayerGroup
 {
@@ -14,7 +12,7 @@ namespace PlayerGroup
         private PlayerGroupView _playerGroupView;
         private PlayerPathFind _playerPathFind;
         private PlayerGroupStateManager _playerGroupStateManager;
-        private GameTime _gameTime;
+        private GameTime.GameTime _gameTime;
         
         private Queue<Vector3> _movementQueue = new Queue<Vector3>();
         private bool _hexReached;
@@ -23,8 +21,7 @@ namespace PlayerGroup
         public PlayerGroupMovement(
             PlayerGroupModel playerGroupModel,
             PlayerGroupView playerGroupView,
-            IHexMouseEvents hexMouse,
-            GameTime gameTime, 
+            GameTime.GameTime gameTime, 
             PlayerGroupStateManager playerGroupStateManager, 
             PlayerPathFind playerPathFind)
         {
@@ -70,11 +67,12 @@ namespace PlayerGroup
 
         private async UniTask EnergyLossAt(Hex hex)
         {
-            float delay = hex.LandTypeProperty.MovementTimeCost * GameTime.MovementTimeModificator / hex.LandTypeProperty.MovementEnergyCost;
+            float delay = hex.LandTypeProperty.MovementTimeCost * _gameTime.TickSeconds / hex.LandTypeProperty.MovementEnergyCost;
             for (int i = 0; i < hex.LandTypeProperty.MovementEnergyCost; i++)
             {
                 _playerGroupModel.ChangeEnergy(-1);
-                await UniTask.Delay(TimeSpan.FromSeconds(delay));
+                await DOVirtual.DelayedCall(delay, () => { });
+                //await UniTask.Delay(TimeSpan.FromSeconds(delay));
             }
         }
         
@@ -82,7 +80,7 @@ namespace PlayerGroup
         {
             if (_movementQueue.Count != 0)
             {
-                await  _playerGroupView.transform.DOMove(_movementQueue.Dequeue(), GameTime.MovementTimeModificator).SetEase(Ease.Linear);
+                await  _playerGroupView.transform.DOMove(_movementQueue.Dequeue(), _gameTime.TickSeconds).SetEase(Ease.Linear);
                 
                 if (_movementQueue.Count != 0)
                 {
@@ -99,9 +97,11 @@ namespace PlayerGroup
         {
             Debug.Log("Entered Movement state");
             StartMove().Forget();
+            _playerGroupView.EnableTrails(true);
         }
         public void ExitState()
         {
+            _playerGroupView.EnableTrails(false);
         }
         public async UniTask OnGameTick()
         {
