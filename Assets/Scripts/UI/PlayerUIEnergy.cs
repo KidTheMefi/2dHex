@@ -13,7 +13,7 @@ namespace UI
         public event Action<int, bool> StartRest;
 
         [SerializeField] private TextMeshProUGUI _energyText;
-        [SerializeField] private Slider _energySlider;
+        [SerializeField] private Slider _currentEnergySlider;
         [SerializeField] private Button _restEnableButton;
         [SerializeField] private GameObject _rest;
         [SerializeField] private Slider _restSlider;
@@ -91,8 +91,6 @@ namespace UI
 
             _restText.text = GameTime.GameTime.ConvertTicksToHoursAndMinutes(_restSlider.value);
         }
-
-        
         
         private void OnRestToggleClick(bool sleep)
         {
@@ -105,13 +103,13 @@ namespace UI
 
         private void EnergyInit()
         {
-            _energySlider.maxValue = _playerGroupModel.MaxEnergy;
-            _energySlider.value = _playerGroupModel.Energy;
+            _currentEnergySlider.maxValue = _playerGroupModel.MaxEnergy;
+            _currentEnergySlider.value = _playerGroupModel.Energy;
             _energyText.text = _playerGroupModel.Energy.ToString();
         }
         private void PlayerGroupModelOnEnergyChanged(int energy)
         {
-            _energySlider.value = _playerGroupModel.Energy;
+            _currentEnergySlider.value = _playerGroupModel.Energy;
             _energyText.text = _playerGroupModel.Energy.ToString();
         }
     }

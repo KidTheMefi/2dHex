@@ -1,77 +1,69 @@
-using System.Collections;
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Interfaces;
-using PlayerGroup;
 using UnityEngine;
-using Zenject;
 
-public class PlayerGroupIdle : IPlayerGroupState//, IInitializable
+namespace PlayerGroup
 {
-    private Vector2Int _pathTarget;
-    private Vector2Int _unclickable = new Vector2Int(999,999);
-
-    private PlayerPathFind _playerPathFind;
-    private IHexMouseEvents _hexMouse;
-    private PlayerGroupStateManager _playerGroupStateManager;
-    public PlayerGroupIdle(
-        PlayerPathFind playerPathFind,
-        IHexMouseEvents hexMouse,
-        PlayerGroupStateManager playerGroupStateManager)
+    public class PlayerGroupIdle : IPlayerGroupState
     {
-        _playerPathFind = playerPathFind;
-        _hexMouse = hexMouse;
-        _playerGroupStateManager = playerGroupStateManager;
-    }
+        private Vector2Int _pathTarget;
+        private readonly Vector2Int _unClickable = new Vector2Int(999,999);
 
-    private async UniTask PathFind(Vector2Int target)
-    {
-        /*if (_playerGroupStateManager.CurrentState == PlayerState.Idle)
-        {*/
+        private PlayerPathFind _playerPathFind;
+        private IHexMouseEvents _hexMouseEvents;
+        private PlayerGroupStateManager _playerGroupStateManager;
+    
+        public PlayerGroupIdle(
+            PlayerPathFind playerPathFind,
+            IHexMouseEvents hexMouseEvents,
+            PlayerGroupStateManager playerGroupStateManager)
+        {
+            _playerPathFind = playerPathFind;
+            _hexMouseEvents = hexMouseEvents;
+            _playerGroupStateManager = playerGroupStateManager;
+        }
+
+        private async UniTask PathFind(Vector2Int target)
+        {
             await _playerPathFind.PathFindTest(target);
-        /*}*/
-    }
-    
-    private void OnDoubleClick()
-    {
-        if (_playerPathFind.GetPath().Length!=0)
-        {
-            _playerGroupStateManager.ChangeState(PlayerState.Moving);
         }
-    }
     
-    public UniTask OnGameTick()
-    {
-        Debug.LogWarning("GameTick on Idle state!");
-        throw new System.NotImplementedException();
-    }
+        private void OnDoubleClick()
+        {
+            if (_playerPathFind.GetPath().Length!=0)
+            {
+                _playerGroupStateManager.ChangeState(PlayerState.Moving);
+            }
+        }
+    
+        public UniTask OnGameTick()
+        {
+            Debug.LogWarning("GameTick on Idle state!");
+            throw new System.NotImplementedException();
+        }
 
-    public void MouseHexClicked(Vector2Int hex)
-    {
-        if (hex != _pathTarget)
+        public void MouseEventsHexClicked(Vector2Int hex)
         {
-            PathFind(hex).Forget();
-            _pathTarget = hex;
+            if (hex != _pathTarget)
+            {
+                PathFind(hex).Forget();
+                _pathTarget = hex;
+            }
+            else 
+            {
+                OnDoubleClick();
+                _pathTarget = _unClickable;
+            }
         }
-        else 
+    
+        public void EnterState()
         {
-            OnDoubleClick();
-            _pathTarget = _unclickable;
+            Debug.Log("Entered Idle state");
+            _hexMouseEvents.HighlightedHexClicked += MouseEventsHexClicked;
+        }
+        public void ExitState()
+        {
+            _hexMouseEvents.HighlightedHexClicked -= MouseEventsHexClicked;
         }
     }
-    
-    public void EnterState()
-    {
-        Debug.Log("Entered Idle state");
-        _hexMouse.HighlightedHexClicked += MouseHexClicked;
-        //_hexMouse.HighlightedHexClicked += PathFind;
-        //_hexMouse.HighlightedHexDoubleClicked += OnDoubleClick;
-    }
-    public void ExitState()
-    {
-        _hexMouse.HighlightedHexClicked -= MouseHexClicked;
-        //_hexMouse.HighlightedHexClicked -= PathFind;
-        //_hexMouse.HighlightedHexDoubleClicked -= OnDoubleClick;
-    }
-    
 }

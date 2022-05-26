@@ -25,4 +25,4 @@ MonoBehaviour:
   GameTimeSettings:
     _defaultTickTime: 0.25
     _restTickTime: 0.1
-    _sleepTickTime: 0.075
+    _sleepTickTime: 0.01

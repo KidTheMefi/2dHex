@@ -7,7 +7,6 @@ public class HexMouse : IHexMouseEvents, IInitializable
 {
     public event Action<Vector2Int> HighlightedHexChanged;
     public event Action<Vector2Int> HighlightedHexClicked;
-    public event Action HighlightedHexDoubleClicked;
 
     private Vector2Int _currentHexHighlight;
 
@@ -33,7 +32,6 @@ public class HexMouse : IHexMouseEvents, IInitializable
     public void Initialize()
     {
         _panelScript.MouseOnPanel += MouseOnPanel;
-
         _inputActions.CameraInput.MousePosition.performed += context => MouseToHexUpdate();
         _inputActions.CameraInput.LeftClick.performed += context => MouseHexClicked();
     }
@@ -64,7 +62,7 @@ public class HexMouse : IHexMouseEvents, IInitializable
         _hexHighlight.gameObject.SetActive(value);
     }
 
-    public void MouseHexHighlighted(Vector3 mousePosition)
+    private void MouseHexHighlighted(Vector3 mousePosition)
     {
         var hex = HexUtils.GetAxialFromWorldCoordinates(mousePosition);
 
@@ -76,7 +74,7 @@ public class HexMouse : IHexMouseEvents, IInitializable
         }
     }
 
-    public void MouseHexClicked()
+    private void MouseHexClicked()
     {
         HighlightedHexClicked?.Invoke(_currentHexHighlight);
     }
