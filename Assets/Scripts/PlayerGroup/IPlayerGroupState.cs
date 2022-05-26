@@ -7,5 +7,6 @@ namespace PlayerGroup
         void EnterState();
         void ExitState(); 
         UniTask OnGameTick();
+        void OnStopPressed();
     }
 }

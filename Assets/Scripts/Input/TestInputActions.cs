@@ -237,23 +237,23 @@ public class @TestInputActions : IInputActionCollection, IDisposable
             ""id"": ""57fda782-503b-466b-840b-e3f5b26e7334"",
             ""actions"": [
                 {
-                    ""name"": ""Jump"",
+                    ""name"": ""Stop"",
                     ""type"": ""Button"",
-                    ""id"": ""4256988a-ab86-43ba-b410-547e86ccef6e"",
+                    ""id"": ""ffd37f1f-9669-4d46-978d-706e3cea1147"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""1a39d664-b04d-41bd-83c9-a9d8f8399999"",
+                    ""id"": ""2eb25cf1-22c1-4f12-a791-377807256442"",
                     ""path"": ""<Keyboard>/space"",
-                    ""interactions"": ""Press"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Jump"",
+                    ""action"": ""Stop"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -273,7 +273,7 @@ public class @TestInputActions : IInputActionCollection, IDisposable
         m_CameraInput_Pause = m_CameraInput.FindAction("Pause", throwIfNotFound: true);
         // ActionKey
         m_ActionKey = asset.FindActionMap("ActionKey", throwIfNotFound: true);
-        m_ActionKey_Jump = m_ActionKey.FindAction("Jump", throwIfNotFound: true);
+        m_ActionKey_Stop = m_ActionKey.FindAction("Stop", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -404,12 +404,12 @@ public class @TestInputActions : IInputActionCollection, IDisposable
     // ActionKey
     private readonly InputActionMap m_ActionKey;
     private IActionKeyActions m_ActionKeyActionsCallbackInterface;
-    private readonly InputAction m_ActionKey_Jump;
+    private readonly InputAction m_ActionKey_Stop;
     public struct ActionKeyActions
     {
         private @TestInputActions m_Wrapper;
         public ActionKeyActions(@TestInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Jump => m_Wrapper.m_ActionKey_Jump;
+        public InputAction @Stop => m_Wrapper.m_ActionKey_Stop;
         public InputActionMap Get() { return m_Wrapper.m_ActionKey; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -419,16 +419,16 @@ public class @TestInputActions : IInputActionCollection, IDisposable
         {
             if (m_Wrapper.m_ActionKeyActionsCallbackInterface != null)
             {
-                @Jump.started -= m_Wrapper.m_ActionKeyActionsCallbackInterface.OnJump;
-                @Jump.performed -= m_Wrapper.m_ActionKeyActionsCallbackInterface.OnJump;
-                @Jump.canceled -= m_Wrapper.m_ActionKeyActionsCallbackInterface.OnJump;
+                @Stop.started -= m_Wrapper.m_ActionKeyActionsCallbackInterface.OnStop;
+                @Stop.performed -= m_Wrapper.m_ActionKeyActionsCallbackInterface.OnStop;
+                @Stop.canceled -= m_Wrapper.m_ActionKeyActionsCallbackInterface.OnStop;
             }
             m_Wrapper.m_ActionKeyActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Jump.started += instance.OnJump;
-                @Jump.performed += instance.OnJump;
-                @Jump.canceled += instance.OnJump;
+                @Stop.started += instance.OnStop;
+                @Stop.performed += instance.OnStop;
+                @Stop.canceled += instance.OnStop;
             }
         }
     }
@@ -445,6 +445,6 @@ public class @TestInputActions : IInputActionCollection, IDisposable
     }
     public interface IActionKeyActions
     {
-        void OnJump(InputAction.CallbackContext context);
+        void OnStop(InputAction.CallbackContext context);
     }
 }

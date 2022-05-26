@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using Interfaces;
+using UI;
 using UnityEngine;
 
 namespace PlayerGroup
@@ -12,15 +13,18 @@ namespace PlayerGroup
         private PlayerPathFind _playerPathFind;
         private IHexMouseEvents _hexMouseEvents;
         private PlayerGroupStateManager _playerGroupStateManager;
-    
+        private PlayerUIEnergy _playerUIEnergy;
+
         public PlayerGroupIdle(
             PlayerPathFind playerPathFind,
             IHexMouseEvents hexMouseEvents,
-            PlayerGroupStateManager playerGroupStateManager)
+            PlayerGroupStateManager playerGroupStateManager, 
+            PlayerUIEnergy playerUIEnergy)
         {
             _playerPathFind = playerPathFind;
             _hexMouseEvents = hexMouseEvents;
             _playerGroupStateManager = playerGroupStateManager;
+            _playerUIEnergy = playerUIEnergy;
         }
 
         private async UniTask PathFind(Vector2Int target)
@@ -41,8 +45,19 @@ namespace PlayerGroup
             Debug.LogWarning("GameTick on Idle state!");
             throw new System.NotImplementedException();
         }
+        public void OnStopPressed()
+        {
+            if (_playerPathFind.GetPath().Length!=0)
+            {
+                OnDoubleClick();
+            }
+            else
+            {
+                _playerGroupStateManager.ChangeState(PlayerState.Rest);
+            }
+        }
 
-        public void MouseEventsHexClicked(Vector2Int hex)
+        private void MouseEventsHexClicked(Vector2Int hex)
         {
             if (hex != _pathTarget)
             {
@@ -59,10 +74,12 @@ namespace PlayerGroup
         public void EnterState()
         {
             Debug.Log("Entered Idle state");
+            _playerUIEnergy.SetRestSliderInteractable(true);
             _hexMouseEvents.HighlightedHexClicked += MouseEventsHexClicked;
         }
         public void ExitState()
         {
+            _playerUIEnergy.SetRestSliderInteractable(false);
             _hexMouseEvents.HighlightedHexClicked -= MouseEventsHexClicked;
         }
     }

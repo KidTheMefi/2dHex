@@ -45,8 +45,7 @@ namespace GameTime
 
         public void SetTimeState(TimeStates time)
         {
-            var sec = _settings.GetTickTime(time);
-            _movementTimeModificator = sec;
+            _movementTimeModificator = _settings.GetTickTime(time);
         }
 
         public void Initialize()

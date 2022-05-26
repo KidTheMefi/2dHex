@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
 using ModestTree;
 using UnityEngine;
 using Zenject;
@@ -14,9 +13,13 @@ namespace PlayerGroup
 
     public class PlayerGroupStateManager : IInitializable
     {
+        private bool _stopState;
+        public bool StopState => _stopState;
+        
         private IPlayerGroupState _currentStateHandler;
         private PlayerState _currentState = PlayerState.Event;
         private GameTime.GameTime _gameTime;
+        private TestInputActions _testInputActions;
         List<IPlayerGroupState> _states;
         
         [Inject]
@@ -25,7 +28,8 @@ namespace PlayerGroup
             PlayerGroupMovement movement,
             PlayerGroupRest rest,
             PlayerGroupEvent groupEvent,
-            GameTime.GameTime gameTime)
+            GameTime.GameTime gameTime,
+            TestInputActions testInputActions)
         {
             _states = new List<IPlayerGroupState>
             {
@@ -33,6 +37,7 @@ namespace PlayerGroup
                 idle, movement, groupEvent, rest
             };
             _gameTime = gameTime;
+            _testInputActions = testInputActions;
         }
 
         public PlayerState CurrentState => _currentState;
@@ -42,6 +47,7 @@ namespace PlayerGroup
             Debug.Log("Initialize");
             _gameTime.Tick += OnGameTick;
             Assert.IsNull(_currentStateHandler);
+            _testInputActions.ActionKey.Stop.performed += context => { OnStopPressed();};
             ChangeState(PlayerState.Idle);
             
         }
@@ -49,6 +55,11 @@ namespace PlayerGroup
         private void OnGameTick()
         {
             _currentStateHandler.OnGameTick();
+        }
+
+        private void OnStopPressed()
+        {
+            _currentStateHandler.OnStopPressed();
         }
         
         public void ChangeState(PlayerState state)
@@ -60,7 +71,7 @@ namespace PlayerGroup
             }
 
             //Log.Trace("View Changing state from {0} to {1}", _currentState, state);
-
+            
             _currentState = state;
 
             if (_currentStateHandler != null)
@@ -68,6 +79,8 @@ namespace PlayerGroup
                 _currentStateHandler.ExitState();
                 _currentStateHandler = null;
             }
+            
+            _stopState = false;
 
             _currentStateHandler = _states[(int)state];
             _currentStateHandler.EnterState();

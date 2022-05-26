@@ -16,5 +16,9 @@ namespace PlayerGroup
         {
             throw new System.NotImplementedException();
         }
+        public void OnStopPressed()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

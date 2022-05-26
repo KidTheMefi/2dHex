@@ -43,7 +43,7 @@ namespace UI
         public void SetActionAtButton(Action<int, bool> action)
         {
             StartRest = action;
-            _restStartButton.onClick.AddListener(OnStartButtonClick);
+            _restStartButton.onClick.AddListener(OnStartRestButtonClick);
         }
 
         public void SetRestSliderInteractable(bool value)
@@ -68,7 +68,7 @@ namespace UI
             _restText.text = GameTime.GameTime.ConvertTicksToHoursAndMinutes(_restSlider.value);
         }
 
-        private void OnStartButtonClick()
+        private void OnStartRestButtonClick()
         {
             if (_playerGroupModel.State == PlayerState.Idle)
             {
@@ -88,7 +88,6 @@ namespace UI
             {
                 _restSlider.value = _restSlider.value < _playerGroupModel.MinTimeSleepHours*4 ? _playerGroupModel.MinTimeSleepHours*4 : _restSlider.value;
             }
-
             _restText.text = GameTime.GameTime.ConvertTicksToHoursAndMinutes(_restSlider.value);
         }
         
@@ -97,7 +96,7 @@ namespace UI
             _sleep = sleep;
             if (_sleep)
             {
-                _restSlider.value = _restSlider.value < _playerGroupModel.MinTimeSleepHours ? _playerGroupModel.MinTimeSleepHours : _restSlider.value;
+                _restSlider.value = _restSlider.value < _playerGroupModel.MinTimeSleepHours*4 ? _playerGroupModel.MinTimeSleepHours : _restSlider.value;
             }
         }
 

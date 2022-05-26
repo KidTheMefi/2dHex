@@ -224,23 +224,23 @@
             "id": "57fda782-503b-466b-840b-e3f5b26e7334",
             "actions": [
                 {
-                    "name": "Jump",
+                    "name": "Stop",
                     "type": "Button",
-                    "id": "4256988a-ab86-43ba-b410-547e86ccef6e",
+                    "id": "ffd37f1f-9669-4d46-978d-706e3cea1147",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
                 {
                     "name": "",
-                    "id": "1a39d664-b04d-41bd-83c9-a9d8f8399999",
+                    "id": "2eb25cf1-22c1-4f12-a791-377807256442",
                     "path": "<Keyboard>/space",
-                    "interactions": "Press",
+                    "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Jump",
+                    "action": "Stop",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

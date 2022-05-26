@@ -13,10 +13,11 @@ namespace PlayerGroup
         private PlayerPathFind _playerPathFind;
         private PlayerGroupStateManager _playerGroupStateManager;
         private GameTime.GameTime _gameTime;
+
         
         private Queue<Vector3> _movementQueue = new Queue<Vector3>();
         private bool _hexReached;
-        private bool _stopMoving;
+        private bool _stopMovement;
 
         public PlayerGroupMovement(
             PlayerGroupModel playerGroupModel,
@@ -46,8 +47,8 @@ namespace PlayerGroup
                 Debug.Log("player Start move");
                 foreach (var pathPoint in path)
                 {
+                    _stopMovement = false;
                     _hexReached = false;
-                    _stopMoving = false;
                     _playerGroupModel.SetTargetMovePosition(pathPoint.AxialCoordinate);
                     _movementQueue = HexUtils.VectorSeparation(_playerGroupView.transform.position, pathPoint.Position, pathPoint.LandTypeProperty.MovementTimeCost);
                     _gameTime.DoTick();
@@ -56,7 +57,7 @@ namespace PlayerGroup
                     _playerPathFind.RemovePoint(pathPoint);
                     _playerGroupModel.SetAxialPosition(pathPoint.AxialCoordinate);
                     
-                    if (_stopMoving)
+                    if (_stopMovement)
                     {
                         break;
                     }
@@ -105,8 +106,12 @@ namespace PlayerGroup
         }
         public async UniTask OnGameTick()
         {
-            await UniTask.Yield();
             MovingToHex().Forget();
+            await UniTask.Yield();
+        }
+        public void OnStopPressed()
+        {
+            _stopMovement = true;
         }
     }
 }
