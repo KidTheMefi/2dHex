@@ -24,7 +24,7 @@ namespace GameTime
             _arrowMinuts.DORotateQuaternion(Quaternion.Euler(Vector3.back * minute * 90f), tickSeconds).SetEase(Ease.Linear);
         
             await DOVirtual.DelayedCall(tickSeconds, () => { });
-            _timeText.text = GameTime.ConvertTicksToHoursAndMinutes(timeInTicks);
+            _timeText.text = InGameTime.ConvertTicksToHoursAndMinutes(timeInTicks);
         }
 
         public void SetTime(int timeInTicks)

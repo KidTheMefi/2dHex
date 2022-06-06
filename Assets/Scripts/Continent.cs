@@ -1,10 +1,10 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Interfaces;
 using UnityEngine;
 using Zenject;
+using Random = UnityEngine.Random;
 
 public class Continent
 {
@@ -93,5 +93,10 @@ public class Continent
             centerSum += vector2;
         }
         return new Vector2Int(centerSum.x / continent.Count, centerSum.y / continent.Count);
+    }
+
+    public Vector2Int GetRandomHexAtContinent()
+    {
+        return _continentAllHex[Random.Range(0, _continentAllHex.Count)];
     }
 }

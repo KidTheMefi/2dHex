@@ -6,14 +6,14 @@ namespace UI
     public class PauseMenu : IInitializable
     {
         private TestInputActions _testInputActions;
-        private GameTime.GameTime _gameTime;
+        private GameTime.InGameTime _inGameTime;
 
         private bool _isPaused = false;
         
-        public PauseMenu(TestInputActions testInputActions, GameTime.GameTime gameTime)
+        public PauseMenu(TestInputActions testInputActions, GameTime.InGameTime inGameTime)
         {
             _testInputActions = testInputActions;
-            _gameTime = gameTime;
+            _inGameTime = inGameTime;
         }
 
         public void Initialize()
@@ -24,7 +24,7 @@ namespace UI
         private void Pause(InputAction.CallbackContext callback)
         {
             _isPaused = !_isPaused;
-            _gameTime.Pause(_isPaused);
+            _inGameTime.Pause(_isPaused);
         }
     }
 }

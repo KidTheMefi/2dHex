@@ -19,16 +19,14 @@ public class HexMapContinents
 
     private List<Continent> _allContinents;
     private IHexStorage _hexStorage;
-    private TestButtonUI.Factory _buttonFactory;
 
     public List<Continent> AllContinents => _allContinents;
 
-    public HexMapContinents(Continent.Factory continentFactory, IHexStorage hexStorage, MapSetting mapSetting, TestButtonUI.Factory buttonFactory)
+    public HexMapContinents(Continent.Factory continentFactory, IHexStorage hexStorage, MapSetting mapSetting)
     {
         _continentFactory = continentFactory;
         _hexStorage = hexStorage;
         _mapSetting = mapSetting;
-        _buttonFactory = buttonFactory;
     }
 
     

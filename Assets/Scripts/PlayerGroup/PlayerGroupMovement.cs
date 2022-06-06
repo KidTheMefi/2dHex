@@ -12,9 +12,9 @@ namespace PlayerGroup
         private PlayerGroupView _playerGroupView;
         private PlayerPathFind _playerPathFind;
         private PlayerGroupStateManager _playerGroupStateManager;
-        private GameTime.GameTime _gameTime;
+        private GameTime.InGameTime _inGameTime;
 
-        
+        private Tween _movement;
         private Queue<Vector3> _movementQueue = new Queue<Vector3>();
         private bool _hexReached;
         private bool _stopMovement;
@@ -22,23 +22,17 @@ namespace PlayerGroup
         public PlayerGroupMovement(
             PlayerGroupModel playerGroupModel,
             PlayerGroupView playerGroupView,
-            GameTime.GameTime gameTime, 
+            GameTime.InGameTime inGameTime, 
             PlayerGroupStateManager playerGroupStateManager, 
             PlayerPathFind playerPathFind)
         {
             _playerGroupModel = playerGroupModel;
             _playerGroupView = playerGroupView;
-            _gameTime = gameTime;
+            _inGameTime = inGameTime;
             _playerGroupStateManager = playerGroupStateManager;
             _playerPathFind = playerPathFind;
         }
 
-        private void OnDoubleClick()
-        {
-            //TODO 
-            //_stopMoving = true;
-        }
-        
         private async UniTask StartMove()
         {
             var path = _playerPathFind.GetPath();
@@ -51,7 +45,7 @@ namespace PlayerGroup
                     _hexReached = false;
                     _playerGroupModel.SetTargetMovePosition(pathPoint.AxialCoordinate);
                     _movementQueue = HexUtils.VectorSeparation(_playerGroupView.transform.position, pathPoint.Position, pathPoint.LandTypeProperty.MovementTimeCost);
-                    _gameTime.DoTick();
+                    _inGameTime.DoTick();
                     EnergyLossAt(pathPoint).Forget();
                     await UniTask.WaitUntil(() => _hexReached);
                     _playerPathFind.RemovePoint(pathPoint);
@@ -68,7 +62,7 @@ namespace PlayerGroup
 
         private async UniTask EnergyLossAt(Hex hex)
         {
-            float delay = hex.LandTypeProperty.MovementTimeCost * _gameTime.TickSeconds / hex.LandTypeProperty.MovementEnergyCost;
+            float delay = hex.LandTypeProperty.MovementTimeCost * _inGameTime.TickSeconds / hex.LandTypeProperty.MovementEnergyCost;
             for (int i = 0; i < hex.LandTypeProperty.MovementEnergyCost; i++)
             {
                 _playerGroupModel.ChangeEnergy(-1);
@@ -81,11 +75,12 @@ namespace PlayerGroup
         {
             if (_movementQueue.Count != 0)
             {
-                await  _playerGroupView.transform.DOMove(_movementQueue.Dequeue(), _gameTime.TickSeconds).SetEase(Ease.Linear);
+                _movement = _playerGroupView.transform.DOMove(_movementQueue.Dequeue(), _inGameTime.TickSeconds).SetEase(Ease.Linear);
+                await _movement;
                 
                 if (_movementQueue.Count != 0)
                 {
-                    _gameTime.DoTick();
+                    _inGameTime.DoTick();
                 }
                 else
                 {
@@ -100,10 +95,12 @@ namespace PlayerGroup
             StartMove().Forget();
             _playerGroupView.EnableTrails(true);
         }
+        
         public void ExitState()
         {
             _playerGroupView.EnableTrails(false);
         }
+        
         public async UniTask OnGameTick()
         {
             MovingToHex().Forget();

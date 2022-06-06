@@ -25,7 +25,7 @@ public class FieldOfView : IInitializable
     public void Initialize()
     {
         //_playerGroupModel.PositionChanged += UpdateFieldOfView;
-        _playerGroupModel.PositionChanged += (center, radius) => UpdateFieldOfView(center, radius).Forget();
+        _playerGroupModel.PositionChanged += () => UpdateFieldOfView(_playerGroupModel.AxialPosition, _playerGroupModel.VisionRadius).Forget();
         _night.NightTimeChange += () => UpdateFieldOfView(_playerGroupModel.AxialPosition, _playerGroupModel.VisionRadius).Forget();
     }
 
@@ -75,7 +75,6 @@ public class FieldOfView : IInitializable
                     {
                         break;
                     }
-
                 }
             }
         }

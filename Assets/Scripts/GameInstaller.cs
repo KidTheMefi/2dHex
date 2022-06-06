@@ -30,7 +30,7 @@ public class GameInstaller : MonoInstaller
         Container.BindInstance(_panel).AsSingle();
         Container.Bind<HexHighlight>().FromComponentInNewPrefab(_prefabList.HexHighlight).WithGameObjectName("hexHighlight").AsSingle();
 
-        Container.BindInterfacesAndSelfTo<GameTime.GameTime>().AsSingle();
+        Container.BindInterfacesAndSelfTo<GameTime.InGameTime>().AsSingle();
         InstallInputSystem();
         InstallGameField();
         InstallPathFind();
@@ -98,8 +98,8 @@ public class GameInstaller : MonoInstaller
     private void InstallEnemies()
     {
         Container.BindInterfacesAndSelfTo<EnemySpawner>().AsSingle();
-        Container.BindFactory<Vector2Int, EnemyFacade, EnemyFacade.Factory>()
-            .FromPoolableMemoryPool<Vector2Int, EnemyFacade, EnemyFacadePool>(poolBinder => poolBinder
+        Container.BindFactory<Vector2Int, EnemySettings, EnemyFacade, EnemyFacade.Factory>()
+            .FromPoolableMemoryPool<Vector2Int,EnemySettings, EnemyFacade, EnemyFacadePool>(poolBinder => poolBinder
                 .WithInitialSize(3)
                 .FromSubContainerResolve()
                 .ByNewPrefabInstaller<EnemyInstaller>(_prefabList.EnemyFacade)
@@ -113,6 +113,6 @@ public class GameInstaller : MonoInstaller
         Container.Bind<PlayerUIEnergy>().FromComponentInNewPrefab(_prefabList.PlayerUIEnergy).UnderTransform(_canvas.transform).AsSingle().NonLazy();
     }
 }
- class EnemyFacadePool : MonoPoolableMemoryPool<Vector2Int, IMemoryPool, EnemyFacade>
+ class EnemyFacadePool : MonoPoolableMemoryPool<Vector2Int, EnemySettings, IMemoryPool, EnemyFacade>
 {
 }

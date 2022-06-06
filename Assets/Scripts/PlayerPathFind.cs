@@ -75,7 +75,7 @@ public class PlayerPathFind
                    
                 }
             }
-            Debug.Log(String.Format("Energy cost: {0} // Time cost:{1}", energyCost, GameTime.GameTime.ConvertTicksToHoursAndMinutes(timeCost)));
+            Debug.Log(String.Format("Energy cost: {0} // Time cost:{1}", energyCost, GameTime.InGameTime.ConvertTicksToHoursAndMinutes(timeCost)));
         }
         else
         {

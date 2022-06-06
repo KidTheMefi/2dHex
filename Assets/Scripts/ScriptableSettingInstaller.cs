@@ -1,3 +1,4 @@
+using Enemies;
 using UnityEngine;
 using Zenject;
 
@@ -9,12 +10,15 @@ public class ScriptableSettingInstaller : ScriptableObjectInstaller<ScriptableSe
     [SerializeField]
     private MapSetting MapSetting;
     [SerializeField]
-    private GameTime.GameTime.Settings GameTimeSettings;
+    private GameTime.InGameTime.Settings GameTimeSettings;
+    [SerializeField]
+    private EnemiesSettings _enemiesSettings;
 
     public override void InstallBindings()
     {
         Container.BindInstance(Prefabs);
         Container.BindInstance(MapSetting);
         Container.BindInstance(GameTimeSettings);
+        Container.BindInstance(_enemiesSettings);
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using GameTime;
 using Interfaces;
 using PlayerGroup;
 using UnityEngine;
@@ -17,7 +18,7 @@ namespace Enemies
         private AStarSearch _aStarSearch;
         private IHexStorage _hexStorage;
         private PlayerGroupModel _playerGroupModel;
-        private GameTime.GameTime _gameTime;
+        private InGameTime _inGameTime;
 
         private Tween _movement;
         private Queue<Vector3> _movementQueue = new Queue<Vector3>();
@@ -30,21 +31,26 @@ namespace Enemies
             PlayerGroupModel playerGroupModel,
             AStarSearch aStarSearch,
             IHexStorage hexStorage,
-            GameTime.GameTime gameTime)
+            InGameTime inGameTime)
         {
             _enemyView = enemyView;
             _enemyModel = enemyModel;
             _aStarSearch = aStarSearch;
             _hexStorage = hexStorage;
-            _gameTime = gameTime;
+            _inGameTime = inGameTime;
             _playerGroupModel = playerGroupModel;
         }
 
 
         public void Initialize()
         {
-            _gameTime.Tick += MovingOnTick;
+            //_inGameTime.Tick += MovingOnTick;
             //CheckNextHex().Forget();
+        }
+
+        public void StartMovement()
+        {
+            _inGameTime.Tick += MovingOnTick;
         }
 
         private async UniTask FindNewPath()
@@ -98,7 +104,7 @@ namespace Enemies
             if (_movementQueue.Count != 0)
             {
                 var moveTo = _movementQueue.Dequeue();
-                _movement = _enemyView.transform.DOMove(moveTo, _gameTime.TickSeconds).SetEase(Ease.Linear);
+                _movement = _enemyView.transform.DOMove(moveTo, _inGameTime.TickSeconds).SetEase(Ease.Linear);
                 if (_movementQueue.Count == 0)
                 {
                     _enemyModel.AxialPosition = _target;
@@ -133,6 +139,8 @@ namespace Enemies
         
         public void Dispose()
         {
+            Debug.Log("Enemy disposed");
+            _inGameTime.Tick -= MovingOnTick;
             _movement.Kill();
             _movementQueue.Clear();
             _path.Clear();

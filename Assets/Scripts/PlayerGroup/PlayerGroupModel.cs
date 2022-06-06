@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace PlayerGroup
@@ -9,7 +7,7 @@ namespace PlayerGroup
 
     public class PlayerGroupModel
     {
-        public event Action<Vector2Int, int> PositionChanged = delegate(Vector2Int i, int i1) { };
+        public event Action PositionChanged = delegate() { };
         
         public event Action<int> EnergyChanged = delegate(int i) { };
 
@@ -45,7 +43,7 @@ namespace PlayerGroup
         public void SetAxialPosition(Vector2Int pos)
         {
             _axialPosition = pos;
-            PositionChanged?.Invoke(pos, _visionRadius);
+            PositionChanged?.Invoke();
         }
     }
 }

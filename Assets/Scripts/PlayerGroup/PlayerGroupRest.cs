@@ -23,7 +23,7 @@ namespace PlayerGroup
         private PlayerUIEnergy _playerUIEnergy;
         private PlayerGroupStateManager _playerGroupStateManager;
         private PlayerGroupView _playerGroupView;
-        private GameTime.GameTime _gameTime;
+        private GameTime.InGameTime _inGameTime;
 
         private bool _sleep = false;
         private bool _stopRest;
@@ -31,13 +31,13 @@ namespace PlayerGroup
         public PlayerGroupRest(
             PlayerGroupModel playerGroupModel,
             PlayerGroupView playerGroupView,
-            GameTime.GameTime gameTime,
+            GameTime.InGameTime inGameTime,
             PlayerUIEnergy playerUIEnergy,
             PlayerGroupStateManager playerGroupStateManager)
         {
             _playerGroupModel = playerGroupModel;
             _playerGroupView = playerGroupView;
-            _gameTime = gameTime;
+            _inGameTime = inGameTime;
             _playerUIEnergy = playerUIEnergy;
             _playerGroupStateManager = playerGroupStateManager;
 
@@ -60,25 +60,25 @@ namespace PlayerGroup
         private async UniTask StartRest()
         {
             _stopRest = false;
-            _gameTime.SetTimeState(TimeStates.Rest);
+            _inGameTime.SetTimeState(TimeStates.Fast);
             while (!_stopRest)
             {
-                _gameTime.DoTick();
-                await DOVirtual.DelayedCall(_gameTime.TickSeconds, () => { });
+                _inGameTime.DoTick();
+                await DOVirtual.DelayedCall(_inGameTime.TickSeconds, () => { });
             }
             _playerGroupStateManager.ChangeState(PlayerState.Idle);
         }
 
         private async UniTask StartRestAsync(int hours, bool sleep = false)
         {
-            _gameTime.SetTimeState(_sleep ? TimeStates.Sleep : TimeStates.Rest);
+            _inGameTime.SetTimeState(_sleep ? TimeStates.VeryFast : TimeStates.Fast);
             _stopRest = false;
             for (int i = 0; i < hours; i++)
             {
 
-                _gameTime.DoTick();
+                _inGameTime.DoTick();
                 _playerUIEnergy.AddRestSliderValue(-1);
-                await DOVirtual.DelayedCall(_gameTime.TickSeconds, () => { });
+                await DOVirtual.DelayedCall(_inGameTime.TickSeconds, () => { });
                 if (!_sleep && _stopRest)
                 {
                     Debug.Log("end rest break");
@@ -114,7 +114,7 @@ namespace PlayerGroup
         public void ExitState()
         {
             _restType = RestType.Wait;
-            _gameTime.SetTimeState(TimeStates.Default);
+            _inGameTime.SetTimeState(TimeStates.Default);
         }
         public async UniTask OnGameTick()
         {
