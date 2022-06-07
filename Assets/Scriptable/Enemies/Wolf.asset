@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06df935d3924acd42ab3b65b2ce4a35f, type: 3}
   m_Name: Wolf
   m_EditorClassIdentifier: Assembly-CSharp:Enemies:EnemySetting
-  _sprite: {fileID: 21300000, guid: caf7640231ca437488632b213e8e6b0e, type: 3}
-  _maxEnergy: 30
-  _hp: 20
-  _attack: 5
-  _name: Wolf
-  _description: Regular Wolf
+  _properties:
+    _sprite: {fileID: 21300000, guid: caf7640231ca437488632b213e8e6b0e, type: 3}
+    _maxEnergy: 21
+    _maxHp: 21
+    _attack: 21
+    _name: Wolf
+    _description: 
+    _biomSpawn: 0

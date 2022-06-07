@@ -54,8 +54,8 @@ namespace Enemies
             Position = HexUtils.CalculatePosition(axialPosition);
             _pool = pool;
             
-            _enemyView.SetSprite(enemySettings.Sprite);
-            
+            _enemyView.SetSprite(enemySettings.Properties.Sprite);
+            _enemyModel.Setup(enemySettings);
             _movement.StartMovement();
         }
 

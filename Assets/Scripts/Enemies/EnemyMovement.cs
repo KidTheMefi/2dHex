@@ -19,7 +19,9 @@ namespace Enemies
         private IHexStorage _hexStorage;
         private PlayerGroupModel _playerGroupModel;
         private InGameTime _inGameTime;
-
+        private HexMapContinents _hexMapContinents;
+        
+        private Continent _continentBiom;
         private Tween _movement;
         private Queue<Vector3> _movementQueue = new Queue<Vector3>();
         private Queue<Hex> _path = new Queue<Hex>();
@@ -31,13 +33,14 @@ namespace Enemies
             PlayerGroupModel playerGroupModel,
             AStarSearch aStarSearch,
             IHexStorage hexStorage,
-            InGameTime inGameTime)
+            InGameTime inGameTime, HexMapContinents hexMapContinents)
         {
             _enemyView = enemyView;
             _enemyModel = enemyModel;
             _aStarSearch = aStarSearch;
             _hexStorage = hexStorage;
             _inGameTime = inGameTime;
+            _hexMapContinents = hexMapContinents;
             _playerGroupModel = playerGroupModel;
         }
 
@@ -50,17 +53,31 @@ namespace Enemies
 
         public void StartMovement()
         {
+            if (_enemyModel.EnemyProperties.BiomType != BiomType.None)
+            {
+                _continentBiom = _hexMapContinents.AllContinents.Find(c => c.BiomType == _enemyModel.EnemyProperties.BiomType);
+            }
             _inGameTime.Tick += MovingOnTick;
         }
 
         private async UniTask FindNewPath()
         {
-            var hexes = HexUtils.GetAxialAreaAtRange(_enemyModel.AxialPosition, _enemyModel.ViewRadius);
-            var target = hexes[Random.Range(0, hexes.Count)];
-            while (!_hexStorage.HexAtAxialCoordinateExist(target))
+            Vector2Int target; 
+            if (_enemyModel.EnemyProperties.BiomType != BiomType.None)
             {
-                target = hexes[Random.Range(0, hexes.Count)];
+                target = _continentBiom.GetRandomHexAtContinent();
+                Debug.Log("smth");
             }
+            else
+            {
+                var hexes = HexUtils.GetAxialAreaAtRange(_enemyModel.AxialPosition, _enemyModel.EnemyProperties.ViewRadius);
+                target = hexes[Random.Range(0, hexes.Count)];
+                while (!_hexStorage.HexAtAxialCoordinateExist(target))
+                {
+                    target = hexes[Random.Range(0, hexes.Count)];
+                }
+            }
+            
             _target = target;
             _path = await PathFind(_target);
         }
@@ -69,7 +86,7 @@ namespace Enemies
         {
             var distanceToPlayer = HexUtils.AxialDistance(_playerGroupModel.AxialPosition, _enemyModel.AxialPosition);
 
-            if (distanceToPlayer < _enemyModel.ViewRadius && _target != _playerGroupModel.TargetMovePosition)
+            if (distanceToPlayer < _enemyModel.EnemyProperties.ViewRadius && _target != _playerGroupModel.TargetMovePosition)
             {
                 _target = _playerGroupModel.TargetMovePosition;
                 _path = await PathFind(_target);
@@ -139,7 +156,6 @@ namespace Enemies
         
         public void Dispose()
         {
-            Debug.Log("Enemy disposed");
             _inGameTime.Tick -= MovingOnTick;
             _movement.Kill();
             _movementQueue.Clear();

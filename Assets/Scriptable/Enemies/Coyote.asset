@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06df935d3924acd42ab3b65b2ce4a35f, type: 3}
   m_Name: Coyote
   m_EditorClassIdentifier: Assembly-CSharp:Enemies:EnemySetting
-  _sprite: {fileID: 21300000, guid: 34195d600639ced46a1109be2bac4f18, type: 3}
-  _maxEnergy: 50
-  _hp: 15
-  _attack: 5
-  _name: Coyote
-  _description: just coyote
-  _biomSpawn: 2
+  _properties:
+    _sprite: {fileID: 21300000, guid: 34195d600639ced46a1109be2bac4f18, type: 3}
+    _maxEnergy: 25
+    _maxHp: 25
+    _attack: 25
+    _name: Coyote
+    _description: 
+    _biomSpawn: 2

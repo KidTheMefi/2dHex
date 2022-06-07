@@ -1,3 +1,4 @@
+using Enemies.EnemyStates;
 using Zenject;
 
 namespace Enemies
@@ -8,6 +9,8 @@ namespace Enemies
         {
             Container.BindInterfacesAndSelfTo<EnemyModel>().AsSingle();
             Container.BindInterfacesAndSelfTo<EnemyMovement>().AsSingle();
+            Container.BindInterfacesAndSelfTo<EnemyStateManager>().AsSingle();
+            Container.BindInterfacesAndSelfTo<EnemyRest>().AsSingle();
         }
     }
 }

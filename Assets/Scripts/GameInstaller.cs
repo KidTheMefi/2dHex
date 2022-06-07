@@ -100,7 +100,7 @@ public class GameInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<EnemySpawner>().AsSingle();
         Container.BindFactory<Vector2Int, EnemySettings, EnemyFacade, EnemyFacade.Factory>()
             .FromPoolableMemoryPool<Vector2Int,EnemySettings, EnemyFacade, EnemyFacadePool>(poolBinder => poolBinder
-                .WithInitialSize(3)
+                .WithInitialSize(10)
                 .FromSubContainerResolve()
                 .ByNewPrefabInstaller<EnemyInstaller>(_prefabList.EnemyFacade)
                 .UnderTransformGroup("Enemies"));

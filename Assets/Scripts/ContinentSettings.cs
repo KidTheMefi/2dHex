@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum BiomType
 {
-    Grass, Winter, Desert
+    None, Grass, Winter, Desert 
 }
 
 [CreateAssetMenu(menuName = "HexGame/ContinentSettings")]
