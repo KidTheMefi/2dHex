@@ -11,7 +11,7 @@ public class GameInstaller : MonoInstaller
     [SerializeField] private Camera _camera;
     [SerializeField] private Canvas _canvas;
     [SerializeField] private GameObject _buttonsParent;
-    //[SerializeField] private Transform _hexHighlight;
+    [SerializeField] private Transform _hexHighlight;
     [SerializeField] private TimeClock _clock;
     [SerializeField] private NightMask _nightMask;
     [SerializeField] private PanelScript _panel;
@@ -24,7 +24,7 @@ public class GameInstaller : MonoInstaller
         
         Container.BindInstance(_camera).AsSingle();
         Container.BindInstance(_canvas).AsSingle();
-        //Container.BindInstance(_hexHighlight).WithId("hexHighlight").AsSingle();
+        Container.BindInstance(_hexHighlight).WithId("hexHighlight").AsSingle();
         Container.BindInstance(_clock).AsSingle();
         Container.BindInstance(_nightMask).AsSingle();
         Container.BindInstance(_panel).AsSingle();

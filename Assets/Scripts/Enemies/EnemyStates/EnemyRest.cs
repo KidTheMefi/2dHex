@@ -1,10 +1,12 @@
+using System;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace Enemies.EnemyStates
 {
     public class EnemyRest : IEnemyState
     {
-
+        public event Action<EnemyState> ChangeState = delegate(EnemyState state) { };
         private EnemyModel _enemyModel;
         private EnemyView _enemyView;
 
@@ -16,15 +18,21 @@ namespace Enemies.EnemyStates
 
         public void EnterState()
         {
-            throw new System.NotImplementedException();
+            Debug.Log("Enter rest state");
         }
         public void ExitState()
         {
-            throw new System.NotImplementedException();
+            Debug.Log("Exit rest state");
         }
-        public UniTask OnGameTick()
+
+        public async UniTask OnGameTick()
         {
-            throw new System.NotImplementedException();
+            await UniTask.Yield();
+            _enemyModel.ChangeEnergy(2);
+            if (_enemyModel.Energy >= _enemyModel.EnemyProperties.MaxEnergy)
+            {
+                ChangeState.Invoke(EnemyState.Moving);
+            }
         }
     }
 }

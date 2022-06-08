@@ -73,7 +73,7 @@ namespace PlayerGroup
     
         public void EnterState()
         {
-            Debug.Log("Entered Idle state");
+            //Debug.Log("Entered Idle state");
             _playerUIEnergy.SetRestSliderInteractable(true);
             _hexMouseEvents.HighlightedHexClicked += MouseEventsHexClicked;
         }

@@ -9,18 +9,21 @@ namespace Enemies
         private EnemyModel _enemyModel;
         private EnemyView _enemyView;
         private EnemyMovement _movement;
+        private EnemyStateManager _enemyStateManager;
         private IMemoryPool _pool;
 
         [Inject]
         public void Construct(
             EnemyMovement movement, 
             EnemyModel enemyModel,
-            EnemyView enemyView
+            EnemyView enemyView,
+            EnemyStateManager enemyStateManager
         )
         {
             _enemyModel = enemyModel;
             _enemyView = enemyView;
             _movement = movement;
+            _enemyStateManager = enemyStateManager;
         }
 
         public Vector2Int AxialPosition
@@ -44,6 +47,7 @@ namespace Enemies
         public void OnDespawned()
         {
             _movement.Dispose();
+            _enemyStateManager.Dispose();
             _pool = null;
             
         }
@@ -56,7 +60,7 @@ namespace Enemies
             
             _enemyView.SetSprite(enemySettings.Properties.Sprite);
             _enemyModel.Setup(enemySettings);
-            _movement.StartMovement();
+            _enemyStateManager.Initialize();
         }
 
         public class Factory : PlaceholderFactory<Vector2Int, EnemySettings, EnemyFacade>

@@ -51,7 +51,7 @@ namespace GameTime
         {
             _clock.SetTime(_timeInTicks);
             _tickTimeModificator = _settings.GetTickTime(TimeStates.Default);
-            DOTween.PauseAll();
+            //DOTween.PauseAll();
         }
 
         public void Pause(bool value)

@@ -38,7 +38,7 @@ namespace PlayerGroup
             var path = _playerPathFind.GetPath();
             if (path.Length > 0)
             {
-                Debug.Log("player Start move");
+                //Debug.Log("player Start move");
                 foreach (var pathPoint in path)
                 {
                     _stopMovement = false;
@@ -91,7 +91,7 @@ namespace PlayerGroup
 
         public void EnterState()
         {
-            Debug.Log("Entered Movement state");
+            //Debug.Log("Entered Movement state");
             StartMove().Forget();
             _playerGroupView.EnableTrails(true);
         }

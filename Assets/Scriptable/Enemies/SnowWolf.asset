@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp:Enemies:EnemySetting
   _properties:
     _sprite: {fileID: 21300000, guid: 025a8b2c21c9452488d536bc384d1cc8, type: 3}
-    _maxEnergy: 30
+    _maxEnergy: 45
     _maxHp: 30
     _attack: 30
     _name: Norh Wolf
     _description: 
     _biomSpawn: 1
+    _viewRadius: 6

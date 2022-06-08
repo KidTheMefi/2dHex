@@ -63,7 +63,7 @@ namespace PlayerGroup
         {
             if (_currentState == state)
             {
-                Debug.Log("_currentState == state");
+                //Debug.Log("_currentState == state");
                 return;
             }
 

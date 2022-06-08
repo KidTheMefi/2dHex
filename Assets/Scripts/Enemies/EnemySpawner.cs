@@ -34,9 +34,9 @@ namespace Enemies
             }
             _enemies.Clear();
             
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 1; i++)
             {
-                var enemySetupSettings = _enemiesSettings.Enemies[Random.Range(0, _enemiesSettings.Enemies.Count)];
+                var enemySetupSettings = _enemiesSettings.Enemies[/*Random.Range(0, _enemiesSettings.Enemies.Count)*/2];
                 //var enemyPos = _mapGeneration.GetRandomStartPosition();
                 var enemyPos = _hexMapContinents.AllContinents.Find(x => x.BiomType == enemySetupSettings.Properties.BiomType).GetRandomHexAtContinent();
                 var enemy = _enemyFactory.Create(enemyPos, enemySetupSettings );

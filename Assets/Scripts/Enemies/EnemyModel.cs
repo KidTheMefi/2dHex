@@ -1,4 +1,5 @@
 using System;
+using UI;
 using UnityEngine;
 
 namespace Enemies
@@ -9,6 +10,9 @@ namespace Enemies
         public Properties EnemyProperties => _properties;
         
         private Vector2Int _axialPosition;
+        
+        private int _energy;
+        public int Energy => _energy;
         
 
 
@@ -21,8 +25,13 @@ namespace Enemies
         public void Setup(EnemySettings enemySettings)
         {
             _properties = new Properties(enemySettings);
+            _energy = enemySettings.Properties.MaxEnergy;
         }
-        
+
+        public void ChangeEnergy(int i)
+        {
+            _energy += i;
+        }
         
         
         [Serializable]
@@ -36,7 +45,7 @@ namespace Enemies
             [SerializeField] private string _description;
             [SerializeField] private BiomType _biomSpawn;
             [SerializeField] private int _viewRadius = 6;
-            
+        
 
             public Sprite Sprite => _sprite;
             public int MaxEnergy => _maxEnergy;

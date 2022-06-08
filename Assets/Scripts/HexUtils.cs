@@ -33,18 +33,19 @@ public class HexUtils
         }
         return hexes;
     }
-
+    
+    
     public static List<Vector2Int> GetAxialAreaAtRange(Vector2Int centerAxial, int range)
     {
         var hexes = new List<Vector2Int>();
-        for (int q = -range; q <= range; q++)
+
+        hexes.Add(centerAxial);
+        
+        for (int i = 0; i <= range; i++)
         {
-            for (int r = Mathf.Max(-range, -q - range); r <= Mathf.Min(range, -q + range); r++)
-            {
-                Vector2Int hexAxial = new Vector2Int(centerAxial.x + q, centerAxial.y + r);
-                hexes.Add(hexAxial);
-            }
+            hexes.AddRange(GetAxialRingWithRadius(centerAxial, i));
         }
+        
         return hexes;
     }
 

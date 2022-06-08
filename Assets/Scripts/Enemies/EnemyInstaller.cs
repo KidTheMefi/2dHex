@@ -9,8 +9,10 @@ namespace Enemies
         {
             Container.BindInterfacesAndSelfTo<EnemyModel>().AsSingle();
             Container.BindInterfacesAndSelfTo<EnemyMovement>().AsSingle();
+            Container.BindInterfacesAndSelfTo<EnemyPathFind>().AsSingle();
             Container.BindInterfacesAndSelfTo<EnemyStateManager>().AsSingle();
             Container.BindInterfacesAndSelfTo<EnemyRest>().AsSingle();
+            Container.BindInterfacesAndSelfTo<EnemyChasing>().AsSingle();
         }
     }
 }
