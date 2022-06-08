@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   landName: Plain
   _landType: 1
+  _landBiom: 1
   _isPassable: 1
   _movementTimeCost: 3
   _movementEnergyCost: 3

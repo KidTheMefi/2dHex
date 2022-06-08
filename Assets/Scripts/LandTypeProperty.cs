@@ -14,6 +14,7 @@ public class LandTypeProperty : ScriptableObject
    
    [SerializeField] private string landName;
    [SerializeField] private LandType _landType;
+   [SerializeField] private BiomType _landBiom;
    [SerializeField] private bool _isPassable = true;
    [SerializeField] private int _movementTimeCost = 1;
    [SerializeField] private int _movementEnergyCost = 1;
@@ -24,6 +25,7 @@ public class LandTypeProperty : ScriptableObject
    public int MovementTimeCost => _movementTimeCost;
    public int MovementEnergyCost => _movementEnergyCost;
    public LandType LandType => _landType;
+   public BiomType LandBiom => _landBiom;
 
    public Sprite GetSprite()
    {

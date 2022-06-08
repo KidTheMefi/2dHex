@@ -9,7 +9,7 @@ using Zenject;
 
 namespace Enemies
 {
-    public class EnemyMovement : IInitializable, IDisposable, IEnemyState
+    public class EnemyMovement :  IDisposable, IEnemyState
     {
         public event Action<EnemyState> ChangeState = delegate(EnemyState state) { };
 
@@ -18,10 +18,8 @@ namespace Enemies
         private EnemyPathFind _enemyPathFind;
         private PlayerGroupModel _playerGroupModel;
         private InGameTime _gameTime;
-        private Transform _hexTarget;
-
-
-        private bool _changeState;
+        //private Transform _hexTarget;
+        
         private Tween _movement;
         private Queue<Vector3> _movementQueue = new Queue<Vector3>();
         private Queue<Hex> _path = new Queue<Hex>();
@@ -32,26 +30,16 @@ namespace Enemies
             EnemyView enemyView,
             PlayerGroupModel playerGroupModel,
             EnemyPathFind enemyPathFind, 
-            InGameTime gameTime, [Inject(Id = "hexHighlight")] Transform hextarget
+            InGameTime gameTime/*, [Inject(Id = "hexHighlight")] Transform hextarget*/
             )
         {
+            //_hexTarget = enemyView.transform;
             _enemyView = enemyView;
             _enemyModel = enemyModel;
             _playerGroupModel = playerGroupModel;
             _enemyPathFind = enemyPathFind;
             _gameTime = gameTime;
-            _hexTarget = hextarget;
-        }
-
-        public void Initialize()
-        {
-            //_inGameTime.Tick += MovingOnTick;
-            //CheckNextHex().Forget();
-        }
-
-        private  void CheckForEnemyNear()
-        {
-           
+            //_hexTarget = hextarget;
         }
 
         private async UniTask CheckNextHex()
@@ -60,18 +48,11 @@ namespace Enemies
             {
                 var hex = _path.Dequeue();
                 _target = hex.AxialCoordinate;
-                _hexTarget.position = hex.Position;
-                 Debug.Log(_target);
+                //_hexTarget.position = hex.Position;
                 _movementQueue = HexUtils.VectorSeparation(HexUtils.CalculatePosition(_enemyModel.AxialPosition), hex.Position, hex.LandTypeProperty.MovementTimeCost);
             }
             else
             {
-                if (_enemyModel.AxialPosition == _playerGroupModel.AxialPosition)
-                {
-                    Debug.LogWarning("Player reached");
-                    return;
-                }
-                
                 _path = await _enemyPathFind.FindNewRandomPath();
                 CheckNextHex().Forget();
             }
@@ -81,9 +62,7 @@ namespace Enemies
         {
             if (_movementQueue.Count != 0)
             {
-                Debug.Log(_movementQueue.Count);
                 var moveTo = _movementQueue.Dequeue();
-                Debug.Log( String.Format("from {0} to {1} ", _enemyView.transform.position, moveTo));
                 _movement = _enemyView.transform.DOMove(moveTo, _gameTime.TickSeconds).SetEase(Ease.Linear);
                 _enemyModel.ChangeEnergy(-1);
                 
@@ -95,17 +74,14 @@ namespace Enemies
                     
                     if (_enemyModel.Energy <= 0)
                     {
-                        Debug.Log("At check next hex " + _enemyModel.Energy);
-                        _changeState = true;
                         await _movement;
                         ChangeState.Invoke(EnemyState.Rest);
                         return;
                     }
                     
                     
-                    if (HexUtils.AxialDistance(_playerGroupModel.AxialPosition, _enemyModel.AxialPosition) < _enemyModel.EnemyProperties.ViewRadius)
+                    if (HexUtils.AxialDistance(_playerGroupModel.AxialPosition, _enemyModel.AxialPosition) <= _enemyModel.EnemyProperties.ViewRadius)
                     {
-                        _changeState = true;
                         await _movement;
                         ChangeState.Invoke(EnemyState.Chasing);
                     }
@@ -127,8 +103,7 @@ namespace Enemies
 
         public async void EnterState()
         {
-            _changeState = false;
-             await CheckNextHex();
+            await CheckNextHex();
         }
         public void ExitState()
         {
@@ -136,17 +111,7 @@ namespace Enemies
         }
         public async UniTask OnGameTick()
         {
-            if (!_changeState)
-            {Debug.Log("Tick");
-                await MovingOnTick();
-            }
-            
-            //await UniTask.Yield();
-        }
-
-        public void OnGameTickTest()
-        {
-            Debug.Log("test");
+            await MovingOnTick();
         }
     }
 }

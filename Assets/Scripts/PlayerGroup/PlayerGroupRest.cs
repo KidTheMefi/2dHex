@@ -106,7 +106,7 @@ namespace PlayerGroup
         {
             if (_restType == RestType.Wait)
             {
-               // StartRest().Forget();
+                StartRest().Forget();
             }
             //Debug.Log("Entered Rest state");
         }

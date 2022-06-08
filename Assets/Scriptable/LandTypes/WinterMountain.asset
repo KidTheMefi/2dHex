@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   landName: Snow mountaine
   _landType: 4
+  _landBiom: 2
   _isPassable: 0
   _movementTimeCost: 3
   _movementEnergyCost: 3

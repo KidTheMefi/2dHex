@@ -15,10 +15,11 @@ namespace Enemies
         Chasing
     }
 
-    public class EnemyStateManager : IInitializable
+    public class EnemyStateManager
     {
         private IEnemyState _currentStateHandler;
         private EnemyState _currentState = EnemyState.Rest;
+        private IEnemyVisualisation _enemyVisualisation;
         public EnemyState CurrentState => _currentState;
         
         private ITickHandler _inGameTime;
@@ -26,7 +27,12 @@ namespace Enemies
         List<IEnemyState> _states;
         
         [Inject]
-        public void Construct(EnemyRest enemyRest, EnemyMovement enemyMovement, EnemyChasing chasing, ITickHandler inGameTime)
+        public void Construct(
+            EnemyRest enemyRest,
+            EnemyMovement enemyMovement,
+            EnemyChasing chasing,
+            ITickHandler inGameTime,
+            IEnemyVisualisation enemyVisualisation)
         {
             _states = new List<IEnemyState>
             {
@@ -34,6 +40,7 @@ namespace Enemies
             };
            
             _inGameTime = inGameTime;
+            _enemyVisualisation = enemyVisualisation;
         }
 
         public void Initialize()
@@ -52,7 +59,6 @@ namespace Enemies
 
         private void OnInGameTick()
         {
-            Debug.Log("tick on statr");
             _currentStateHandler.OnGameTick();
             
         }
@@ -72,13 +78,11 @@ namespace Enemies
             if (_currentStateHandler != null)
             {
                 _currentStateHandler.ChangeState -= ChangeState;
-                Debug.Log("UnSub");
                 _currentStateHandler.ExitState();
                 _currentStateHandler = null;
             }
-
+            _enemyVisualisation.ChangeEnemyVisualisation(state);
             _currentStateHandler = _states[(int)state];
-            Debug.Log("Sub");
             _currentStateHandler.ChangeState += ChangeState;
             _currentStateHandler.EnterState();
             

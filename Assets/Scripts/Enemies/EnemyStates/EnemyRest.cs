@@ -18,11 +18,9 @@ namespace Enemies.EnemyStates
 
         public void EnterState()
         {
-            Debug.Log("Enter rest state");
         }
         public void ExitState()
         {
-            Debug.Log("Exit rest state");
         }
 
         public async UniTask OnGameTick()

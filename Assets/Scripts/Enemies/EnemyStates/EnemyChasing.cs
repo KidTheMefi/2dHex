@@ -74,6 +74,7 @@ namespace Enemies.EnemyStates
         {
             if (_enemyModel.Energy <= 0)
             {
+                await _movement;
                 ChangeState.Invoke(EnemyState.Rest);
                 return;
             }
@@ -84,7 +85,7 @@ namespace Enemies.EnemyStates
             {
                 var hex = _path.Dequeue();
                 _target = hex.AxialCoordinate;
-                _movementQueue = HexUtils.VectorSeparation(HexUtils.CalculatePosition(_enemyModel.AxialPosition), hex.Position, hex.LandTypeProperty.MovementTimeCost);
+                _movementQueue = HexUtils.VectorSeparation(HexUtils.CalculatePosition(_enemyModel.AxialPosition), hex.Position, hex.LandTypeProperty.MovementTimeCost-1);
             }
             else
             {

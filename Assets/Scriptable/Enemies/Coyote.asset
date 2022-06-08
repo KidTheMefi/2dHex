@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp:Enemies:EnemySetting
   _properties:
     _sprite: {fileID: 21300000, guid: 34195d600639ced46a1109be2bac4f18, type: 3}
-    _maxEnergy: 36
+    _maxEnergy: 60
     _maxHp: 25
     _attack: 25
     _name: Coyote

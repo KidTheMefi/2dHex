@@ -24,7 +24,7 @@ public class GameInstaller : MonoInstaller
         
         Container.BindInstance(_camera).AsSingle();
         Container.BindInstance(_canvas).AsSingle();
-        Container.BindInstance(_hexHighlight).WithId("hexHighlight").AsSingle();
+        Container.BindInstance(_hexHighlight).WithId("hexHighlight").AsTransient();
         Container.BindInstance(_clock).AsSingle();
         Container.BindInstance(_nightMask).AsSingle();
         Container.BindInstance(_panel).AsSingle();

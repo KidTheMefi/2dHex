@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   landName: Hill
   _landType: 3
+  _landBiom: 1
   _isPassable: 1
   _movementTimeCost: 4
   _movementEnergyCost: 4

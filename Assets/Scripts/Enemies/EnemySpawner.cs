@@ -34,7 +34,7 @@ namespace Enemies
             }
             _enemies.Clear();
             
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 2; i++)
             {
                 var enemySetupSettings = _enemiesSettings.Enemies[/*Random.Range(0, _enemiesSettings.Enemies.Count)*/2];
                 //var enemyPos = _mapGeneration.GetRandomStartPosition();
