@@ -14,42 +14,45 @@ namespace Enemies
         public event Action<EnemyState> ChangeState = delegate(EnemyState state) { };
 
         private EnemyView _enemyView;
-        private EnemyModel _enemyModel;
+        private EnemyMapModel _enemyMapModel;
         private EnemyPathFind _enemyPathFind;
         private PlayerGroupModel _playerGroupModel;
         private InGameTime _gameTime;
-        //private Transform _hexTarget;
-        
+
         private Tween _movement;
         private Queue<Vector3> _movementQueue = new Queue<Vector3>();
         private Queue<Hex> _path = new Queue<Hex>();
         private Vector2Int _target;
 
         public EnemyMovement(
-            EnemyModel enemyModel,
+            EnemyMapModel enemyMapModel,
             EnemyView enemyView,
             PlayerGroupModel playerGroupModel,
             EnemyPathFind enemyPathFind, 
-            InGameTime gameTime/*, [Inject(Id = "hexHighlight")] Transform hextarget*/
+            InGameTime gameTime
             )
         {
-            //_hexTarget = enemyView.transform;
             _enemyView = enemyView;
-            _enemyModel = enemyModel;
+            _enemyMapModel = enemyMapModel;
             _playerGroupModel = playerGroupModel;
             _enemyPathFind = enemyPathFind;
             _gameTime = gameTime;
-            //_hexTarget = hextarget;
         }
 
+        private void CalculateTargetPointerPosition(Vector3 targetPosition)
+        {
+            var pos =  targetPosition - HexUtils.CalculatePosition(_enemyMapModel.AxialPosition);
+            _enemyView.SetTargetPointer(pos);
+        }
+        
         private async UniTask CheckNextHex()
         {
             if (_path.Count != 0)
             {
                 var hex = _path.Dequeue();
                 _target = hex.AxialCoordinate;
-                //_hexTarget.position = hex.Position;
-                _movementQueue = HexUtils.VectorSeparation(HexUtils.CalculatePosition(_enemyModel.AxialPosition), hex.Position, hex.LandTypeProperty.MovementTimeCost);
+                CalculateTargetPointerPosition(hex.Position);
+                _movementQueue = HexUtils.VectorSeparation(HexUtils.CalculatePosition(_enemyMapModel.AxialPosition), hex.Position, hex.LandTypeProperty.MovementTimeCost);
             }
             else
             {
@@ -57,6 +60,7 @@ namespace Enemies
                 CheckNextHex().Forget();
             }
         }
+        
 
         private async UniTask MovingOnTick()
         {
@@ -64,15 +68,15 @@ namespace Enemies
             {
                 var moveTo = _movementQueue.Dequeue();
                 _movement = _enemyView.transform.DOMove(moveTo, _gameTime.TickSeconds).SetEase(Ease.Linear);
-                _enemyModel.ChangeEnergy(-1);
+                _enemyMapModel.ChangeEnergy(-1);
                 
                 if (_movementQueue.Count == 0)
                 {
-                    _enemyModel.AxialPosition = _target;
+                    _enemyMapModel.AxialPosition = _target;
                     CheckNextHex().Forget();
                     
                     
-                    if (_enemyModel.Energy <= 0)
+                    if (_enemyMapModel.Energy <= 0)
                     {
                         await _movement;
                         ChangeState.Invoke(EnemyState.Rest);
@@ -80,7 +84,7 @@ namespace Enemies
                     }
                     
                     
-                    if (HexUtils.AxialDistance(_playerGroupModel.AxialPosition, _enemyModel.AxialPosition) <= _enemyModel.EnemyProperties.ViewRadius)
+                    if (HexUtils.AxialDistance(_playerGroupModel.AxialPosition, _enemyMapModel.AxialPosition) <= _enemyMapModel.EnemyProperties.ViewRadius)
                     {
                         await _movement;
                         ChangeState.Invoke(EnemyState.Chasing);
@@ -89,7 +93,6 @@ namespace Enemies
             }
             else
             {
-                Debug.Log("before = " + _movementQueue.Count);
                 CheckNextHex().Forget();
             }
         }
@@ -103,10 +106,12 @@ namespace Enemies
 
         public async void EnterState()
         {
+            _enemyView.TargetPointerArrowEnable(true);
             await CheckNextHex();
         }
         public void ExitState()
         {
+            _enemyView.TargetPointerArrowEnable(false);
             Dispose();
         }
         public async UniTask OnGameTick()

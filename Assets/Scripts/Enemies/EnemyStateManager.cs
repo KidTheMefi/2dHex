@@ -67,12 +67,10 @@ namespace Enemies
         {
             if (_currentState == state)
             {
-                Debug.Log("_currentState == state");
+                Debug.Log("Enemy_currentState == state");
                 return;
             }
-            
-            Log.Trace("View Changing state from {0} to {1}", _currentState, state);
-            
+
             _currentState = state;
 
             if (_currentStateHandler != null)

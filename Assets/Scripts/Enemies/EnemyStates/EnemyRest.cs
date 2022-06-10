@@ -7,13 +7,13 @@ namespace Enemies.EnemyStates
     public class EnemyRest : IEnemyState
     {
         public event Action<EnemyState> ChangeState = delegate(EnemyState state) { };
-        private EnemyModel _enemyModel;
+        private EnemyMapModel _enemyMapModel;
         private EnemyView _enemyView;
 
-        public EnemyRest(EnemyView enemyView, EnemyModel enemyModel)
+        public EnemyRest(EnemyView enemyView, EnemyMapModel enemyMapModel)
         {
             _enemyView = enemyView;
-            _enemyModel = enemyModel;
+            _enemyMapModel = enemyMapModel;
         }
 
         public void EnterState()
@@ -26,8 +26,8 @@ namespace Enemies.EnemyStates
         public async UniTask OnGameTick()
         {
             await UniTask.Yield();
-            _enemyModel.ChangeEnergy(2);
-            if (_enemyModel.Energy >= _enemyModel.EnemyProperties.MaxEnergy)
+            _enemyMapModel.ChangeEnergy(2);
+            if (_enemyMapModel.Energy >= _enemyMapModel.EnemyProperties.MaxEnergy)
             {
                 ChangeState.Invoke(EnemyState.Moving);
             }

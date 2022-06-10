@@ -8,20 +8,20 @@ namespace Enemies
 {
     public class EnemyPathFind
     {
-        private EnemyModel _enemyModel;
+        private EnemyMapModel _enemyMapModel;
         private AStarSearch _aStarSearch;
         private IHexStorage _hexStorage;
         private PlayerGroupModel _playerGroupModel;
         private HexMapContinents _hexMapContinents;
 
         public EnemyPathFind(
-            EnemyModel enemyModel,
+            EnemyMapModel enemyMapModel,
             AStarSearch aStarSearch,
             IHexStorage hexStorage,
             PlayerGroupModel playerGroupModel,
             HexMapContinents hexMapContinents)
         {
-            _enemyModel = enemyModel;
+            _enemyMapModel = enemyMapModel;
             _aStarSearch = aStarSearch;
             _hexStorage = hexStorage;
             _playerGroupModel = playerGroupModel;
@@ -31,15 +31,15 @@ namespace Enemies
         public async UniTask<Queue<Hex>> FindNewRandomPath()
         {
             Vector2Int target;
-            if (_enemyModel.EnemyProperties.BiomType != BiomType.None)
+            if (_enemyMapModel.EnemyProperties.BiomType != BiomType.None)
             {
-                target = _hexMapContinents.AllContinents.Find(c => c.BiomType == _enemyModel.EnemyProperties.BiomType).GetRandomHexAtContinent();
+                target = _hexMapContinents.AllContinents.Find(c => c.BiomType == _enemyMapModel.EnemyProperties.BiomType).GetRandomHexAtContinent();
             }
             else
             {
-                var hexes = HexUtils.GetAxialAreaAtRange(_enemyModel.AxialPosition, _enemyModel.EnemyProperties.ViewRadius);
+                var hexes = HexUtils.GetAxialAreaAtRange(_enemyMapModel.AxialPosition, _enemyMapModel.EnemyProperties.ViewRadius);
                 target = hexes[Random.Range(0, hexes.Count)];
-                while (!_hexStorage.HexAtAxialCoordinateExist(target)|| target == _enemyModel.AxialPosition)
+                while (!_hexStorage.HexAtAxialCoordinateExist(target)|| target == _enemyMapModel.AxialPosition)
                 {
                     Debug.Log("while");
                     target = hexes[Random.Range(0, hexes.Count)];
@@ -58,7 +58,7 @@ namespace Enemies
 
         private async UniTask<Queue<Hex>> PathFind(Vector2Int target)
         {
-            var starPathPos = _enemyModel.AxialPosition;
+            var starPathPos = _enemyMapModel.AxialPosition;
             var endPathPos = target;
             var pathList = await _aStarSearch.TryPathFind(starPathPos, endPathPos);
             Queue<Hex> path = new Queue<Hex>();

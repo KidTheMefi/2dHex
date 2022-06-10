@@ -6,8 +6,8 @@ namespace Enemies
     public class EnemySettings : ScriptableObject
     {
         [SerializeField]
-        private EnemyModel.Properties _properties;
+        private EnemyMapModel.Properties _properties;
         
-        public EnemyModel.Properties Properties => _properties;
+        public EnemyMapModel.Properties Properties => _properties;
     }
 }

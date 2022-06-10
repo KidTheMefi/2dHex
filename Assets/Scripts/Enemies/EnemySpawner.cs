@@ -28,15 +28,15 @@ namespace Enemies
 
         private void SpawnEnemy()
         {
-            foreach (var enemy in _enemies)
+            foreach (var enemy in _enemies)       
             {
                 enemy.Despawn();
             }
             _enemies.Clear();
             
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 5; i++)
             {
-                var enemySetupSettings = _enemiesSettings.Enemies[/*Random.Range(0, _enemiesSettings.Enemies.Count)*/2];
+                var enemySetupSettings = _enemiesSettings.Enemies[Random.Range(0, _enemiesSettings.Enemies.Count)];
                 //var enemyPos = _mapGeneration.GetRandomStartPosition();
                 var enemyPos = _hexMapContinents.AllContinents.Find(x => x.BiomType == enemySetupSettings.Properties.BiomType).GetRandomHexAtContinent();
                 var enemy = _enemyFactory.Create(enemyPos, enemySetupSettings );

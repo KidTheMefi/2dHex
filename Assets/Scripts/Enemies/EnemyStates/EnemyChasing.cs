@@ -13,7 +13,7 @@ namespace Enemies.EnemyStates
 
         public event Action<EnemyState> ChangeState = delegate(EnemyState state) { };
 
-        private EnemyModel _enemyModel;
+        private EnemyMapModel _enemyMapModel;
         private EnemyView _enemyView;
         private EnemyPathFind _enemyPathFind;
         private PlayerGroupModel _playerGroupModel;
@@ -24,11 +24,11 @@ namespace Enemies.EnemyStates
         private Queue<Hex> _path = new Queue<Hex>();
         private Vector2Int _target;
         
-        public EnemyChasing(InGameTime gameTime, EnemyView enemyView, EnemyModel enemyModel, PlayerGroupModel playerGroupModel, EnemyPathFind enemyPathFind)
+        public EnemyChasing(InGameTime gameTime, EnemyView enemyView, EnemyMapModel enemyMapModel, PlayerGroupModel playerGroupModel, EnemyPathFind enemyPathFind)
         {
             _gameTime = gameTime;
             _enemyView = enemyView;
-            _enemyModel = enemyModel;
+            _enemyMapModel = enemyMapModel;
             _playerGroupModel = playerGroupModel;
             _enemyPathFind = enemyPathFind;
         }
@@ -56,11 +56,11 @@ namespace Enemies.EnemyStates
             {
                 var moveTo = _movementQueue.Dequeue();
                 _movement = _enemyView.transform.DOMove(moveTo, _gameTime.TickSeconds).SetEase(Ease.Linear);
-                _enemyModel.ChangeEnergy(-1);
+                _enemyMapModel.ChangeEnergy(-1);
                 if (_movementQueue.Count == 0)
                 {
                     
-                    _enemyModel.AxialPosition = _target;
+                    _enemyMapModel.AxialPosition = _target;
                     CheckNextHex().Forget();
                 }
             }
@@ -72,7 +72,7 @@ namespace Enemies.EnemyStates
         
         private async UniTask CheckNextHex()
         {
-            if (_enemyModel.Energy <= 0)
+            if (_enemyMapModel.Energy <= 0)
             {
                 await _movement;
                 ChangeState.Invoke(EnemyState.Rest);
@@ -85,7 +85,7 @@ namespace Enemies.EnemyStates
             {
                 var hex = _path.Dequeue();
                 _target = hex.AxialCoordinate;
-                _movementQueue = HexUtils.VectorSeparation(HexUtils.CalculatePosition(_enemyModel.AxialPosition), hex.Position, hex.LandTypeProperty.MovementTimeCost-1);
+                _movementQueue = HexUtils.VectorSeparation(HexUtils.CalculatePosition(_enemyMapModel.AxialPosition), hex.Position, hex.LandTypeProperty.MovementTimeCost-1);
             }
             else
             {

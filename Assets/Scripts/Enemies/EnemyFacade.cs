@@ -6,7 +6,7 @@ namespace Enemies
 {
     public class EnemyFacade : MonoBehaviour, IPoolable<Vector2Int, EnemySettings, IMemoryPool>
     {
-        private EnemyModel _enemyModel;
+        private EnemyMapModel _enemyMapModel;
         private EnemyView _enemyView;
         private EnemyMovement _movement;
         private EnemyStateManager _enemyStateManager;
@@ -15,12 +15,12 @@ namespace Enemies
         [Inject]
         public void Construct(
             EnemyMovement movement, 
-            EnemyModel enemyModel,
+            EnemyMapModel enemyMapModel,
             EnemyView enemyView,
             EnemyStateManager enemyStateManager
         )
         {
-            _enemyModel = enemyModel;
+            _enemyMapModel = enemyMapModel;
             _enemyView = enemyView;
             _movement = movement;
             _enemyStateManager = enemyStateManager;
@@ -28,8 +28,8 @@ namespace Enemies
 
         public Vector2Int AxialPosition
         {
-            get { return _enemyModel.AxialPosition; }
-            set { _enemyModel.AxialPosition = value; }
+            get { return _enemyMapModel.AxialPosition; }
+            set { _enemyMapModel.AxialPosition = value; }
         }
         
         public Vector3 Position
@@ -46,6 +46,7 @@ namespace Enemies
 
         public void OnDespawned()
         {
+            _enemyView.MouseOnObject -= OnMouseAtObject;
             _movement.Dispose();
             _enemyStateManager.Dispose();
             _pool = null;
@@ -59,8 +60,21 @@ namespace Enemies
             _pool = pool;
             
             _enemyView.SetSprite(enemySettings.Properties.Sprite);
-            _enemyModel.Setup(enemySettings);
+            _enemyView.MouseOnObject += OnMouseAtObject;
+            _enemyMapModel.Setup(enemySettings);
             _enemyStateManager.Initialize();
+        }
+
+        private void OnMouseAtObject(bool value)
+        {
+            if (value)
+            {
+                Debug.Log("mouse entered");
+            }
+            else
+            {
+                Debug.Log("mouse exit"); 
+            }
         }
 
         public class Factory : PlaceholderFactory<Vector2Int, EnemySettings, EnemyFacade>

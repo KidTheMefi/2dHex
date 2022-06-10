@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7344717868320225011
 Transform:
   m_ObjectHideFlags: 0
@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1357256331687613813}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.018, z: 0}
+  m_LocalPosition: {x: 0, y: 0.018, z: -0.05}
   m_LocalScale: {x: 1.08, y: 1.11, z: 1}
   m_Children: []
   m_Father: {fileID: 6854974742231919578}
@@ -99,7 +99,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6408054553358861151
 RectTransform:
   m_ObjectHideFlags: 0
@@ -262,6 +262,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6854974741493434741}
   - component: {fileID: 6854974741493434740}
+  - component: {fileID: 331481743168380962}
   m_Layer: 0
   m_Name: HexSprite
   m_TagString: Untagged
@@ -277,7 +278,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6854974741493434738}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.05}
   m_LocalScale: {x: 1.02, y: 1.02, z: 1}
   m_Children: []
   m_Father: {fileID: 6854974742231919578}
@@ -334,6 +335,40 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!60 &331481743168380962
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6854974741493434738}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.086666666, y: 0.5}
+      - {x: -0.07333334, y: 0.5}
+      - {x: -0.19333334, y: 0.43333334}
+      - {x: -0.46, y: 0.27333334}
+      - {x: -0.46, y: -0.3}
+      - {x: -0.086666666, y: -0.5}
+      - {x: 0.086666666, y: -0.5}
+      - {x: 0.46, y: -0.27333334}
+      - {x: 0.46, y: 0.3}
 --- !u!1 &6854974742231919579
 GameObject:
   m_ObjectHideFlags: 0
@@ -383,4 +418,7 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 6854974741493434740}
   _coordinate: {fileID: 3883829939698209368}
   _fogRenderer: {fileID: 131666989072147295}
+  _fogCollider: {fileID: 331481743168380962}
+  _darkFogColor: {r: 0.084905684, g: 0.068485245, b: 0.071978465, a: 1}
   _fogColor: {r: 0.6037736, g: 0.55452013, b: 0.46422216, a: 1}
+  _hexFogSprite: {fileID: 21300000, guid: 37e50d431e23e0c43b307fe7912f48ce, type: 3}
