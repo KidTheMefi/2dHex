@@ -21,9 +21,9 @@ public class HexView : MonoBehaviour
         _hexSprite = sprite;
     }
 
-    public void ChangeFogStatus()
+    public void ChangeFogStatus(bool value = false)
     {
-        _fogOn = !_fogOn;
+        _fogOn = value ?  value : !_fogOn;
 
             if (_fogOn)
             {

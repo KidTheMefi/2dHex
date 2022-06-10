@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Interfaces;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -11,6 +12,10 @@ public class MapGeneration : IInitializable, IRandomPassablePosition
     private RiverGenerator _riverGenerator;
     private TestButtonUI.Factory _buttonFactory;
     private IHexStorage _hexStorage;
+
+    private bool _fogOn = false;
+    
+    private List<TestButtonUI> _buttons;
 
     public MapGeneration(
         HexMapContinents hexMapContinents,
@@ -26,8 +31,9 @@ public class MapGeneration : IInitializable, IRandomPassablePosition
     
     public void Initialize()
     {
-        var generateWorldButton = _buttonFactory.Create(GenerateStart, "Generate map");
-        var fogButton = _buttonFactory.Create(Fog, "Fog");
+        _buttons = new List<TestButtonUI>();
+        _buttons.Add(_buttonFactory.Create(GenerateStart, "Generate map")); 
+        _buttons.Add(_buttonFactory.Create(Fog, "Fog"));
     }
 
     private void Fog()
@@ -37,12 +43,29 @@ public class MapGeneration : IInitializable, IRandomPassablePosition
             hex.ChangeFogStatus();
         }
     }
+ 
 
     private async void GenerateStart()
     {
+        foreach (var button in _buttons)
+        {
+            button.enabled = false;
+        }
+        
         await _hexMapContinents.GenerateStart();
+        
+        foreach (var hex in _hexStorage.HexToHexView().Values)
+        {
+            hex.ChangeFogStatus(true);
+        }
+        
         await _riverGenerator.DrawRandomRivers(6);
 
+        foreach (var button in _buttons)
+        {
+            button.enabled = true;
+        }
+        
         MapGenerated.Invoke();
     }
 
