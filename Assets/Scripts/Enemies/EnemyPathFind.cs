@@ -41,7 +41,6 @@ namespace Enemies
                 target = hexes[Random.Range(0, hexes.Count)];
                 while (!_hexStorage.HexAtAxialCoordinateExist(target)|| target == _enemyMapModel.AxialPosition)
                 {
-                    Debug.Log("while");
                     target = hexes[Random.Range(0, hexes.Count)];
                 }
             }
