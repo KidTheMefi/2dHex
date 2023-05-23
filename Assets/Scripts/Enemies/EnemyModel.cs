@@ -4,7 +4,7 @@ using Random = UnityEngine.Random;
 
 namespace Enemies
 {
-    public class EnemyMapModel
+    public class EnemyModel
     {
         private Properties _properties;
         public Properties EnemyProperties => _properties;
@@ -13,6 +13,9 @@ namespace Enemies
         
         private int _energy;
         public int Energy => _energy;
+        
+        private int _hp;
+        public int HP => _hp;
         
         public Vector2Int AxialPosition
         {
@@ -24,11 +27,17 @@ namespace Enemies
         {
             _properties = new Properties(enemySettings);
             _energy = Random.Range(1,enemySettings.Properties.MaxEnergy);
+            _hp = enemySettings.Properties.MaxHP;
         }
 
         public void ChangeEnergy(int i)
         {
             _energy += i;
+        }
+        
+        public void ChangeHP(int i)
+        {
+            _hp += i;
         }
         
         [Serializable]

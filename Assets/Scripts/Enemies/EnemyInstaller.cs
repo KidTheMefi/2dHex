@@ -7,7 +7,7 @@ namespace Enemies
     {
         public override void InstallBindings()
         {
-            Container.BindInterfacesAndSelfTo<EnemyMapModel>().AsSingle();
+            Container.BindInterfacesAndSelfTo<EnemyModel>().AsSingle();
             Container.BindInterfacesAndSelfTo<EnemyMovement>().AsSingle();
             Container.BindInterfacesAndSelfTo<EnemyPathFind>().AsSingle();
             Container.BindInterfacesAndSelfTo<EnemyStateManager>().AsSingle();

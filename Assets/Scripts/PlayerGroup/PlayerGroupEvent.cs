@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace PlayerGroup
 {
@@ -6,19 +7,22 @@ namespace PlayerGroup
     {
         public void EnterState()
         {
-            throw new System.NotImplementedException();
+            
         }
         public void ExitState()
         {
-            throw new System.NotImplementedException();
+            
         }
-        public UniTask OnGameTick()
+        public async UniTask OnGameTick()
         {
-            throw new System.NotImplementedException();
+            Debug.LogError("Tick on EventState");
+            await UniTask.Yield();
+
+            //throw new System.NotImplementedException();
         }
         public void OnStopPressed()
         {
-            throw new System.NotImplementedException();
+            
         }
     }
 }

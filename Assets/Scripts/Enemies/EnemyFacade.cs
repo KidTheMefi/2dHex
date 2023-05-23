@@ -6,30 +6,28 @@ namespace Enemies
 {
     public class EnemyFacade : MonoBehaviour, IPoolable<Vector2Int, EnemySettings, IMemoryPool>
     {
-        private EnemyMapModel _enemyMapModel;
+        private EnemyModel _enemyModel;
         private EnemyView _enemyView;
-        private EnemyMovement _movement;
         private EnemyStateManager _enemyStateManager;
         private IMemoryPool _pool;
 
         [Inject]
         public void Construct(
             EnemyMovement movement, 
-            EnemyMapModel enemyMapModel,
+            EnemyModel enemyModel,
             EnemyView enemyView,
             EnemyStateManager enemyStateManager
         )
         {
-            _enemyMapModel = enemyMapModel;
+            _enemyModel = enemyModel;
             _enemyView = enemyView;
-            _movement = movement;
             _enemyStateManager = enemyStateManager;
         }
 
         public Vector2Int AxialPosition
         {
-            get { return _enemyMapModel.AxialPosition; }
-            set { _enemyMapModel.AxialPosition = value; }
+            get { return _enemyModel.AxialPosition; }
+            set { _enemyModel.AxialPosition = value; }
         }
         
         public Vector3 Position
@@ -47,7 +45,6 @@ namespace Enemies
         public void OnDespawned()
         {
             _enemyView.MouseOnObject -= OnMouseAtObject;
-            _movement.Dispose();
             _enemyStateManager.Dispose();
             _pool = null;
             
@@ -61,7 +58,7 @@ namespace Enemies
             
             _enemyView.SetSprite(enemySettings.Properties.Sprite);
             _enemyView.MouseOnObject += OnMouseAtObject;
-            _enemyMapModel.Setup(enemySettings);
+            _enemyModel.Setup(enemySettings);
             _enemyStateManager.Initialize();
         }
 

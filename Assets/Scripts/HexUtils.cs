@@ -156,7 +156,7 @@ public class HexUtils
         return AxialRound(new Vector2(q,r));
     }
 
-    public static Vector3 CalculatePosition( Vector2Int axialCoordinate)
+    public static Vector3 CalculatePosition(Vector2Int axialCoordinate)
     {
         float height = HexRadius * 2;
         float width = WIDTH_MULTIPLIER * HexRadius;

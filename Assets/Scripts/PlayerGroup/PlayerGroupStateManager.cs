@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using GameTime;
 using ModestTree;
 using UnityEngine;
@@ -51,7 +52,7 @@ namespace PlayerGroup
         
         private void OnInGameTick()
         {
-            _currentStateHandler.OnGameTick();
+            _currentStateHandler.OnGameTick().Forget();
         }
 
         private void OnStopPressed()

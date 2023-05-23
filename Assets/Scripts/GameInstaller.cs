@@ -1,5 +1,6 @@
 using System;
 using Enemies;
+using GameEvents;
 using GameTime;
 using PlayerGroup;
 using UI;
@@ -21,7 +22,6 @@ public class GameInstaller : MonoInstaller
     
     public override void InstallBindings()
     {
-        
         Container.BindInstance(_camera).AsSingle();
         Container.BindInstance(_canvas).AsSingle();
         Container.BindInstance(_hexHighlight).WithId("hexHighlight").AsTransient();
@@ -38,7 +38,8 @@ public class GameInstaller : MonoInstaller
         InstallPlayerGroup();
         InstallEnemies();
         InstallUI();
-        
+        InstallSignals();
+
     }
 
     private void InstallInputSystem()
@@ -111,6 +112,13 @@ public class GameInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<PauseMenu>().AsSingle();
         Container.BindFactory<Action, string, TestButtonUI, TestButtonUI.Factory>().FromComponentInNewPrefab(_prefabList.ButtonPrefab).UnderTransform(_buttonsParent.transform);
         Container.Bind<PlayerUIEnergy>().FromComponentInNewPrefab(_prefabList.PlayerUIEnergy).UnderTransform(_canvas.transform).AsSingle().NonLazy();
+    }
+
+    private void InstallSignals()
+    {
+        SignalBusInstaller.Install(Container);
+        Container.DeclareSignal<GameSignals.EnemyAttackSignal>();
+        Container.BindInterfacesTo<EnemyAttackEvent>().AsSingle();
     }
 }
  class EnemyFacadePool : MonoPoolableMemoryPool<Vector2Int, EnemySettings, IMemoryPool, EnemyFacade>

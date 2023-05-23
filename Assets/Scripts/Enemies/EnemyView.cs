@@ -51,7 +51,7 @@ namespace Enemies
 
         public void SetTargetPointer(Vector3 position)
         {
-            float angle = Vector3.Angle(Vector3.up, position);
+            float angle = Vector3.Angle(Vector3.up, position) -45f;
             angle = position.x < 0 ? angle : -angle;
             _targetPointerArrow.gameObject.transform.rotation = Quaternion.Euler(0,0,angle);
             _targetPointerArrow.gameObject.transform.localPosition = position.normalized * 0.53f;

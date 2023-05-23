@@ -23,7 +23,7 @@ namespace PlayerGroup
         private PlayerUIEnergy _playerUIEnergy;
         private PlayerGroupStateManager _playerGroupStateManager;
         private PlayerGroupView _playerGroupView;
-        private GameTime.InGameTime _inGameTime;
+        private InGameTime _inGameTime;
 
         private bool _sleep = false;
         private bool _stopRest;
@@ -31,7 +31,7 @@ namespace PlayerGroup
         public PlayerGroupRest(
             PlayerGroupModel playerGroupModel,
             PlayerGroupView playerGroupView,
-            GameTime.InGameTime inGameTime,
+            InGameTime inGameTime,
             PlayerUIEnergy playerUIEnergy,
             PlayerGroupStateManager playerGroupStateManager)
         {
@@ -53,7 +53,7 @@ namespace PlayerGroup
                 _restType = _sleep ? RestType.SleepFor : RestType.WaitFor;
 
                 _playerGroupStateManager.ChangeState(PlayerState.Rest);
-                StartRestAsync(hours, sleep).Forget();
+                StartRestAsync(hours).Forget();
             }
         }
 
@@ -69,7 +69,7 @@ namespace PlayerGroup
             _playerGroupStateManager.ChangeState(PlayerState.Idle);
         }
 
-        private async UniTask StartRestAsync(int hours, bool sleep = false)
+        private async UniTask StartRestAsync(int hours)
         {
             _inGameTime.SetTimeState(_sleep ? TimeStates.VeryFast : TimeStates.Fast);
             _stopRest = false;
@@ -113,6 +113,7 @@ namespace PlayerGroup
 
         public void ExitState()
         {
+            _stopRest = true;
             _restType = RestType.Wait;
             _inGameTime.SetTimeState(TimeStates.Default);
         }

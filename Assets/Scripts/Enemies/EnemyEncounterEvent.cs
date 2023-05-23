@@ -16,7 +16,7 @@ public class EnemyEncounterEvent
         _playerGroupModel = playerGroupModel;
     }
 
-    public void EventStart(EnemyMapModel enemyMapModel)
+    public void EventStart(EnemyModel enemyModel)
     {
         _playerGroupStateManager.ChangeState(PlayerState.Event);
         Debug.Log("EnemyEncounterEvent");
