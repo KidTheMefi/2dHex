@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Zenject;
 
@@ -25,9 +26,29 @@ namespace PlayerGroup
             _playerGroupView.transform.position = HexUtils.CalculatePosition(axialPos);
             _playerGroupStateManager.ChangeState(PlayerState.Idle);
         }
+
+        private void SpawnAtLoadedPosition()
+        {
+            _playerGroupModel.LoadModelFromJson();
+            _playerGroupView.transform.position = HexUtils.CalculatePosition(_playerGroupModel.AxialPosition);
+            _playerGroupStateManager.ChangeState(PlayerState.Idle);
+        }
+        
+        
         public void Initialize()
         {
-            _mapGeneration.MapGenerated += SpawnAtRandomPosition;
+            _mapGeneration.MapGenerated += OnOnMapGenerated;
+        }
+        private void OnOnMapGenerated(bool loaded)
+        {
+            if (loaded)
+            {
+                SpawnAtLoadedPosition();
+            }
+            else
+            {
+                SpawnAtRandomPosition();
+            }
         }
     }
 }

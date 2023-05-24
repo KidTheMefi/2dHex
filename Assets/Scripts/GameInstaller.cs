@@ -1,4 +1,5 @@
 using System;
+using DefaultNamespace;
 using Enemies;
 using GameEvents;
 using GameTime;
@@ -16,12 +17,17 @@ public class GameInstaller : MonoInstaller
     [SerializeField] private TimeClock _clock;
     [SerializeField] private NightMask _nightMask;
     [SerializeField] private PanelScript _panel;
+    [SerializeField] private SaveHandler _saveHandler;
+    
+
+    [SerializeField] private PlayerGroupModel.PlayerSettings _playerSettings;
     
     [Inject]
     private PrefabList _prefabList = null;
     
     public override void InstallBindings()
     {
+        Container.BindInstance(_saveHandler);
         Container.BindInstance(_camera).AsSingle();
         Container.BindInstance(_canvas).AsSingle();
         Container.BindInstance(_hexHighlight).WithId("hexHighlight").AsTransient();
@@ -66,6 +72,7 @@ public class GameInstaller : MonoInstaller
 
     private void InstallPlayerGroup()
     {
+        Container.BindInstance(_playerSettings).AsSingle();
         Container.Bind<PlayerGroupView>().FromComponentInNewPrefab(_prefabList.PlayerGroupPrefab).WithGameObjectName("Player").AsSingle();
         Container.BindInterfacesAndSelfTo<PlayerGroupModel>().AsSingle();
         
@@ -96,11 +103,12 @@ public class GameInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<HexMapContinents>().AsSingle();
         Container.BindInterfacesAndSelfTo<RiverGenerator>().AsSingle();
     }
+    
     private void InstallEnemies()
     {
         Container.BindInterfacesAndSelfTo<EnemySpawner>().AsSingle();
-        Container.BindFactory<Vector2Int, EnemySettings, EnemyFacade, EnemyFacade.Factory>()
-            .FromPoolableMemoryPool<Vector2Int,EnemySettings, EnemyFacade, EnemyFacadePool>(poolBinder => poolBinder
+        Container.BindFactory<Vector2Int, EnemyModel.Properties, EnemyFacade, EnemyFacade.Factory>()
+            .FromPoolableMemoryPool<Vector2Int,EnemyModel.Properties, EnemyFacade, EnemyFacadePool>(poolBinder => poolBinder
                 .WithInitialSize(10)
                 .FromSubContainerResolve()
                 .ByNewPrefabInstaller<EnemyInstaller>(_prefabList.EnemyFacade)
@@ -121,6 +129,6 @@ public class GameInstaller : MonoInstaller
         Container.BindInterfacesTo<EnemyAttackEvent>().AsSingle();
     }
 }
- class EnemyFacadePool : MonoPoolableMemoryPool<Vector2Int, EnemySettings, IMemoryPool, EnemyFacade>
+ class EnemyFacadePool : MonoPoolableMemoryPool<Vector2Int, EnemyModel.Properties, IMemoryPool, EnemyFacade>
 {
 }

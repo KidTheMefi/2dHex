@@ -4,12 +4,14 @@ using Zenject;
 
 namespace Enemies
 {
-    public class EnemyFacade : MonoBehaviour, IPoolable<Vector2Int, EnemySettings, IMemoryPool>
+    public class EnemyFacade : MonoBehaviour, IPoolable<Vector2Int, EnemyModel.Properties, IMemoryPool>
     {
         private EnemyModel _enemyModel;
         private EnemyView _enemyView;
         private EnemyStateManager _enemyStateManager;
         private IMemoryPool _pool;
+        
+        public EnemyModel EnemyModel => _enemyModel;
 
         [Inject]
         public void Construct(
@@ -49,14 +51,14 @@ namespace Enemies
             _pool = null;
             
         }
-        public void OnSpawned(Vector2Int axialPosition, EnemySettings enemySettings, IMemoryPool pool)
+        public void OnSpawned(Vector2Int axialPosition, EnemyModel.Properties enemySettings, IMemoryPool pool)
         {
 
             AxialPosition = axialPosition;
             Position = HexUtils.CalculatePosition(axialPosition);
             _pool = pool;
             
-            _enemyView.SetSprite(enemySettings.Properties.Sprite);
+            _enemyView.SetSprite(enemySettings.Sprite);
             _enemyView.MouseOnObject += OnMouseAtObject;
             _enemyModel.Setup(enemySettings);
             _enemyStateManager.Initialize();
@@ -74,7 +76,7 @@ namespace Enemies
             }
         }
 
-        public class Factory : PlaceholderFactory<Vector2Int, EnemySettings, EnemyFacade>
+        public class Factory : PlaceholderFactory<Vector2Int, EnemyModel.Properties, EnemyFacade>
         {
 
         }

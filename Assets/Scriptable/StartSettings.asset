@@ -24,6 +24,6 @@ MonoBehaviour:
   MapSetting: {fileID: 11400000, guid: d778f19d9ad255b429cd0d2ba693f02d, type: 2}
   GameTimeSettings:
     _defaultTickTime: 0.15
-    _restTickTime: 0.507
+    _restTickTime: 0.5
     _sleepTickTime: 0.15
   _enemiesSettings: {fileID: 11400000, guid: 9fba04a95849e8b49b9f3986bcc44c5e, type: 2}

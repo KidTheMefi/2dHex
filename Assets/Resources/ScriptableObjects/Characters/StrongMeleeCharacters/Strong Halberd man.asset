@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f0c95ff4cf04bb280cd94156c62afb7, type: 3}
+  m_Name: Strong Halberd man
+  m_EditorClassIdentifier: 
+  CharacterName: Strong Halberd man
+  SummonedCreature: 0
+  CharacterAnimatorPrefab: {fileID: 2569952036894771904, guid: a8710c3692cec7645a58da4158a8c957, type: 3}
+  CharacterSprite: {fileID: 0}
+  HP: 4
+  Armor: 4
+  MagicShield: 1
+  HireCost: 5
+  _magicDefenceList: []
+  _armorDefenceList:
+  - armorType: 0
+    value: 1
+  - armorType: 1
+    value: 1
+  - armorType: 2
+    value: 1
+  _magicDamageList: []
+  _physicDamageList:
+  - armorType: 1
+    value: 2
+  - armorType: 2
+    value: 1

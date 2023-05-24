@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6968357f53740878c233e194f06399f, type: 3}
+  m_Name: DiceList
+  m_EditorClassIdentifier: 
+  _diceListVariant: 2
+  _createdCubeSetups:
+  - {fileID: 11400000, guid: 6dd7368b91fa0f844ba0f737091124dd, type: 2}
+  - {fileID: 11400000, guid: 57b4cd0c941583e499d478dff0592142, type: 2}
+  - {fileID: 11400000, guid: 97cca61d37dc0a5488848d093bfe12d9, type: 2}
+  - {fileID: 11400000, guid: 8f4b154cba9a5ab459b3509332094ea5, type: 2}
+  - {fileID: 11400000, guid: cd04b811acd6fdb4a85c7b0051df976f, type: 2}
+  - {fileID: 11400000, guid: d61ddd4ccbf094a498e5ea5ed9c9c805, type: 2}
+  _baseElementsCube: {fileID: 11400000, guid: 4eb202689d3555b40b023911ef0616a6, type: 2}
+  _formsCube: {fileID: 11400000, guid: 73a54cc59e0b8364988e67a69482ce41, type: 2}
+  _fullRandomCube: {fileID: 11400000, guid: 6310165ba4cfa9743ab3cab8491976d5, type: 2}

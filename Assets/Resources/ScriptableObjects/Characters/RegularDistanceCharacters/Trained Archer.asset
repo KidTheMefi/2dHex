@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 669b62fad595427b8f184b99bd0efd87, type: 3}
+  m_Name: Trained Archer
+  m_EditorClassIdentifier: 
+  CharacterName: Archer
+  SummonedCreature: 0
+  CharacterAnimatorPrefab: {fileID: 5644680774038383018, guid: 8f3b8651a38ad0c41a7123a9a8ffccc6, type: 3}
+  CharacterSprite: {fileID: 0}
+  HP: 4
+  Armor: 2
+  MagicShield: 0
+  HireCost: 3
+  _magicDefenceList:
+  - magicType: 0
+    value: 1
+  - magicType: 1
+    value: 1
+  - magicType: 2
+    value: 1
+  - magicType: 3
+    value: 1
+  _armorDefenceList: []
+  _magicDamageList: []
+  _physicDamageList:
+  - armorType: 0
+    value: 3

@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f0c95ff4cf04bb280cd94156c62afb7, type: 3}
+  m_Name: Strong Axeman
+  m_EditorClassIdentifier: 
+  CharacterName: Strong Axeman
+  SummonedCreature: 0
+  CharacterAnimatorPrefab: {fileID: 7627499883699186479, guid: f1aa64e983f175d4b9ec51230cfc10c4, type: 3}
+  CharacterSprite: {fileID: 0}
+  HP: 6
+  Armor: 2
+  MagicShield: 2
+  HireCost: 5
+  _magicDefenceList:
+  - magicType: 1
+    value: 1
+  _armorDefenceList:
+  - armorType: 1
+    value: 1
+  - armorType: 2
+    value: 1
+  _magicDamageList: []
+  _physicDamageList:
+  - armorType: 1
+    value: 3

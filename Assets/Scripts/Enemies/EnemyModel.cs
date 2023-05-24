@@ -4,30 +4,29 @@ using Random = UnityEngine.Random;
 
 namespace Enemies
 {
+    [Serializable]
     public class EnemyModel
     {
+        [SerializeField]
         private Properties _properties;
         public Properties EnemyProperties => _properties;
         
+        [SerializeField]
         private Vector2Int _axialPosition;
         
         private int _energy;
         public int Energy => _energy;
-        
-        private int _hp;
-        public int HP => _hp;
-        
+
         public Vector2Int AxialPosition
         {
             get { return _axialPosition; }
             set { _axialPosition = value; }
         }
 
-        public void Setup(EnemySettings enemySettings)
+        public void Setup(Properties enemySettings)
         {
-            _properties = new Properties(enemySettings);
-            _energy = Random.Range(1,enemySettings.Properties.MaxEnergy);
-            _hp = enemySettings.Properties.MaxHP;
+            _properties = enemySettings; //new Properties(enemySettings);
+            _energy = Random.Range(1,enemySettings.MaxEnergy);
         }
 
         public void ChangeEnergy(int i)
@@ -35,43 +34,26 @@ namespace Enemies
             _energy += i;
         }
         
-        public void ChangeHP(int i)
-        {
-            _hp += i;
-        }
         
         [Serializable]
-        public class Properties
+        public struct  Properties
         {
             [SerializeField] private Sprite _sprite;
             [SerializeField] private int _maxEnergy;
-            [SerializeField] private int _maxHp;
-            [SerializeField] private int _attack;
+            [SerializeField] private int _enemyLvl;
             [SerializeField] private string _name;
             [SerializeField] private string _description;
             [SerializeField] private BiomType _biomSpawn;
-            [SerializeField] private int _viewRadius = 6;
+            [SerializeField] private int _viewRadius;
 
             public Sprite Sprite => _sprite;
             public int MaxEnergy => _maxEnergy;
-            public int MaxHP => _maxHp;
-            public int Attack => _attack;
+            public int EnemyLvl => _enemyLvl;
             public string EnemyName => _name;
             public string Description => _description; 
             public BiomType BiomType => _biomSpawn;
             public int ViewRadius => _viewRadius;
-
-            public Properties(EnemySettings enemySettings)
-            {
-                _sprite = enemySettings.Properties.Sprite;
-                _maxEnergy = enemySettings.Properties.MaxEnergy;
-                _maxHp = enemySettings.Properties.MaxHP;
-                _attack =enemySettings.Properties.Attack;
-                _name = enemySettings.Properties.EnemyName;
-                _description = enemySettings.Properties.Description;
-                _biomSpawn = enemySettings.Properties.BiomType;
-                _viewRadius = enemySettings.Properties.ViewRadius;
-            }
+            
         }
     }
 }

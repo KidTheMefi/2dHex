@@ -6,13 +6,16 @@ using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
 
+[Serializable]
 public class Continent
 {
     private IHexStorage _hexStorage;
     private ILandGeneration _landGeneration;
 
+    [SerializeField]
     private List<Vector2Int> _continentAllHex;
     private Dictionary<LandType, List<Vector2Int>> _landTypes;
+    [SerializeField]
     private BiomType _biomType;
 
     public Dictionary<LandType, List<Vector2Int>> LandTypes => _landTypes;

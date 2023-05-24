@@ -1,14 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using Random = UnityEngine.Random;
 
 public enum LandType
 {
    Water, Plain, Forrest, Hill, Mountain
 }
 
-[CreateAssetMenu(menuName = "HexGame/LandTypeSettings")]
+[Serializable, CreateAssetMenu(menuName = "HexGame/LandTypeSettings")]
 public class LandTypeProperty : ScriptableObject
 {
    

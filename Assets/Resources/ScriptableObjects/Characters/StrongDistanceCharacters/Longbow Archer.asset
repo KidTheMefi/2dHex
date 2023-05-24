@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddc7cdfe9cab4266a29681171b459fc4, type: 3}
+  m_Name: Longbow Archer
+  m_EditorClassIdentifier: 
+  CharacterName: Power CrossBow man
+  SummonedCreature: 0
+  CharacterAnimatorPrefab: {fileID: 1994553296816749560, guid: dea4f5438db9a92409a4a68d4ddbbe59, type: 3}
+  CharacterSprite: {fileID: 0}
+  HP: 3
+  Armor: 5
+  MagicShield: 0
+  HireCost: 5
+  _magicDefenceList: []
+  _armorDefenceList:
+  - armorType: 1
+    value: 1
+  - armorType: 2
+    value: 1
+  - armorType: 0
+    value: 1
+  _magicDamageList: []
+  _physicDamageList:
+  - armorType: 0
+    value: 4

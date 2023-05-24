@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using DefaultNamespace;
 using UnityEngine;
 
 namespace Interfaces
@@ -14,6 +16,9 @@ namespace Interfaces
 
         public Dictionary<Hex, HexView> HexToHexView();
         public Dictionary<HexView, Hex> HexViewToHex();
+
+        public void SaveMap(HexMapSaved hexMapSaved);
+        public  UniTask LoadMap(HexMapSaved hexMapSaved);
 
     }
 }

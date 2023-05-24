@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using DefaultNamespace;
 using Interfaces;
 using UnityEngine;
 using Zenject;
@@ -13,6 +15,7 @@ public class HexMapGrid :  IInitializable, IHexStorage, IMapBorder
     private GameObject _centerPoint;
     
     private Hex[,] _hexStorageOddOffset;
+    
     private Dictionary<Hex, HexView> _hexToHexViews = new Dictionary<Hex, HexView>();
     private Dictionary<HexView, Hex> _hexViewToHex = new Dictionary<HexView, Hex>();
     
@@ -122,6 +125,40 @@ public class HexMapGrid :  IInitializable, IHexStorage, IMapBorder
     public Dictionary<HexView, Hex> HexViewToHex()
     {
         return _hexViewToHex;
+    }
+
+    public async UniTask LoadMap(HexMapSaved hexMapSaved)
+    {
+
+        var savedMapHexes = hexMapSaved.Hexes; 
+        //_mapResolution = new Vector2Int(savedMapHexes.Length;
+        _mapResolution = hexMapSaved.MapResolution;
+        _hexStorageOddOffset = new Hex[_mapResolution.x, _mapResolution.y];
+
+        foreach (var hex in savedMapHexes)
+        {
+            Vector2Int oddCoordinate =  HexUtils.AxialToOffsetOdd(hex.AxialCoordinate);;
+            
+            HexView hexTileView = _hexViewFactory.Create();
+            hexTileView.transform.position = hex.Position;
+            hexTileView.gameObject.name = oddCoordinate.ToString();
+            hexTileView.TextAtHex(HexUtils.OffsetOddToAxial(oddCoordinate).ToString());
+            
+            hexTileView.SetHexViewSprite(hex.Sprite);
+            hex.LandTypeSpriteChanged += ChangeHexSprite;
+            hex.InvokeLandTypeSpriteChanged();
+
+            _hexStorageOddOffset[oddCoordinate.x,oddCoordinate.y] = hex;
+            //ChangeHexSprite(hex, hex.LandTypeProperty.GetSprite());
+            _hexToHexViews.Add(hex, hexTileView);
+            _hexViewToHex.Add(hexTileView, hex);
+        }
+    }
+    
+    public void SaveMap(HexMapSaved hexMapSaved)
+    {
+        var savedMap = hexMapSaved;
+        savedMap.SaveMap(_hexStorageOddOffset, _mapResolution);
     }
 
     private void OnDestroy()

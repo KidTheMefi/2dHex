@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74e0cc7cb3e53ed4b9fd85b398a5c092, type: 3}
   m_Name: SimpleContinent
   m_EditorClassIdentifier: 
-  _biomType: 0
-  _minHexesCount: 2000
+  _biomType: 1
   _landsTypeSettings:
   - _landType: {fileID: 11400000, guid: 2834691ae17dd3e48972ffd8039687d6, type: 2}
     _percent: 15

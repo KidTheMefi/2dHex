@@ -20,7 +20,7 @@ namespace PlayerGroup
         private ITickHandler _inGameTime;
         private TestInputActions _testInputActions;
         List<IPlayerGroupState> _states;
-        
+
         [Inject]
         public void Construct(
             PlayerGroupIdle idle,
@@ -28,7 +28,8 @@ namespace PlayerGroup
             PlayerGroupRest rest,
             PlayerGroupEvent groupEvent,
             ITickHandler inGameTime,
-            TestInputActions testInputActions)
+            TestInputActions testInputActions,
+            PlayerGroupModel playerGroupModel)
         {
             _states = new List<IPlayerGroupState>
             {

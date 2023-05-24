@@ -1,7 +1,9 @@
 using System;
 using GameEvents;
 using PlayerGroup;
+using TeamCreation;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 public class EnemyAttackEvent : IInitializable, IDisposable
@@ -21,7 +23,11 @@ public class EnemyAttackEvent : IInitializable, IDisposable
     private void AttackBegin(GameSignals.EnemyAttackSignal enemyAttackSignal)
     {
         Debug.LogWarning($"{enemyAttackSignal.enemyModel.EnemyProperties.EnemyName} attacked player group");
+        ComputerTeam computerTeam = new ComputerTeam(enemyAttackSignal.enemyModel.EnemyProperties.EnemyLvl);
         _playerGroupStateManager.ChangeState(PlayerState.Event);
+
+        SceneManager.LoadScene("FightScene", LoadSceneMode.Single); 
+        //SceneManager.LoadScene(2, LoadSceneMode.Single);
     }
     public void Initialize()
     {

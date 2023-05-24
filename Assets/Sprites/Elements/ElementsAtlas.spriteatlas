@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ElementsAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: 3f006f3cced593f4c86a15ef4bc443e8, type: 3}
+    - {fileID: 2800000, guid: f4d8a402ffe480f478df563179b3656b, type: 3}
+    - {fileID: 2800000, guid: a55a56f4e463d2748a996f8a65fe2c28, type: 3}
+    - {fileID: 2800000, guid: 437bef5d416e64b418ece655d5edb368, type: 3}
+    - {fileID: 2800000, guid: ee361049a7373d44389b6103c74d9ad1, type: 3}
+    - {fileID: 2800000, guid: 3842f1a184caacb49bb2333386ec85df, type: 3}
+    - {fileID: 2800000, guid: 02f3be8e6e222724b964903e6c65cd27, type: 3}
+    - {fileID: 2800000, guid: f64cff96a2ffe5a4092925f027ba4302, type: 3}
+    - {fileID: 2800000, guid: 6de7036c4731731419eb1163a3fd7724, type: 3}
+    - {fileID: 2800000, guid: 9653f43ee557e3248a6d4842032bf026, type: 3}
+    - {fileID: 2800000, guid: 53f8aa2f27bcaba49936dea6cdeec765, type: 3}
+    - {fileID: 2800000, guid: b9f8140fbdd9a624ba4a749ca4f1a9cf, type: 3}
+    - {fileID: 2800000, guid: 36c6c7b07a8bf2147a43033970056b76, type: 3}
+    totalSpriteSurfaceArea: 3742720
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 36c6c7b07a8bf2147a43033970056b76, type: 3}
+  - {fileID: 21300000, guid: 3842f1a184caacb49bb2333386ec85df, type: 3}
+  - {fileID: 21300000, guid: f4d8a402ffe480f478df563179b3656b, type: 3}
+  - {fileID: 21300000, guid: a55a56f4e463d2748a996f8a65fe2c28, type: 3}
+  - {fileID: 21300000, guid: f64cff96a2ffe5a4092925f027ba4302, type: 3}
+  - {fileID: 21300000, guid: ee361049a7373d44389b6103c74d9ad1, type: 3}
+  - {fileID: 21300000, guid: 3f006f3cced593f4c86a15ef4bc443e8, type: 3}
+  - {fileID: 21300000, guid: 6de7036c4731731419eb1163a3fd7724, type: 3}
+  - {fileID: 21300000, guid: 437bef5d416e64b418ece655d5edb368, type: 3}
+  - {fileID: 21300000, guid: 9653f43ee557e3248a6d4842032bf026, type: 3}
+  - {fileID: 21300000, guid: 02f3be8e6e222724b964903e6c65cd27, type: 3}
+  - {fileID: 21300000, guid: b9f8140fbdd9a624ba4a749ca4f1a9cf, type: 3}
+  - {fileID: 21300000, guid: 53f8aa2f27bcaba49936dea6cdeec765, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - EmptyRune
+  - HealthWithLines2
+  - EarthWithLines2
+  - Fire
+  - Water
+  - Health
+  - Earth
+  - WaterWithLines
+  - FireWithLines
+  - Wind
+  - Mana
+  - ManaWithLines2
+  - WindWithLines
+  m_RenderDataMap: {}
+  m_Tag: ElementsAtlas
+  m_IsVariant: 0

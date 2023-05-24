@@ -1,30 +1,39 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Assertions;
-using Zenject;
 
+[Serializable]
 public class Hex 
 {
     public event Action<Hex, Sprite> LandTypeSpriteChanged = delegate { };
 
-    public readonly Vector2Int AxialCoordinate;
-    public readonly Vector3 Position;
+    [SerializeField]
+    public Vector2Int AxialCoordinate;
+    [SerializeField]
+    public Vector3 Position;
+    [SerializeField]
+    private Sprite _sprite;
+    public Sprite Sprite => _sprite;
     
+    [SerializeField]
     private LandTypeProperty _landTypeProperty;
     public LandTypeProperty LandTypeProperty => _landTypeProperty;
 
     public void SetLandTypeProperty(LandTypeProperty landTypeProperty)
     {
         _landTypeProperty = landTypeProperty;
-        LandTypeSpriteChanged.Invoke(this, landTypeProperty.GetSprite());
+        _sprite = _landTypeProperty.GetSprite();
+        LandTypeSpriteChanged.Invoke(this, _landTypeProperty.GetSprite());
     }
 
     public Hex(Vector2Int axialCoordinate)
     {
         AxialCoordinate = axialCoordinate;
         Position = HexUtils.CalculatePosition(axialCoordinate);
+    }
+
+    public void InvokeLandTypeSpriteChanged()
+    {
+        LandTypeSpriteChanged.Invoke(this, _landTypeProperty.GetSprite());
     }
 
 }

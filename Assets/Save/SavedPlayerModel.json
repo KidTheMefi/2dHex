@@ -1,0 +1,15 @@
+{
+    "_playerSettings": {
+        "_visionRadius": 4,
+        "_energy": 64,
+        "_energyMax": 64,
+        "_minSleepTime": 8,
+        "_savedTeam": {
+            "instanceID": 26552
+        }
+    },
+    "_axialPosition": {
+        "x": 21,
+        "y": 38
+    }
+}

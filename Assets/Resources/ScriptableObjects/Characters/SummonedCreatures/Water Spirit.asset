@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 669b62fad595427b8f184b99bd0efd87, type: 3}
+  m_Name: Water Spirit
+  m_EditorClassIdentifier: 
+  CharacterName: Water Spirit
+  SummonedCreature: 1
+  CharacterAnimatorPrefab: {fileID: 0}
+  CharacterSprite: {fileID: 0}
+  HP: 2
+  Armor: 0
+  MagicShield: 2
+  _magicDefenceList:
+  - magicType: 1
+    value: 2
+  _armorDefenceList:
+  - armorType: 0
+    value: 3
+  - armorType: 1
+    value: 2
+  - armorType: 2
+    value: 1
+  _magicDamageList:
+  - magicType: 1
+    value: 2
+  _physicDamageList:
+  - armorType: 2
+    value: 1

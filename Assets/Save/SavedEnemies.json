@@ -1,0 +1,89 @@
+{
+    "_enemyModels": [
+        {
+            "_properties": {
+                "_sprite": {
+                    "instanceID": 19080
+                },
+                "_maxEnergy": 60,
+                "_enemyLvl": 0,
+                "_name": "Coyote",
+                "_description": "",
+                "_biomSpawn": 2,
+                "_viewRadius": 6
+            },
+            "_axialPosition": {
+                "x": 34,
+                "y": 50
+            }
+        },
+        {
+            "_properties": {
+                "_sprite": {
+                    "instanceID": 19084
+                },
+                "_maxEnergy": 50,
+                "_enemyLvl": 0,
+                "_name": "Wolf",
+                "_description": "",
+                "_biomSpawn": 1,
+                "_viewRadius": 5
+            },
+            "_axialPosition": {
+                "x": 10,
+                "y": 24
+            }
+        },
+        {
+            "_properties": {
+                "_sprite": {
+                    "instanceID": 19080
+                },
+                "_maxEnergy": 60,
+                "_enemyLvl": 0,
+                "_name": "Coyote",
+                "_description": "",
+                "_biomSpawn": 2,
+                "_viewRadius": 6
+            },
+            "_axialPosition": {
+                "x": 14,
+                "y": 54
+            }
+        },
+        {
+            "_properties": {
+                "_sprite": {
+                    "instanceID": 19084
+                },
+                "_maxEnergy": 50,
+                "_enemyLvl": 0,
+                "_name": "Wolf",
+                "_description": "",
+                "_biomSpawn": 1,
+                "_viewRadius": 5
+            },
+            "_axialPosition": {
+                "x": 22,
+                "y": 34
+            }
+        },
+        {
+            "_properties": {
+                "_sprite": {
+                    "instanceID": 19082
+                },
+                "_maxEnergy": 60,
+                "_enemyLvl": 0,
+                "_name": "Norh Wolf",
+                "_description": "",
+                "_biomSpawn": 2,
+                "_viewRadius": 6
+            },
+            "_axialPosition": {
+                "x": 44,
+                "y": 29
+            }
+        }
+    ]
+}

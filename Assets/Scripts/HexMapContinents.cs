@@ -36,11 +36,11 @@ public class HexMapContinents
 
         _allContinentsHexes?.Clear();
         _allContinents?.Clear();
-        await CreateContinents();
+        await CreateContinentsAsync();
         ContinentsGenerated.Invoke();
     }
 
-    private async UniTask  CreateContinents()
+    private async UniTask  CreateContinentsAsync()
     {
         _allContinents = new List<Continent>();
 
@@ -55,6 +55,17 @@ public class HexMapContinents
 
             _allContinentsHexes.AddRange(newContinent.AllHexes);
             _allContinents.Add(newContinent);
+        }
+        await UniTask.Yield();
+    }
+
+    public async UniTask LoadContinentsAsync(List<Continent> savedContinents)
+    {
+        _allContinents = savedContinents;
+        _allContinentsHexes = new List<Vector2Int>();
+        foreach (var continent in _allContinents)
+        {
+            _allContinentsHexes.AddRange(continent.AllHexes);
         }
         await UniTask.Yield();
     }

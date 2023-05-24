@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 524929eb43d34428a0a7149dab541c65, type: 3}
+  m_Name: FireAcolyte
+  m_EditorClassIdentifier: 
+  CharacterName: FireAcolyte
+  SummonedCreature: 0
+  CharacterAnimatorPrefab: {fileID: 388237063587290419, guid: 9f755323b52559547b85570318c64742, type: 3}
+  CharacterSprite: {fileID: 0}
+  HP: 3
+  Armor: 1
+  MagicShield: 3
+  HireCost: 3
+  _magicDefenceList:
+  - magicType: 1
+    value: 2
+  _armorDefenceList:
+  - armorType: 2
+    value: 1
+  _magicDamageList:
+  - magicType: 0
+    value: 4
+  _physicDamageList: []
