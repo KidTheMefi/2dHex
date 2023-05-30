@@ -21,13 +21,13 @@ namespace GameTime
         private Settings _settings;
         private float _tickTimeModificator = 0.05f;
         private bool _onPause = false;
-    
         private bool _nightTime = true;
         private int _dayTimeStart = 36;
         private int _nightTimeStart = 84;
         
         public float TickSeconds => _tickTimeModificator;
-    
+
+        public int CurrentTimeInTicks => _timeInTicks;
         private int _timeInTicks = 0;
         /// <summary>
         /// 24 hours = 96 ticks
@@ -54,8 +54,19 @@ namespace GameTime
             //DOTween.PauseAll();
         }
 
+        public void SetTime(int time)
+        {
+           
+            _timeInTicks = time < 0 ? 0 : time >= _midnightTick ? 0 : time;
+            _clock.SetTime(_timeInTicks);
+
+            _nightTime = _timeInTicks > _nightTimeStart || _timeInTicks < _dayTimeStart;
+            NightTimeChange.Invoke();
+        }
+        
         public void Pause(bool value)
         {
+            
             if (value != _onPause)
             {
                 if (value)
@@ -64,6 +75,7 @@ namespace GameTime
                 }
                 else
                 {
+
                     DOTween.PlayAll();
                 }
                 _onPause = value;

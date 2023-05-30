@@ -21,7 +21,9 @@ MonoBehaviour:
     _pathPointPrefab: {fileID: 5405044973312703767, guid: fc17834ead85dd048ad20463c39bdcc4, type: 3}
     _enemyPrefab: {fileID: 4111478005896853196, guid: cba0ebc83d69a82408b5c5ba1d649cd6, type: 3}
     _hexHighlightPrefab: {fileID: 2330815027623687040, guid: 526602031aacbed49a40056703648b9a, type: 3}
+    _recruitingCenterPrefab: {fileID: 2037654195546594747, guid: c3d8af7d4dedab340bd19ce54789fe30, type: 3}
   MapSetting: {fileID: 11400000, guid: d778f19d9ad255b429cd0d2ba693f02d, type: 2}
+  _recruitingCentersOnMap: {fileID: 11400000, guid: f0e43706a8e1d53478a27e3f4542795d, type: 2}
   GameTimeSettings:
     _defaultTickTime: 0.15
     _restTickTime: 0.5

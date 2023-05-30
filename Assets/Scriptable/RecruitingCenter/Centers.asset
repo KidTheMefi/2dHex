@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9eef068615846fabe77f25d181a853b, type: 3}
+  m_Name: Centers
+  m_EditorClassIdentifier: 
+  recruitingCenterProperties:
+  - {fileID: 11400000, guid: 5ed5917f63db777468ae568ac3e2e2c7, type: 2}
+  - {fileID: 11400000, guid: 5ed5917f63db777468ae568ac3e2e2c7, type: 2}
+  - {fileID: 11400000, guid: 84f87e5f3358c9444a6003eb833d1615, type: 2}
+  - {fileID: 11400000, guid: 84f87e5f3358c9444a6003eb833d1615, type: 2}
+  - {fileID: 11400000, guid: 31105698aae59864a92a07d9a9ae73cd, type: 2}

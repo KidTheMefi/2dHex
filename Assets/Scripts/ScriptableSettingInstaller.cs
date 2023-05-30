@@ -1,3 +1,4 @@
+using BuildingScripts;
 using Enemies;
 using UnityEngine;
 using Zenject;
@@ -10,6 +11,8 @@ public class ScriptableSettingInstaller : ScriptableObjectInstaller<ScriptableSe
     [SerializeField]
     private MapSetting MapSetting;
     [SerializeField]
+    private RecruitingCentersOnMap _recruitingCentersOnMap;
+    [SerializeField]
     private GameTime.InGameTime.Settings GameTimeSettings;
     [SerializeField]
     private EnemiesSettings _enemiesSettings;
@@ -20,5 +23,6 @@ public class ScriptableSettingInstaller : ScriptableObjectInstaller<ScriptableSe
         Container.BindInstance(MapSetting);
         Container.BindInstance(GameTimeSettings);
         Container.BindInstance(_enemiesSettings);
+        Container.BindInstance(_recruitingCentersOnMap);
     }
 }

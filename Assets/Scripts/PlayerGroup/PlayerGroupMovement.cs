@@ -58,6 +58,8 @@ namespace PlayerGroup
                 }
             }
             _playerGroupStateManager.ChangeState(PlayerState.Idle);
+            _playerGroupModel.PlayerStopped();
+            
         }
 
         private async UniTask EnergyLossAt(Hex hex)

@@ -18,6 +18,11 @@ public class TestButtonUI : MonoBehaviour
         _buttonText.text = buttonText;
     }
 
+    public void SetInteractable(bool value)
+    {
+        _button.interactable = value;
+    }
+
     private void OnDestroy()
     {
         _button.onClick?.RemoveAllListeners();

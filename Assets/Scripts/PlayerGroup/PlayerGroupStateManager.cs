@@ -82,6 +82,5 @@ namespace PlayerGroup
             _currentStateHandler = _states[(int)state];
             _currentStateHandler.EnterState();
         }
-        
     }
 }

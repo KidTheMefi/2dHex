@@ -1,3 +1,4 @@
+using BuildingScripts;
 using Enemies;
 
 namespace GameEvents
@@ -6,7 +7,12 @@ namespace GameEvents
     {
         public class EnemyAttackSignal
         {
-            public EnemyModel enemyModel;
+            public EnemyModel EnemyModel;
+        }
+        
+        public class RecruitingCenterVisitSignal
+        {
+            public RecruitingCenter RecruitingCenter;
         }
     }
 }

@@ -79,7 +79,7 @@ namespace PlayerGroup
                 _inGameTime.DoTick();
                 _playerUIEnergy.AddRestSliderValue(-1);
                 await DOVirtual.DelayedCall(_inGameTime.TickSeconds, () => { });
-                if (!_sleep && _stopRest)
+                if (/*!_sleep && */_stopRest)
                 {
                     Debug.Log("end rest break");
                     break;
@@ -114,6 +114,7 @@ namespace PlayerGroup
         public void ExitState()
         {
             _stopRest = true;
+            
             _restType = RestType.Wait;
             _inGameTime.SetTimeState(TimeStates.Default);
         }

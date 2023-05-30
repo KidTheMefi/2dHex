@@ -29,7 +29,7 @@ namespace Enemies
         public Vector2Int AxialPosition
         {
             get { return _enemyModel.AxialPosition; }
-            set { _enemyModel.AxialPosition = value; }
+            set => _enemyModel.AxialPosition = value;
         }
         
         public Vector3 Position
@@ -53,7 +53,6 @@ namespace Enemies
         }
         public void OnSpawned(Vector2Int axialPosition, EnemyModel.Properties enemySettings, IMemoryPool pool)
         {
-
             AxialPosition = axialPosition;
             Position = HexUtils.CalculatePosition(axialPosition);
             _pool = pool;

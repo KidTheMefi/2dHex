@@ -21,7 +21,7 @@ public class EnemyEncounterEvent
         _playerGroupStateManager.ChangeState(PlayerState.Event);
         Debug.Log("EnemyEncounterEvent");
 
-        DOVirtual.DelayedCall(1.5f, () => { });
+        DOVirtual.DelayedCall(0.5f, () => { });
         EventEnd();
     }
 

@@ -6,9 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scene/TIleGrid.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+    path: Assets/Scene/StartMenu.unity
+    guid: ce346064f325d74418923618e64cf691
   - enabled: 1
-    path: Assets/Scenes/FightScene.unity
+    path: Assets/Scene/SpriteHex.unity
+    guid: 340d98055bb45c341972e7e5dbeadad5
+  - enabled: 1
+    path: Assets/Scene/TeamCreationScene.unity
+    guid: b3d460c34fdcca64ba0de6399d0fd03c
+  - enabled: 1
+    path: Assets/Scene/FightScene.unity
     guid: b987e0823b44010429c760559208e76d
   m_configObjects: {}

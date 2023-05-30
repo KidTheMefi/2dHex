@@ -32,6 +32,7 @@ namespace GameTime
             int hours = Mathf.FloorToInt(timeInTicks);
             int minute = Mathf.RoundToInt(timeInTicks % 4)*90;
 
+            _timeText.text = InGameTime.ConvertTicksToHoursAndMinutes(timeInTicks);
             _arrowHour.rotation = Quaternion.Euler(Vector3.back * hours);
             _arrowMinuts.rotation = Quaternion.Euler(Vector3.back * minute);
         }

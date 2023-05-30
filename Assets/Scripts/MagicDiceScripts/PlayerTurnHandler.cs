@@ -46,6 +46,7 @@ namespace DefaultNamespace
             //_throwerScript.SetRollButtonInteractable(false);
             _endTurnButton.interactable = false;
             //_changePosition.EnableMoveButtons(true);
+            SceneChanger.GetInstance().LoadScreenEnabled(false);
         }
         private void BattleFieldOnEndGame()
         {
@@ -81,7 +82,7 @@ namespace DefaultNamespace
             //_throwerScript.ReturnAllDiceToHand();
             DisableAllInteraction();
             _throwerScript.ResetDicesState();
-            await UniTask.Delay(TimeSpan.FromSeconds(0.4f));
+            await UniTask.Delay(TimeSpan.FromSeconds(0.2f));
             var continued = await _battleField.EndTurnAsync();
 
             if (continued)

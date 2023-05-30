@@ -1,40 +1,43 @@
 using System;
-using GameEvents;
+using Cysharp.Threading.Tasks;
+using DefaultNamespace;
 using PlayerGroup;
 using TeamCreation;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Zenject;
 
-public class EnemyAttackEvent : IInitializable, IDisposable
+namespace GameEvents
 {
-    private PlayerGroupModel _playerGroupModel;
-    private PlayerGroupStateManager _playerGroupStateManager;
-    readonly SignalBus _signalBus;
+    public class EnemyAttackEvent : IInitializable, IDisposable
+    {
+        private PlayerGroupStateManager _playerGroupStateManager;
+        readonly SignalBus _signalBus;
+        private GameEventHandler _gameEventHandler;
     
     
-    public EnemyAttackEvent(PlayerGroupModel playerGroupModel, SignalBus signalBus, PlayerGroupStateManager playerGroupStateManager)
-    {
-        _playerGroupModel = playerGroupModel;
-        _signalBus = signalBus;
-        _playerGroupStateManager = playerGroupStateManager;
-    }
+        public EnemyAttackEvent(SignalBus signalBus, PlayerGroupStateManager playerGroupStateManager, GameEventHandler gameEventHandler)
+        {
+            _signalBus = signalBus;
+            _playerGroupStateManager = playerGroupStateManager;
+            _gameEventHandler = gameEventHandler;
+            Debug.Log(_gameEventHandler.gameObject.name);
+        }
     
-    private void AttackBegin(GameSignals.EnemyAttackSignal enemyAttackSignal)
-    {
-        Debug.LogWarning($"{enemyAttackSignal.enemyModel.EnemyProperties.EnemyName} attacked player group");
-        ComputerTeam computerTeam = new ComputerTeam(enemyAttackSignal.enemyModel.EnemyProperties.EnemyLvl);
-        _playerGroupStateManager.ChangeState(PlayerState.Event);
-
-        SceneManager.LoadScene("FightScene", LoadSceneMode.Single); 
-        //SceneManager.LoadScene(2, LoadSceneMode.Single);
-    }
-    public void Initialize()
-    {
-        _signalBus.Subscribe<GameSignals.EnemyAttackSignal>(AttackBegin);
-    }
-    public void Dispose()
-    {
-        _signalBus.Unsubscribe<GameSignals.EnemyAttackSignal>(AttackBegin);
+        private void AttackBegin(GameSignals.EnemyAttackSignal enemyAttackSignal)
+        {
+            Debug.LogWarning($"{enemyAttackSignal.EnemyModel.EnemyProperties.EnemyName} attacked player group");
+            ComputerTeam computerTeam = new ComputerTeam(enemyAttackSignal.EnemyModel.EnemyProperties.EnemyLvl);
+            //enemyAttackSignal.enemyModel.
+            _playerGroupStateManager.ChangeState(PlayerState.Event);
+            _gameEventHandler.FightAsync(enemyAttackSignal.EnemyModel).Forget();
+        }
+        public void Initialize()
+        {
+            _signalBus.Subscribe<GameSignals.EnemyAttackSignal>(AttackBegin);
+        }
+        public void Dispose()
+        {
+            _signalBus.Unsubscribe<GameSignals.EnemyAttackSignal>(AttackBegin);
+        }
     }
 }

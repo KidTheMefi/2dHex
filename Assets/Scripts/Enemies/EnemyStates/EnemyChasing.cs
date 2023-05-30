@@ -92,7 +92,7 @@ namespace Enemies.EnemyStates
             else
             {
                 Debug.Log("PlayerReached");
-                _signalBus.Fire(new GameSignals.EnemyAttackSignal() {enemyModel = _enemyModel} );
+                _signalBus.Fire(new GameSignals.EnemyAttackSignal() {EnemyModel = _enemyModel} );
             }
         }
     }

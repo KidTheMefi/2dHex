@@ -1,0 +1,82 @@
+{
+    "CurrentTimeInTick": 40,
+    "EnemyList": [],
+    "PlayerGroupModel": {
+        "PlayerSettings": {
+            "_visionRadius": 4,
+            "_energy": 27,
+            "_energyMax": 64,
+            "_minSleepTime": 8,
+            "_savedTeam": {
+                "instanceID": 19356
+            },
+            "SavedTeamList": [
+                {
+                    "Position": {
+                        "x": 0,
+                        "y": 1
+                    },
+                    "Character": {
+                        "instanceID": 19394
+                    }
+                }
+            ]
+        },
+        "AxialPosition": {
+            "x": 47,
+            "y": 26
+        }
+    },
+    "RecruitingCenterSavedDataList": [
+        {
+            "recruitingCenterProperty": {
+                "instanceID": 25242
+            },
+            "axialPosition": {
+                "x": 27,
+                "y": 10
+            },
+            "visited": true
+        },
+        {
+            "recruitingCenterProperty": {
+                "instanceID": 25242
+            },
+            "axialPosition": {
+                "x": 46,
+                "y": 4
+            },
+            "visited": false
+        },
+        {
+            "recruitingCenterProperty": {
+                "instanceID": 21278
+            },
+            "axialPosition": {
+                "x": 20,
+                "y": 26
+            },
+            "visited": true
+        },
+        {
+            "recruitingCenterProperty": {
+                "instanceID": 21278
+            },
+            "axialPosition": {
+                "x": 25,
+                "y": 37
+            },
+            "visited": true
+        },
+        {
+            "recruitingCenterProperty": {
+                "instanceID": 20074
+            },
+            "axialPosition": {
+                "x": 47,
+                "y": 26
+            },
+            "visited": true
+        }
+    ]
+}

@@ -8,7 +8,7 @@ namespace DefaultNamespace
     public class ProgressionHandler : MonoBehaviour
     {
         private static ProgressionHandler _instance;
-
+        
         public int PlayerMoneyValue { get; private set;}
         [SerializeField]
         private TextMeshPro _playerMoneyText;
@@ -32,6 +32,7 @@ namespace DefaultNamespace
 
         private void Awake()
         {
+            _instance = this;
             _lvl = 0;
             DontDestroyOnLoad(this);
             PlayerMoneyValue = 12;

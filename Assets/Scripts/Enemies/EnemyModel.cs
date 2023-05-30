@@ -33,6 +33,11 @@ namespace Enemies
         {
             _energy += i;
         }
+
+        public void Destroy()
+        {
+            
+        }
         
         
         [Serializable]

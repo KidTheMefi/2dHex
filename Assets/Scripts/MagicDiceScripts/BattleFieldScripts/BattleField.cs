@@ -76,9 +76,9 @@ namespace BattleFieldScripts
             if (deadTeam == _rightTeamField)
             {
                 Debug.Log("Player win");
-                ProgressionHandler.GetInstance().NextLevel();
                 _playerTeam.SaveTeam(_leftTeamField.GetTeamScriptable());
-                SceneManager.LoadScene(1, LoadSceneMode.Single);
+                var save = _playerTeam.SavePlayerTeamToJsonData();
+                SceneChanger.GetInstance().LoadGame();
             }
             else
             {

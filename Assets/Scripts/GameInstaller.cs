@@ -1,4 +1,5 @@
 using System;
+using BuildingScripts;
 using DefaultNamespace;
 using Enemies;
 using GameEvents;
@@ -18,6 +19,7 @@ public class GameInstaller : MonoInstaller
     [SerializeField] private NightMask _nightMask;
     [SerializeField] private PanelScript _panel;
     [SerializeField] private SaveHandler _saveHandler;
+    [SerializeField] private GameEventHandler _gameEventHandler;
     
 
     [SerializeField] private PlayerGroupModel.PlayerSettings _playerSettings;
@@ -27,16 +29,9 @@ public class GameInstaller : MonoInstaller
     
     public override void InstallBindings()
     {
-        Container.BindInstance(_saveHandler);
-        Container.BindInstance(_camera).AsSingle();
-        Container.BindInstance(_canvas).AsSingle();
-        Container.BindInstance(_hexHighlight).WithId("hexHighlight").AsTransient();
-        Container.BindInstance(_clock).AsSingle();
-        Container.BindInstance(_nightMask).AsSingle();
-        Container.BindInstance(_panel).AsSingle();
-        Container.Bind<HexHighlight>().FromComponentInNewPrefab(_prefabList.HexHighlight).WithGameObjectName("hexHighlight").AsSingle();
 
-        Container.BindInterfacesAndSelfTo<GameTime.InGameTime>().AsSingle();
+        BindInstance();
+        Container.BindInterfacesAndSelfTo<InGameTime>().AsSingle();
         InstallInputSystem();
         InstallGameField();
         InstallPathFind();
@@ -45,9 +40,22 @@ public class GameInstaller : MonoInstaller
         InstallEnemies();
         InstallUI();
         InstallSignals();
+        InstallRecruitingCenter();
 
     }
 
+    private void BindInstance()
+    {
+        Container.BindInstance(_saveHandler).AsSingle();
+        Container.BindInstance(_camera).AsSingle();
+        Container.BindInstance(_canvas).AsSingle();
+        Container.BindInstance(_hexHighlight).WithId("hexHighlight").AsTransient();
+        Container.BindInstance(_clock).AsSingle();
+        Container.BindInstance(_nightMask).AsSingle();
+        Container.BindInstance(_panel).AsSingle();
+        Container.BindInstance(_gameEventHandler).AsSingle();
+        Container.Bind<HexHighlight>().FromComponentInNewPrefab(_prefabList.HexHighlight).WithGameObjectName("hexHighlight").AsSingle();   
+    }
     private void InstallInputSystem()
     {
         Container.BindInterfacesAndSelfTo<TestInputActions>().AsSingle();
@@ -103,6 +111,15 @@ public class GameInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<HexMapContinents>().AsSingle();
         Container.BindInterfacesAndSelfTo<RiverGenerator>().AsSingle();
     }
+
+    private void InstallRecruitingCenter()
+    {
+        Container.BindInterfacesAndSelfTo<RecruitingCentersHandler>().AsSingle();
+        Container.BindFactory<RecruitingCenter.RecruitingCenterSavedData, RecruitingCenter, RecruitingCenter.Factory>()
+            .FromPoolableMemoryPool<RecruitingCenter.RecruitingCenterSavedData, RecruitingCenter, RecruitingCenterPool>(poolBinder => poolBinder
+                .WithInitialSize(10).FromComponentInNewPrefab(_prefabList.RecruitingCenterPrefab)
+                .UnderTransformGroup("RecruitingCenters"));
+    }
     
     private void InstallEnemies()
     {
@@ -126,9 +143,16 @@ public class GameInstaller : MonoInstaller
     {
         SignalBusInstaller.Install(Container);
         Container.DeclareSignal<GameSignals.EnemyAttackSignal>();
+        Container.DeclareSignal<GameSignals.RecruitingCenterVisitSignal>();
         Container.BindInterfacesTo<EnemyAttackEvent>().AsSingle();
+        Container.BindInterfacesAndSelfTo<RecruitingCenterVisitEvent>().AsSingle();
     }
 }
  class EnemyFacadePool : MonoPoolableMemoryPool<Vector2Int, EnemyModel.Properties, IMemoryPool, EnemyFacade>
 {
+}
+
+class RecruitingCenterPool : MonoPoolableMemoryPool<RecruitingCenter.RecruitingCenterSavedData, IMemoryPool, RecruitingCenter>
+{
+    
 }

@@ -1,24 +1,26 @@
 using System;
-using System.IO;
+using System.Collections.Generic;
+using Interfaces;
 using TeamCreation;
 using UnityEngine;
 
 namespace PlayerGroup
 {
     [Serializable]
-    public class PlayerGroupModel
+    public class PlayerGroupModel : IPlayerGroupEvents
     {
         public event Action PositionChanged = delegate() { };
+        public event Action<Vector2Int> StoppedOnPosition = delegate(Vector2Int i) { };
+        
         public event Action<int> EnergyChanged = delegate(int i) { };
 
         [SerializeField]
         private PlayerSettings _playerSettings;
         [SerializeField]
         private Vector2Int _axialPosition;
+        
         private PlayerState _state = PlayerState.Idle;
         private Vector2Int _targetMovePosition;
-
-        public SavedTeam SavedTeam => _playerSettings.SavedTeam;
 
         public int Energy => _playerSettings.Energy;
         public int MaxEnergy => _playerSettings.MaxEnergy;
@@ -34,22 +36,29 @@ namespace PlayerGroup
             _playerSettings = playerSettings;
         }
 
-        public void LoadModelFromJson()
+        public void SetupModel(SavedPlayer loadedModel)
         {
-            string json = File.ReadAllText(Application.dataPath + "/Save/SavedPlayerModel.json");
-            PlayerGroupModel playerSaved = JsonUtility.FromJson<PlayerGroupModel>(json);
-
-            _playerSettings = playerSaved._playerSettings;
-            _axialPosition = playerSaved.AxialPosition;
+            var savedTeamScriptable = _playerSettings.SavedTeam;
+            _playerSettings = loadedModel.PlayerSettings;
+            _playerSettings.SavedTeam.SetTeamFromList(_playerSettings.SavedTeamList);
+            _axialPosition = loadedModel.AxialPosition;
+            Debug.Log(_axialPosition);
             EnergyChanged.Invoke(Energy);
+            PositionChanged.Invoke();
         }
 
-        public void SaveModelToJson()
+        public SavedPlayer SavedModel()
         {
-            string json = JsonUtility.ToJson(this, true);
-            File.WriteAllText(Application.dataPath + "/Save/SavedPlayerModel.json", json);
+            var savedPlayer = new SavedPlayer(_playerSettings, _axialPosition);
+            savedPlayer.PlayerSettings.SavedTeamList = _playerSettings.SavedTeam.GetTeamAsList();
+            return savedPlayer;
         }
 
+        public void PlayerStopped()
+        {
+            StoppedOnPosition.Invoke(AxialPosition);
+        }
+        
         public void ChangeEnergy(int energy)
         {
             var newEnergy = Energy + energy;
@@ -82,6 +91,8 @@ namespace PlayerGroup
             private int _minSleepTime;
             [SerializeField]
             private SavedTeam _savedTeam;
+            
+            public List<SavedTeam.CharacterKeyValue> SavedTeamList;
 
             public int VisionRadius => _visionRadius;
             public int Energy => _energy > _energyMax ? _energyMax : _energy;
@@ -92,6 +103,19 @@ namespace PlayerGroup
             public void SetEnergy(int value)
             {
                 _energy = value;
+            }
+        }
+        
+        [Serializable]
+        public struct SavedPlayer
+        {
+            public PlayerSettings PlayerSettings;
+            public Vector2Int AxialPosition;
+
+            public SavedPlayer(PlayerSettings playerSettings, Vector2Int axialPosition )
+            {
+                PlayerSettings = playerSettings;
+                AxialPosition = axialPosition;
             }
         }
     }
