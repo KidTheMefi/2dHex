@@ -23,11 +23,16 @@ public class Hex
     [SerializeField]
     private TileVisibility _tileVisibility;
     public TileVisibility TileVisibility => _tileVisibility;
+    [SerializeField]
+    private bool withBuilding;
+
+    public bool WithBuilding => withBuilding;
     
     [SerializeField]
     private LandTypeProperty _landTypeProperty;
     public LandTypeProperty LandTypeProperty => _landTypeProperty;
 
+    
     public void SetLandTypeProperty(LandTypeProperty landTypeProperty)
     {
         _landTypeProperty = landTypeProperty;
@@ -54,6 +59,12 @@ public class Hex
         _sprite = hex._sprite;
         _tileVisibility = hex._tileVisibility;
         _landTypeProperty = hex._landTypeProperty;
+        withBuilding = hex.withBuilding;
+    }
+    
+    public void SetWithBuilding(bool value)
+    {
+        withBuilding = value;
     }
 
     public void InvokeLandTypeSpriteChanged()

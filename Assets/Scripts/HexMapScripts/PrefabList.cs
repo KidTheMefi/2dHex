@@ -1,5 +1,6 @@
 using System;
 using BuildingScripts;
+using BuildingScripts.RecruitingBuildings;
 using UI;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ public class PrefabList
         [SerializeField] private GameObject _enemyPrefab;
         [SerializeField] private HexHighlight _hexHighlightPrefab;
         [SerializeField] private RecruitingCenter _recruitingCenterPrefab;
+        [SerializeField] private BaseBuilding _baseBuilding;
 
         public HexView HexViewPrefab => _hexViewPrefab;
         public TestButtonUI ButtonPrefab => _buttonUIPrefab;
@@ -25,5 +27,6 @@ public class PrefabList
         public PlayerUIEnergy PlayerUIEnergy => _playerUIEnergy;
         public HexHighlight HexHighlight => _hexHighlightPrefab;
         public RecruitingCenter RecruitingCenterPrefab => _recruitingCenterPrefab;
+        public BaseBuilding BaseBuilding => _baseBuilding;
 
 }

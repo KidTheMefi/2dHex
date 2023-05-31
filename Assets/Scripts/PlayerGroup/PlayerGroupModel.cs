@@ -38,16 +38,15 @@ namespace PlayerGroup
 
         public void SetupModel(SavedPlayer loadedModel)
         {
-            var savedTeamScriptable = _playerSettings.SavedTeam;
             _playerSettings = loadedModel.PlayerSettings;
             _playerSettings.SavedTeam.SetTeamFromList(_playerSettings.SavedTeamList);
             _axialPosition = loadedModel.AxialPosition;
-            Debug.Log(_axialPosition);
+            //Debug.Log(_axialPosition);
             EnergyChanged.Invoke(Energy);
             PositionChanged.Invoke();
         }
 
-        public SavedPlayer SavedModel()
+        public SavedPlayer GetSavedModel()
         {
             var savedPlayer = new SavedPlayer(_playerSettings, _axialPosition);
             savedPlayer.PlayerSettings.SavedTeamList = _playerSettings.SavedTeam.GetTeamAsList();
@@ -75,9 +74,29 @@ namespace PlayerGroup
         public void SetAxialPosition(Vector2Int pos)
         {
             _axialPosition = pos;
+            
+            // open tiles around 0,0 at loading (problem with spawn?)
+            //TODO: field of view
+            if (_axialPosition == Vector2Int.zero) 
+            {
+                return;
+            }
             PositionChanged?.Invoke();
         }
 
+        [Serializable]
+        public struct SavedPlayer
+        {
+            public PlayerSettings PlayerSettings;
+            public Vector2Int AxialPosition;
+
+            public SavedPlayer(PlayerSettings playerSettings, Vector2Int axialPosition )
+            {
+                PlayerSettings = playerSettings;
+                AxialPosition = axialPosition;
+            }
+        }
+        
         [Serializable]
         public struct PlayerSettings
         {
@@ -103,19 +122,6 @@ namespace PlayerGroup
             public void SetEnergy(int value)
             {
                 _energy = value;
-            }
-        }
-        
-        [Serializable]
-        public struct SavedPlayer
-        {
-            public PlayerSettings PlayerSettings;
-            public Vector2Int AxialPosition;
-
-            public SavedPlayer(PlayerSettings playerSettings, Vector2Int axialPosition )
-            {
-                PlayerSettings = playerSettings;
-                AxialPosition = axialPosition;
             }
         }
     }

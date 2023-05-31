@@ -20,7 +20,7 @@ public class Continent
     private List<TilesWithSameLandType> _tilesWithSameLandType;
     public List<TilesWithSameLandType> TilesWithSameLandTypeList => _tilesWithSameLandType;
     
-    
+
     public List<Vector2Int> AllHexes => _continentAllHex;
     public BiomType BiomType => _biomType;
 
@@ -38,10 +38,21 @@ public class Continent
         }
         _continentAllHex.Remove(hexPos);
     }
-    
-    public class Factory : PlaceholderFactory<Continent>
+
+    public bool ContainLandTypeTiles(LandType landType)
     {
-        
+        if (_tilesWithSameLandType == null)
+        {
+            return false;
+        }
+        foreach (var tilesWithSameLandType in _tilesWithSameLandType)
+        {
+            if (tilesWithSameLandType.landType == landType)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public async UniTask CreateNewContinent(Vector2Int continentPos, ContinentSettings continentSettings, int tilesCount, List<Vector2Int> unavailableHexes = null)
@@ -102,6 +113,11 @@ public class Continent
     public Vector2Int GetRandomHexAtContinent()
     {
         return _continentAllHex[Random.Range(0, _continentAllHex.Count)];
+    }
+    
+    public class Factory : PlaceholderFactory<Continent>
+    {
+        
     }
     
     [Serializable]

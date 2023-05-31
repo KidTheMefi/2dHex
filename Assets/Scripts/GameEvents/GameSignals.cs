@@ -1,4 +1,5 @@
 using BuildingScripts;
+using BuildingScripts.RecruitingBuildings;
 using Enemies;
 
 namespace GameEvents

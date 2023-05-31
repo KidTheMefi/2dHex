@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using BuildingScripts;
+using BuildingScripts.RecruitingBuildings;
 using Cysharp.Threading.Tasks;
 using Enemies;
 using GameTime;
@@ -21,7 +22,7 @@ namespace DefaultNamespace
         private PlayerGroupSpawn _playerGroupSpawn;
         private FieldOfView _fieldOfView;
         private InGameTime _inGameTime;
-        private RecruitingCentersHandler _recruitingCentersHandler;
+        private BuildingsHandler _buildingsHandler;
 
         [SerializeField]
         private SceneScriptableData _sceneScriptableData;
@@ -30,8 +31,9 @@ namespace DefaultNamespace
         private void Construct(TestButtonUI.Factory buttonFactory, MapGeneration mapGeneration,
             PlayerGroupModel playerGroupModel, EnemySpawner enemySpawner,
             PlayerGroupSpawn playerGroupSpawn, FieldOfView fieldOfView,
-            InGameTime inGameTime, RecruitingCentersHandler recruitingCentersHandler)
+            InGameTime inGameTime, BuildingsHandler buildingsHandler)
         {
+            _buildingsHandler = buildingsHandler;
             _fieldOfView = fieldOfView;
             _buttonFactory = buttonFactory;
             _playerGroupModel = playerGroupModel;
@@ -39,7 +41,6 @@ namespace DefaultNamespace
             _mapGeneration = mapGeneration;
             _playerGroupSpawn = playerGroupSpawn;
             _inGameTime = inGameTime;
-            _recruitingCentersHandler = recruitingCentersHandler;
         }
 
         private void Start()
@@ -84,7 +85,7 @@ namespace DefaultNamespace
             await _mapGeneration.GenerateNewMapAsync();
             _playerGroupSpawn.SpawnAtPosition(_mapGeneration.GetRandomStartPosition());
             _enemySpawner.SpawnEnemyNew();
-            await _recruitingCentersHandler.CreateNewCentersAsync();
+            await _buildingsHandler.CreateNewBuildings();
             SetButtonsInteractable(true);
         }
 
@@ -113,8 +114,8 @@ namespace DefaultNamespace
             SetButtonsInteractable(false);
             await _mapGeneration.SaveMapAsync();
             saveData.EnemyList = _enemySpawner.GetCurrentEnemiesModel();
-            saveData.PlayerGroupModel = _playerGroupModel.SavedModel();
-            saveData.RecruitingCenterSavedDataList = _recruitingCentersHandler.SavedData();
+            saveData.PlayerGroupModel = _playerGroupModel.GetSavedModel();
+            saveData.BuildingsSaveData = _buildingsHandler.GetSaveData();
 
             SaveDataToJson(saveData);
             await UniTask.Yield();
@@ -132,6 +133,7 @@ namespace DefaultNamespace
             await UniTask.Delay(TimeSpan.FromSeconds(1));
             string json = File.ReadAllText(Application.dataPath + "/Save/SavedData.json");
             SaveData saveData = JsonUtility.FromJson<SaveData>(json);
+            _inGameTime.SetTime(saveData.CurrentTimeInTick);
             await _playerGroupSpawn.SpawnLoadedModelAsync(saveData.PlayerGroupModel);
 
             var enemyEncounter = _sceneScriptableData.GetEnemyModelFromAttackEvent();
@@ -143,9 +145,7 @@ namespace DefaultNamespace
                 saveData.EnemyList.Remove(enemyModel);
             }
             await _enemySpawner.SpawnLoadedEnemyAsync(saveData.EnemyList);
-            _inGameTime.SetTime(saveData.CurrentTimeInTick);
-
-            await _recruitingCentersHandler.CreateLoadedCentersAsync(saveData.RecruitingCenterSavedDataList);
+            await _buildingsHandler.LoadSavedDataAsync(saveData.BuildingsSaveData);
             await UniTask.Yield();
         }
 
@@ -155,7 +155,8 @@ namespace DefaultNamespace
             public int CurrentTimeInTick;
             public List<EnemyModel> EnemyList;
             public PlayerGroupModel.SavedPlayer PlayerGroupModel;
-            public List<RecruitingCenter.RecruitingCenterSavedData> RecruitingCenterSavedDataList;
+            public BuildingsHandler.BuildingsSaveData BuildingsSaveData;
+            
         }
     }
 }

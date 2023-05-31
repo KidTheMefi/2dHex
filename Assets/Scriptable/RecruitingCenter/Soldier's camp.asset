@@ -12,9 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a51b36707064af7b8a3650c5840ea1a, type: 3}
   m_Name: Soldier's camp
   m_EditorClassIdentifier: 
-  sprite: {fileID: 0}
-  name: 
+  sprite: {fileID: 21300000, guid: e128b01dab70e7a498a78577123c2db0, type: 3}
+  name: Soldier's camp
   description: 
-  landType: 0
+  landType: 3
   landBiom: 0
-  Recruits: []
+  Recruits:
+  - {fileID: 11400000, guid: ad90375ec8c8945488abf4c52819e5aa, type: 2}
+  - {fileID: 11400000, guid: 452bb304458975547be15bff8dca809a, type: 2}
+  - {fileID: 11400000, guid: d09661d288e24b34892085e477668916, type: 2}
+  - {fileID: 11400000, guid: 93c2678b0ed7f4948afc70d1b7accb03, type: 2}

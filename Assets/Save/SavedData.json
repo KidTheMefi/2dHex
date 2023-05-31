@@ -1,14 +1,202 @@
 {
-    "CurrentTimeInTick": 40,
-    "EnemyList": [],
+    "CurrentTimeInTick": 27,
+    "EnemyList": [
+        {
+            "_properties": {
+                "_sprite": {
+                    "instanceID": 19902
+                },
+                "_maxEnergy": 60,
+                "_enemyLvl": 2,
+                "_name": "Coyote",
+                "_description": "",
+                "_biomSpawn": 3,
+                "_viewRadius": 5
+            },
+            "_axialPosition": {
+                "x": 46,
+                "y": 3
+            }
+        },
+        {
+            "_properties": {
+                "_sprite": {
+                    "instanceID": 19906
+                },
+                "_maxEnergy": 60,
+                "_enemyLvl": 3,
+                "_name": "Norh Wolf",
+                "_description": "",
+                "_biomSpawn": 2,
+                "_viewRadius": 3
+            },
+            "_axialPosition": {
+                "x": 45,
+                "y": 50
+            }
+        },
+        {
+            "_properties": {
+                "_sprite": {
+                    "instanceID": 19906
+                },
+                "_maxEnergy": 60,
+                "_enemyLvl": 3,
+                "_name": "Norh Wolf",
+                "_description": "",
+                "_biomSpawn": 2,
+                "_viewRadius": 3
+            },
+            "_axialPosition": {
+                "x": 34,
+                "y": 42
+            }
+        },
+        {
+            "_properties": {
+                "_sprite": {
+                    "instanceID": 19910
+                },
+                "_maxEnergy": 50,
+                "_enemyLvl": 1,
+                "_name": "Wolf",
+                "_description": "",
+                "_biomSpawn": 1,
+                "_viewRadius": 4
+            },
+            "_axialPosition": {
+                "x": 6,
+                "y": 33
+            }
+        },
+        {
+            "_properties": {
+                "_sprite": {
+                    "instanceID": 19910
+                },
+                "_maxEnergy": 50,
+                "_enemyLvl": 1,
+                "_name": "Wolf",
+                "_description": "",
+                "_biomSpawn": 1,
+                "_viewRadius": 4
+            },
+            "_axialPosition": {
+                "x": -9,
+                "y": 49
+            }
+        },
+        {
+            "_properties": {
+                "_sprite": {
+                    "instanceID": 19910
+                },
+                "_maxEnergy": 50,
+                "_enemyLvl": 1,
+                "_name": "Wolf",
+                "_description": "",
+                "_biomSpawn": 1,
+                "_viewRadius": 4
+            },
+            "_axialPosition": {
+                "x": 6,
+                "y": 32
+            }
+        },
+        {
+            "_properties": {
+                "_sprite": {
+                    "instanceID": 19990
+                },
+                "_maxEnergy": 45,
+                "_enemyLvl": 4,
+                "_name": "Bandits",
+                "_description": "",
+                "_biomSpawn": 1,
+                "_viewRadius": 3
+            },
+            "_axialPosition": {
+                "x": 11,
+                "y": 20
+            }
+        },
+        {
+            "_properties": {
+                "_sprite": {
+                    "instanceID": 20014
+                },
+                "_maxEnergy": 45,
+                "_enemyLvl": 4,
+                "_name": "Desert Bandits",
+                "_description": "",
+                "_biomSpawn": 3,
+                "_viewRadius": 4
+            },
+            "_axialPosition": {
+                "x": 17,
+                "y": 14
+            }
+        },
+        {
+            "_properties": {
+                "_sprite": {
+                    "instanceID": 20026
+                },
+                "_maxEnergy": 35,
+                "_enemyLvl": 5,
+                "_name": "",
+                "_description": "",
+                "_biomSpawn": 2,
+                "_viewRadius": 3
+            },
+            "_axialPosition": {
+                "x": 16,
+                "y": 52
+            }
+        },
+        {
+            "_properties": {
+                "_sprite": {
+                    "instanceID": 20026
+                },
+                "_maxEnergy": 35,
+                "_enemyLvl": 5,
+                "_name": "",
+                "_description": "",
+                "_biomSpawn": 2,
+                "_viewRadius": 3
+            },
+            "_axialPosition": {
+                "x": 19,
+                "y": 50
+            }
+        },
+        {
+            "_properties": {
+                "_sprite": {
+                    "instanceID": 20026
+                },
+                "_maxEnergy": 35,
+                "_enemyLvl": 5,
+                "_name": "",
+                "_description": "",
+                "_biomSpawn": 2,
+                "_viewRadius": 3
+            },
+            "_axialPosition": {
+                "x": 20,
+                "y": 56
+            }
+        }
+    ],
     "PlayerGroupModel": {
         "PlayerSettings": {
             "_visionRadius": 4,
-            "_energy": 27,
-            "_energyMax": 64,
+            "_energy": 32,
+            "_energyMax": 72,
             "_minSleepTime": 8,
             "_savedTeam": {
-                "instanceID": 19356
+                "instanceID": 19368
             },
             "SavedTeamList": [
                 {
@@ -17,66 +205,210 @@
                         "y": 1
                     },
                     "Character": {
-                        "instanceID": 19394
+                        "instanceID": 19406
                     }
                 }
             ]
         },
         "AxialPosition": {
-            "x": 47,
-            "y": 26
+            "x": 17,
+            "y": 14
         }
     },
-    "RecruitingCenterSavedDataList": [
-        {
-            "recruitingCenterProperty": {
-                "instanceID": 25242
+    "BuildingsSaveData": {
+        "templesSavedData": [
+            {
+                "recruitingCenterProperty": {
+                    "instanceID": 20660
+                },
+                "axialPosition": {
+                    "x": 30,
+                    "y": 53
+                },
+                "visited": false
             },
-            "axialPosition": {
-                "x": 27,
-                "y": 10
+            {
+                "recruitingCenterProperty": {
+                    "instanceID": 20102
+                },
+                "axialPosition": {
+                    "x": 32,
+                    "y": 1
+                },
+                "visited": false
             },
-            "visited": true
-        },
-        {
-            "recruitingCenterProperty": {
-                "instanceID": 25242
+            {
+                "recruitingCenterProperty": {
+                    "instanceID": 25878
+                },
+                "axialPosition": {
+                    "x": 9,
+                    "y": 14
+                },
+                "visited": false
             },
-            "axialPosition": {
-                "x": 46,
-                "y": 4
+            {
+                "recruitingCenterProperty": {
+                    "instanceID": 25948
+                },
+                "axialPosition": {
+                    "x": 41,
+                    "y": 37
+                },
+                "visited": false
+            }
+        ],
+        "recruitingCenterSavedData": [
+            {
+                "recruitingCenterProperty": {
+                    "instanceID": 20674
+                },
+                "axialPosition": {
+                    "x": 29,
+                    "y": 37
+                },
+                "visited": false
             },
-            "visited": false
-        },
-        {
-            "recruitingCenterProperty": {
-                "instanceID": 21278
+            {
+                "recruitingCenterProperty": {
+                    "instanceID": 20582
+                },
+                "axialPosition": {
+                    "x": 16,
+                    "y": 10
+                },
+                "visited": false
             },
-            "axialPosition": {
-                "x": 20,
-                "y": 26
+            {
+                "recruitingCenterProperty": {
+                    "instanceID": 20494
+                },
+                "axialPosition": {
+                    "x": 38,
+                    "y": 48
+                },
+                "visited": false
             },
-            "visited": true
-        },
-        {
-            "recruitingCenterProperty": {
-                "instanceID": 21278
+            {
+                "recruitingCenterProperty": {
+                    "instanceID": 25438
+                },
+                "axialPosition": {
+                    "x": 42,
+                    "y": 2
+                },
+                "visited": false
             },
-            "axialPosition": {
-                "x": 25,
-                "y": 37
+            {
+                "recruitingCenterProperty": {
+                    "instanceID": 21646
+                },
+                "axialPosition": {
+                    "x": 4,
+                    "y": 26
+                },
+                "visited": false
             },
-            "visited": true
-        },
-        {
-            "recruitingCenterProperty": {
-                "instanceID": 20074
+            {
+                "recruitingCenterProperty": {
+                    "instanceID": 20908
+                },
+                "axialPosition": {
+                    "x": 14,
+                    "y": 33
+                },
+                "visited": false
             },
-            "axialPosition": {
-                "x": 47,
-                "y": 26
+            {
+                "recruitingCenterProperty": {
+                    "instanceID": 21480
+                },
+                "axialPosition": {
+                    "x": 57,
+                    "y": 45
+                },
+                "visited": false
             },
-            "visited": true
-        }
-    ]
+            {
+                "recruitingCenterProperty": {
+                    "instanceID": 21480
+                },
+                "axialPosition": {
+                    "x": 64,
+                    "y": 36
+                },
+                "visited": false
+            },
+            {
+                "recruitingCenterProperty": {
+                    "instanceID": 20674
+                },
+                "axialPosition": {
+                    "x": 45,
+                    "y": 31
+                },
+                "visited": false
+            },
+            {
+                "recruitingCenterProperty": {
+                    "instanceID": 20582
+                },
+                "axialPosition": {
+                    "x": 46,
+                    "y": 0
+                },
+                "visited": false
+            },
+            {
+                "recruitingCenterProperty": {
+                    "instanceID": 20494
+                },
+                "axialPosition": {
+                    "x": 33,
+                    "y": 41
+                },
+                "visited": false
+            },
+            {
+                "recruitingCenterProperty": {
+                    "instanceID": 25438
+                },
+                "axialPosition": {
+                    "x": 37,
+                    "y": 8
+                },
+                "visited": false
+            },
+            {
+                "recruitingCenterProperty": {
+                    "instanceID": 21646
+                },
+                "axialPosition": {
+                    "x": 6,
+                    "y": 49
+                },
+                "visited": false
+            },
+            {
+                "recruitingCenterProperty": {
+                    "instanceID": 20908
+                },
+                "axialPosition": {
+                    "x": 14,
+                    "y": 40
+                },
+                "visited": false
+            },
+            {
+                "recruitingCenterProperty": {
+                    "instanceID": 21480
+                },
+                "axialPosition": {
+                    "x": 40,
+                    "y": 30
+                },
+                "visited": false
+            }
+        ]
+    }
 }

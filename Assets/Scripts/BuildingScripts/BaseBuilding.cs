@@ -1,10 +1,11 @@
 ﻿using System;
+using BuildingScripts.RecruitingBuildings;
 using UnityEngine;
 using Zenject;
 
 namespace BuildingScripts
 {
-    public class RecruitingCenter : MonoBehaviour, IPoolable<RecruitingCenter.RecruitingCenterSavedData, IMemoryPool>
+    public class BaseBuilding : MonoBehaviour, IPoolable<BaseBuilding.BaseBuildingSavedData, IMemoryPool>
     {
         [SerializeField]
         private SpriteRenderer _spriteRendererImage;
@@ -13,12 +14,11 @@ namespace BuildingScripts
 
         private IMemoryPool _pool;
 
-        public RecruitingCenterProperty RecruitingCenterProperty { get; private set; }
-
+        public BaseBuildingSetup BaseBuildingSetup { get; private set; }
         public Vector2Int AxialPosition { get; private set; }
         public bool Visited { get; set; }
-
-
+        
+        
         public void Despawn()
         {
             _pool.Despawn(this);
@@ -27,45 +27,48 @@ namespace BuildingScripts
         public void OnDespawned()
         {
             _pool = null;
-            RecruitingCenterProperty = null;
+            BaseBuildingSetup = null;
             Visited = false;
         }
         
-        public void OnSpawned(RecruitingCenterSavedData property, IMemoryPool pool)
-        {   
+        public BaseBuildingSavedData GetBaseBuildingSavedData()
+        {
+            return new BaseBuildingSavedData(BaseBuildingSetup, AxialPosition, Visited);
+        }
+        
+        public void OnSpawned(BaseBuildingSavedData property, IMemoryPool pool)
+        {
             Visited = property.visited;
-            RecruitingCenterProperty = property.recruitingCenterProperty;
+            BaseBuildingSetup = property.recruitingCenterProperty;
             _spriteRendererImage.sprite = property.recruitingCenterProperty.sprite;
             _visitHighlight.color = Visited ? Color.grey : Color.green;
             _pool = pool;
             AxialPosition = property.axialPosition;
             transform.position = HexUtils.CalculatePosition(AxialPosition);
-            
         }
 
-        public RecruitingCenterSavedData GetRecruitingCenterData()
+        public void SetVisited(bool value)
         {
-            return new RecruitingCenterSavedData(RecruitingCenterProperty, AxialPosition, Visited);
+            Visited = value;
+            _visitHighlight.color = Visited ? Color.grey : Color.green;
         }
-        
-        
-        public class Factory : PlaceholderFactory<RecruitingCenterSavedData, RecruitingCenter>
+        public class Factory : PlaceholderFactory<BaseBuildingSavedData, BaseBuilding>
         {
 
         }
         
         [Serializable]
-        public struct RecruitingCenterSavedData
+        public struct BaseBuildingSavedData
         {
             [SerializeField]
-            public RecruitingCenterProperty recruitingCenterProperty;
+            public BaseBuildingSetup recruitingCenterProperty;
             [SerializeField]
             public Vector2Int axialPosition;
             [SerializeField]
             public bool visited;
 
 
-            public RecruitingCenterSavedData(RecruitingCenterProperty recruitingCenterProperty, Vector2Int axialPosition, bool visited)
+            public BaseBuildingSavedData(BaseBuildingSetup recruitingCenterProperty, Vector2Int axialPosition, bool visited)
             {
                 this.recruitingCenterProperty = recruitingCenterProperty;
                 this.axialPosition = axialPosition;

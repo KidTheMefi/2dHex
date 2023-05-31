@@ -96,7 +96,11 @@ public class FieldOfView : IInitializable
                         _currentOpenedHexes.Remove(hex);
                     }
 
-                    hex.SetVisibility(TileVisibility.VisibleNow);
+                    if (hex.TileVisibility != TileVisibility.VisibleAlways)
+                    {
+                        hex.SetVisibility(TileVisibility.VisibleNow);
+                    }
+                    
                     if (hex.LandTypeProperty.LandType == LandType.Mountain)
                     {
                         break;
@@ -107,8 +111,10 @@ public class FieldOfView : IInitializable
 
         foreach (var hex in _currentOpenedHexes)
         {
-            hex.SetVisibility(TileVisibility.Discovered);
-
+            if (hex.TileVisibility != TileVisibility.VisibleAlways)
+            {
+                hex.SetVisibility(TileVisibility.Discovered);
+            }
             //_hexStorage.HexToHexView()[hex].SetHexVisible(false);
         }
         _currentOpenedHexes = hexThatCanBeSee;

@@ -1,6 +1,7 @@
 using System.IO;
 using BattleFieldScripts;
 using BuildingScripts;
+using BuildingScripts.RecruitingBuildings;
 using DefaultNamespace;
 using MagicSkills;
 using ScriptableScripts;

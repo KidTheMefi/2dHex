@@ -22,10 +22,12 @@ MonoBehaviour:
     _enemyPrefab: {fileID: 4111478005896853196, guid: cba0ebc83d69a82408b5c5ba1d649cd6, type: 3}
     _hexHighlightPrefab: {fileID: 2330815027623687040, guid: 526602031aacbed49a40056703648b9a, type: 3}
     _recruitingCenterPrefab: {fileID: 2037654195546594747, guid: c3d8af7d4dedab340bd19ce54789fe30, type: 3}
+    _baseBuilding: {fileID: 1412520244398715228, guid: fb5c32d76de0dd94695569cec5f1aa5a, type: 3}
   MapSetting: {fileID: 11400000, guid: d778f19d9ad255b429cd0d2ba693f02d, type: 2}
   _recruitingCentersOnMap: {fileID: 11400000, guid: f0e43706a8e1d53478a27e3f4542795d, type: 2}
+  _templesOnMap: {fileID: 11400000, guid: a587d90aea4f9a442b126b2077d06762, type: 2}
   GameTimeSettings:
-    _defaultTickTime: 0.15
-    _restTickTime: 0.5
+    _defaultTickTime: 0.2
+    _restTickTime: 0.3
     _sleepTickTime: 0.15
   _enemiesSettings: {fileID: 11400000, guid: 9fba04a95849e8b49b9f3986bcc44c5e, type: 2}

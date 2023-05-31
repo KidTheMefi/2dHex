@@ -11,11 +11,8 @@ namespace DefaultNamespace
         
         public int PlayerMoneyValue { get; private set;}
         [SerializeField]
-        private TextMeshPro _playerMoneyText;
-        [SerializeField]
-        private TextMeshPro _levelText;
-        private int _lvl;
-        
+        private TextMeshProUGUI _playerMoneyText;
+
         public static ProgressionHandler GetInstance()
         {
             if (_instance == null)
@@ -33,11 +30,9 @@ namespace DefaultNamespace
         private void Awake()
         {
             _instance = this;
-            _lvl = 0;
             DontDestroyOnLoad(this);
-            PlayerMoneyValue = 12;
+            PlayerMoneyValue = 10;
             MoneyValueChanged();
-            NextLevel();
         }
 
         public void ChangeMoneyValueBy(int value)
@@ -51,14 +46,5 @@ namespace DefaultNamespace
         {
             _playerMoneyText.text = PlayerMoneyValue.ToString();
         }
-
-        public void NextLevel()
-        {
-            _lvl++;
-            ComputerTeam computerTeam = new ComputerTeam(_lvl);
-            Debug.Log($"{_lvl} level team constructed");
-            _levelText.text = $"Enemy team level: {_lvl}";
-        }
-        
     }
 }

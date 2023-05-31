@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Church of Water
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: d0ec2e65dadd70346b81af93bb4eb352, type: 3}
-  name: Snow camp
+  name: Church of Water
   description: 
-  landType: 3
+  landType: 1
   landBiom: 2
   Recruits:
   - {fileID: 11400000, guid: b0ef4456ce051514a83fa09005953425, type: 2}

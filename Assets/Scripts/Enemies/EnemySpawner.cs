@@ -58,7 +58,8 @@ namespace Enemies
 
             foreach (var enemySetupSettings in _enemiesSettings.Enemies)
             {
-                for (int i = 0; i < 4; i++)
+                var randCount = Random.Range(1, 4);
+                for (int i = 0; i < randCount; i++)
                 {
                     var enemyPos = _hexMapContinents.AllContinents.Find(x => x.BiomType == enemySetupSettings.Properties.BiomType).GetRandomHexAtContinent();
                     var enemy = _enemyFactory.Create(enemyPos, enemySetupSettings.Properties );

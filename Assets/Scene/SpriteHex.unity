@@ -277,8 +277,8 @@ MonoBehaviour:
   _gameEventHandler: {fileID: 331440053}
   _playerSettings:
     _visionRadius: 4
-    _energy: 64
-    _energyMax: 64
+    _energy: 72
+    _energyMax: 72
     _minSleepTime: 8
     _savedTeam: {fileID: 11400000, guid: 17585a97347c3594e918cdddfee7a2f6, type: 2}
     SavedTeamList: []
@@ -1561,10 +1561,10 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 7
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 100, y: 100}
+  m_CellSize: {x: 100, y: 45}
   m_Spacing: {x: 25, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
@@ -1584,8 +1584,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -108.15997}
-  m_SizeDelta: {x: 0, y: 216.32}
+  m_AnchoredPosition: {x: 1213.13, y: -1309.22}
+  m_SizeDelta: {x: -2426.26, y: 261.48}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &333721584726657197
 PrefabInstance:

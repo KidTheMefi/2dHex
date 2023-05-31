@@ -13,8 +13,19 @@ MonoBehaviour:
   m_Name: Centers
   m_EditorClassIdentifier: 
   recruitingCenterProperties:
-  - {fileID: 11400000, guid: 5ed5917f63db777468ae568ac3e2e2c7, type: 2}
-  - {fileID: 11400000, guid: 5ed5917f63db777468ae568ac3e2e2c7, type: 2}
-  - {fileID: 11400000, guid: 84f87e5f3358c9444a6003eb833d1615, type: 2}
-  - {fileID: 11400000, guid: 84f87e5f3358c9444a6003eb833d1615, type: 2}
+  - {fileID: 11400000, guid: 91bfda8f224afe544b0e23f42984c6b7, type: 2}
+  - {fileID: 11400000, guid: 619149fd18b0ecd4d9b3dfe515245016, type: 2}
   - {fileID: 11400000, guid: 31105698aae59864a92a07d9a9ae73cd, type: 2}
+  - {fileID: 11400000, guid: 5ed5917f63db777468ae568ac3e2e2c7, type: 2}
+  - {fileID: 11400000, guid: 84f87e5f3358c9444a6003eb833d1615, type: 2}
+  - {fileID: 11400000, guid: 42a9a97526fbde34ab05e97f78ff2822, type: 2}
+  - {fileID: 11400000, guid: f334fec7ee76c8040979b56d325f98cc, type: 2}
+  - {fileID: 11400000, guid: f334fec7ee76c8040979b56d325f98cc, type: 2}
+  - {fileID: 11400000, guid: f334fec7ee76c8040979b56d325f98cc, type: 2}
+  - {fileID: 11400000, guid: 91bfda8f224afe544b0e23f42984c6b7, type: 2}
+  - {fileID: 11400000, guid: 619149fd18b0ecd4d9b3dfe515245016, type: 2}
+  - {fileID: 11400000, guid: 31105698aae59864a92a07d9a9ae73cd, type: 2}
+  - {fileID: 11400000, guid: 5ed5917f63db777468ae568ac3e2e2c7, type: 2}
+  - {fileID: 11400000, guid: 84f87e5f3358c9444a6003eb833d1615, type: 2}
+  - {fileID: 11400000, guid: 42a9a97526fbde34ab05e97f78ff2822, type: 2}
+  - {fileID: 11400000, guid: f334fec7ee76c8040979b56d325f98cc, type: 2}

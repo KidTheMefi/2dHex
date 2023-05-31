@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using BuildingScripts;
 using Cysharp.Threading.Tasks;
 using Interfaces;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 
 public class HexMapContinents
@@ -69,4 +72,40 @@ public class HexMapContinents
         }
         await UniTask.Yield();
     }
+    
+    public bool TryGetAvailablePositionForBuilding(BaseBuildingSetup property, out Vector2Int positionAvailable)
+    {
+        positionAvailable = Vector2Int.zero;
+        Continent continent = null;
+        
+        if (property.landBiom == BiomType.None)
+        {
+            var possibleContinents = AllContinents.FindAll(cont => cont.ContainLandTypeTiles(property.landType));
+            continent = possibleContinents.Count != 0 ?  possibleContinents[Random.Range(0, possibleContinents.Count)] : null;
+        }
+        else
+        {
+            var continents = AllContinents.FindAll(x => x.BiomType == property.landBiom);
+            if (continents.Count != 0)
+            {
+                continent = continents[Random.Range(0, continents.Count)];
+            }
+        }
+        
+        if (continent == null)
+        {
+            return false;
+        }
+        var landTiles = continent.TilesWithSameLandTypeList.Find(land => land.landType == property.landType);
+        if (landTiles.tilesAxialPositions == null || landTiles.tilesAxialPositions.Count == 0)
+        {
+            return false;
+        }
+        
+        var allHexes = _hexStorage.GetHexesAtAxialCoordinates(landTiles.tilesAxialPositions).Where(hex => !hex.WithBuilding).ToList();
+        var hex = allHexes[Random.Range(0, allHexes.Count)];
+        hex.SetWithBuilding(true);
+        positionAvailable = hex.AxialCoordinate;
+        return true;
+    } 
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BattleFieldScripts;
 using BuildingScripts;
+using BuildingScripts.RecruitingBuildings;
 using CharactersScripts;
 using DefaultNamespace;
 using ScriptableScripts;

@@ -5434,21 +5434,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1069881613926205871, guid: 4d17165e77a34514092bde93ec2fcb06, type: 3}
-      propertyPath: m_SortingLayer
-      value: 6
+    - target: {fileID: 6276090337470624481, guid: 4d17165e77a34514092bde93ec2fcb06, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 6.0448
       objectReference: {fileID: 0}
-    - target: {fileID: 1069881613926205871, guid: 4d17165e77a34514092bde93ec2fcb06, type: 3}
-      propertyPath: m_SortingLayerID
-      value: 2078035243
-      objectReference: {fileID: 0}
-    - target: {fileID: 1497742561378638461, guid: 4d17165e77a34514092bde93ec2fcb06, type: 3}
-      propertyPath: m_SortingLayer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 1497742561378638461, guid: 4d17165e77a34514092bde93ec2fcb06, type: 3}
-      propertyPath: m_SortingLayerID
-      value: 2078035243
+    - target: {fileID: 6276090337470624481, guid: 4d17165e77a34514092bde93ec2fcb06, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 3.3762817
       objectReference: {fileID: 0}
     - target: {fileID: 8376388796522545432, guid: 4d17165e77a34514092bde93ec2fcb06, type: 3}
       propertyPath: m_RootOrder

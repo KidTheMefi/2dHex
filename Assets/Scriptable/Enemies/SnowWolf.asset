@@ -15,8 +15,8 @@ MonoBehaviour:
   _properties:
     _sprite: {fileID: 21300000, guid: 025a8b2c21c9452488d536bc384d1cc8, type: 3}
     _maxEnergy: 60
-    _enemyLvl: 0
+    _enemyLvl: 3
     _name: Norh Wolf
     _description: 
     _biomSpawn: 2
-    _viewRadius: 6
+    _viewRadius: 3

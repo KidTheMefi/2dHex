@@ -1,5 +1,6 @@
 using System;
 using BuildingScripts;
+using BuildingScripts.RecruitingBuildings;
 using DefaultNamespace;
 using Enemies;
 using GameEvents;
@@ -40,7 +41,7 @@ public class GameInstaller : MonoInstaller
         InstallEnemies();
         InstallUI();
         InstallSignals();
-        InstallRecruitingCenter();
+        InstallBuildings();
 
     }
 
@@ -112,6 +113,13 @@ public class GameInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<RiverGenerator>().AsSingle();
     }
 
+
+    private void InstallBuildings()
+    {
+        InstallRecruitingCenter();
+        InstallTemples();
+        Container.BindInterfacesAndSelfTo<BuildingsHandler>().AsSingle();
+    }
     private void InstallRecruitingCenter()
     {
         Container.BindInterfacesAndSelfTo<RecruitingCentersHandler>().AsSingle();
@@ -119,6 +127,16 @@ public class GameInstaller : MonoInstaller
             .FromPoolableMemoryPool<RecruitingCenter.RecruitingCenterSavedData, RecruitingCenter, RecruitingCenterPool>(poolBinder => poolBinder
                 .WithInitialSize(10).FromComponentInNewPrefab(_prefabList.RecruitingCenterPrefab)
                 .UnderTransformGroup("RecruitingCenters"));
+    }
+
+    private void InstallTemples()
+    {
+        Container.BindInterfacesAndSelfTo<TempleBuildingHandler>().AsSingle();
+        Container.BindFactory<BaseBuilding.BaseBuildingSavedData, BaseBuilding, BaseBuilding.Factory>()
+            .FromPoolableMemoryPool<BaseBuilding.BaseBuildingSavedData, BaseBuilding, BaseBuildingPool>(poolBinder => poolBinder
+                .WithInitialSize(10).FromComponentInNewPrefab(_prefabList.BaseBuilding)
+                .UnderTransformGroup("Temples"));
+        
     }
     
     private void InstallEnemies()
@@ -153,6 +171,11 @@ public class GameInstaller : MonoInstaller
 }
 
 class RecruitingCenterPool : MonoPoolableMemoryPool<RecruitingCenter.RecruitingCenterSavedData, IMemoryPool, RecruitingCenter>
+{
+    
+}
+
+class BaseBuildingPool : MonoPoolableMemoryPool<BaseBuilding.BaseBuildingSavedData, IMemoryPool, BaseBuilding>
 {
     
 }

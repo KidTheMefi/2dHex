@@ -8,7 +8,7 @@ using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
 
-namespace BuildingScripts
+namespace BuildingScripts.RecruitingBuildings
 {
     public class RecruitingCentersHandler : IInitializable, IDisposable
     {
@@ -54,7 +54,7 @@ namespace BuildingScripts
 
             foreach (var centerData in _centersOnNewMap.recruitingCenterProperties)
             {
-                if (TryGetAvailablePosition(centerData, out var positionAvailable))
+                if (_hexMapContinents.TryGetAvailablePositionForBuilding(centerData, out var positionAvailable))
                 {
                     var center = _factory.Create(new RecruitingCenter.RecruitingCenterSavedData(centerData, positionAvailable, false));
                     _centers.Add(center);
@@ -62,24 +62,7 @@ namespace BuildingScripts
             }
             await UniTask.Yield();
         }
-
-        private bool TryGetAvailablePosition(RecruitingCenterProperty property, out Vector2Int positionAvailable)
-        {
-            positionAvailable = Vector2Int.zero;
-            var continent = _hexMapContinents.AllContinents.Find(x => x.BiomType == property.landBiom);
-            if (continent == null)
-            {
-                return false;
-            }
-            var landTiles = continent.TilesWithSameLandTypeList.Find(land => land.landType == property.landType);
-            if (landTiles.tilesAxialPositions == null || landTiles.tilesAxialPositions.Count == 0)
-            {
-                return false;
-            }
-
-            positionAvailable = landTiles.tilesAxialPositions[Random.Range(0, landTiles.tilesAxialPositions.Count)];
-            return true;
-        }
+        
         private async UniTask RemoveAllCentersAsync()
         {
             foreach (var center in _centers)

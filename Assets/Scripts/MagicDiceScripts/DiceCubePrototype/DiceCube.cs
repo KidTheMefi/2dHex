@@ -121,6 +121,10 @@ namespace DiceCubePrototype
         public void SetCubeState(DiceState state)
         {
             _diceState = state;
+            if (_faceOnTop == null)
+            {
+                return;
+            }
             if (_diceState == DiceState.CanBeSelected)
             {
                 _faceOnTop.FaceOnTop();
