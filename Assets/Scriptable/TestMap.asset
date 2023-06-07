@@ -16,18 +16,18 @@ MonoBehaviour:
   _DefaultlandTypeProperty: {fileID: 11400000, guid: ad5b1a47c47d5bf4fa5fbc3a1465dda3, type: 2}
   _continentsAtMap:
   - _percent: 20
-    _StartPointXInPercent: 29
-    _StartPointYInPercent: 50
-    settings: {fileID: 11400000, guid: 8a245800afd75f940b51cfd6f7157f73, type: 2}
-  - _percent: 16
-    _StartPointXInPercent: 60
-    _StartPointYInPercent: 94
-    settings: {fileID: 11400000, guid: eb48cc43e2b1d0a4e9348b3de86c5c7f, type: 2}
-  - _percent: 12
     _StartPointXInPercent: 40
+    _StartPointYInPercent: 46
+    settings: {fileID: 11400000, guid: 8a245800afd75f940b51cfd6f7157f73, type: 2}
+  - _percent: 15
+    _StartPointXInPercent: 65
+    _StartPointYInPercent: 87
+    settings: {fileID: 11400000, guid: eb48cc43e2b1d0a4e9348b3de86c5c7f, type: 2}
+  - _percent: 15
+    _StartPointXInPercent: 36
     _StartPointYInPercent: 0
     settings: {fileID: 11400000, guid: 7d3be3489483d444488ea0c4c04e57b6, type: 2}
-  - _percent: 12
-    _StartPointXInPercent: 74
-    _StartPointYInPercent: 63
+  - _percent: 13
+    _StartPointXInPercent: 60
+    _StartPointYInPercent: 44
     settings: {fileID: 11400000, guid: 8a245800afd75f940b51cfd6f7157f73, type: 2}

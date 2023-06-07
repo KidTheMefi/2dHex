@@ -36,11 +36,10 @@ namespace BuildingScripts.RecruitingBuildings
             Visited = property.visited;
             RecruitingCenterProperty = property.recruitingCenterProperty;
             _spriteRendererImage.sprite = property.recruitingCenterProperty.sprite;
-            _visitHighlight.color = Visited ? Color.grey : Color.green;
+            _visitHighlight.color = Visited ? Color.clear : Color.green;
             _pool = pool;
             AxialPosition = property.axialPosition;
             transform.position = HexUtils.CalculatePosition(AxialPosition);
-            
         }
 
         public RecruitingCenterSavedData GetRecruitingCenterData()

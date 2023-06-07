@@ -92,7 +92,6 @@ namespace DefaultNamespace
         private async UniTask LoadAsync()
         {
             SetButtonsInteractable(false);
-            _fieldOfView.CleanOpenedHexes();
             await _mapGeneration.LoadMapAsync();
             await LoadDataFromJsonAsync();
             SetButtonsInteractable(true);
@@ -133,9 +132,9 @@ namespace DefaultNamespace
             await UniTask.Delay(TimeSpan.FromSeconds(1));
             string json = File.ReadAllText(Application.dataPath + "/Save/SavedData.json");
             SaveData saveData = JsonUtility.FromJson<SaveData>(json);
-            _inGameTime.SetTime(saveData.CurrentTimeInTick);
-            await _playerGroupSpawn.SpawnLoadedModelAsync(saveData.PlayerGroupModel);
 
+            await _playerGroupSpawn.SpawnLoadedModelAsync(saveData.PlayerGroupModel);
+            _inGameTime.SetTime(saveData.CurrentTimeInTick);
             var enemyEncounter = _sceneScriptableData.GetEnemyModelFromAttackEvent();
             if (enemyEncounter != null)
             {
@@ -146,6 +145,7 @@ namespace DefaultNamespace
             }
             await _enemySpawner.SpawnLoadedEnemyAsync(saveData.EnemyList);
             await _buildingsHandler.LoadSavedDataAsync(saveData.BuildingsSaveData);
+            
             await UniTask.Yield();
         }
 

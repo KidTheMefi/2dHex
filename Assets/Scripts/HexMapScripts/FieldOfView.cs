@@ -30,12 +30,6 @@ public class FieldOfView : IInitializable
         _night.NightTimeChange += () => UpdateFieldOfView(_playerGroupModel.AxialPosition, _playerGroupModel.VisionRadius).Forget();
     }
 
-
-    public void CleanOpenedHexes()
-    {
-        _currentOpenedHexes.Clear();
-    }
-
     public void RemoveFog()
     {
         if (_fogEnabled == false) return;
@@ -48,6 +42,30 @@ public class FieldOfView : IInitializable
 
     }
 
+    public void DiscoverAtPoint(Vector2Int center, int radius)
+    {
+        if (_hexStorage.GetHexAtAxialCoordinate(center) == null)
+        {
+            Debug.LogError($"HEX DON'T EXIST AT AXIAL COORDINATE {center}");
+            return;
+        }
+
+        var areaAtRange = HexUtils.GetAxialAreaAtRange(center, radius);
+
+        foreach (var hexAtArea in areaAtRange)
+        {
+            if (_hexStorage.HexAtAxialCoordinateExist(hexAtArea))
+            {
+                var hex = _hexStorage.GetHexAtAxialCoordinate(hexAtArea);
+
+                if (hex.TileVisibility == TileVisibility.Undiscovered)
+                {
+                    hex.SetVisibility(TileVisibility.Discovered);
+                }
+            }
+        }
+    }
+    
     private async UniTask UpdateFieldOfView(Vector2Int center, int radius)
     {
         int radiusActual = radius;
@@ -74,12 +92,12 @@ public class FieldOfView : IInitializable
             default:
                 break;
         }
-
+        
         radiusActual = radiusActual < 1 ? 1 : radiusActual;
 
         List<Hex> hexThatCanBeSee = new List<Hex>();
         var ring = HexUtils.GetAxialRingWithRadius(center, radiusActual);
-
+        
         foreach (var hexInRing in ring)
         {
             var line = HexUtils.GetAxialLine(center, hexInRing);

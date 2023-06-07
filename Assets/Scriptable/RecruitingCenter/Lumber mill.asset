@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a51b36707064af7b8a3650c5840ea1a, type: 3}
   m_Name: Lumber mill
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: b3a100d8344187049b3f8b5c9e5aba88, type: 3}
+  sprite: {fileID: 21300000, guid: 7c835079d0b0b27489ac3aa82c530d52, type: 3}
   name: Lumber mill
   description: 
   landType: 2

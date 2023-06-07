@@ -1,6 +1,8 @@
 using BuildingScripts;
 using BuildingScripts.MapTargets;
+using BuildingScripts.ObservationBuildings;
 using BuildingScripts.RecruitingBuildings;
+using BuildingScripts.RestPlaces;
 using Enemies;
 using UnityEngine;
 using Zenject;
@@ -17,9 +19,14 @@ public class ScriptableSettingInstaller : ScriptableObjectInstaller<ScriptableSe
     [SerializeField]
     private TemplesOnMap _templesOnMap;
     [SerializeField]
+    private RestingPlaceOnMap _restingPlaceOnMap;
+    [SerializeField]
+    private ObservationPlaceOnMap _observationPlaceOnMap;
+    [SerializeField]
     private GameTime.InGameTime.Settings GameTimeSettings;
     [SerializeField]
     private EnemiesSettings _enemiesSettings;
+    
 
     public override void InstallBindings()
     {
@@ -29,5 +36,7 @@ public class ScriptableSettingInstaller : ScriptableObjectInstaller<ScriptableSe
         Container.BindInstance(_enemiesSettings);
         Container.BindInstance(_recruitingCentersOnMap);
         Container.BindInstance(_templesOnMap);
+        Container.BindInstance(_restingPlaceOnMap);
+        Container.BindInstance(_observationPlaceOnMap);
     }
 }

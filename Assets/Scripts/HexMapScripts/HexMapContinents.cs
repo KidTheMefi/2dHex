@@ -10,7 +10,6 @@ using Random = UnityEngine.Random;
 
 public class HexMapContinents
 {
-    public event Action ContinentsGenerated = delegate { };
     private MapSetting _mapSetting;
     private Continent.Factory _continentFactory;
     
@@ -40,7 +39,6 @@ public class HexMapContinents
         _allContinentsHexes?.Clear();
         _allContinents?.Clear();
         await CreateContinentsAsync();
-        ContinentsGenerated.Invoke();
     }
 
     private async UniTask  CreateContinentsAsync()

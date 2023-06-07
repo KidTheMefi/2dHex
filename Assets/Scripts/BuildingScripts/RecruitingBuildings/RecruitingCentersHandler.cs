@@ -82,7 +82,6 @@ namespace BuildingScripts.RecruitingBuildings
                 center.Visited = true;
                 _signalBus.Fire(new GameSignals.RecruitingCenterVisitSignal() {RecruitingCenter = center} );
             }
-            
         }
         public void Initialize()
         {

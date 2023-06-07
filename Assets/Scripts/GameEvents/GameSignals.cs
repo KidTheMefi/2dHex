@@ -15,5 +15,10 @@ namespace GameEvents
         {
             public RecruitingCenter RecruitingCenter;
         }
+        
+        public class OnMapObjectSignal
+        {
+            
+        }
     }
 }

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0e83bce36ee4de88b2d892b21d8e1c8, type: 3}
+  m_Name: Observation tower
+  m_EditorClassIdentifier: 
+  name: Observetion tower
+  description: 
+  landType: 3
+  landBiom: 0
+  sprite: {fileID: 21300000, guid: cf17d96398279714faa8e4c3bc6da192, type: 3}
+  iconSprite: {fileID: 21300000, guid: 5c27fc79dd2011c4ab50f507f7cfb7af, type: 3}
+  moneyCost: 0
+  observationRadius: 9
+  observationType: 0

@@ -38,6 +38,7 @@ namespace PlayerGroup
 
         public void SetupModel(SavedPlayer loadedModel)
         {
+            
             _playerSettings = loadedModel.PlayerSettings;
             _playerSettings.SavedTeam.SetTeamFromList(_playerSettings.SavedTeamList);
             _axialPosition = loadedModel.AxialPosition;

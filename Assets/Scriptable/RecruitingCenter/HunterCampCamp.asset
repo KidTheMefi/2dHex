@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a51b36707064af7b8a3650c5840ea1a, type: 3}
   m_Name: HunterCampCamp
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: bf693fa78bbee3c4088f8993ac382f69, type: 3}
+  sprite: {fileID: 21300000, guid: eb953dd22368dba40b10c934ce78fbec, type: 3}
   name: Hunter Camp
   description: Recruite hunters
   landType: 2

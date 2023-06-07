@@ -26,6 +26,8 @@ MonoBehaviour:
   MapSetting: {fileID: 11400000, guid: d778f19d9ad255b429cd0d2ba693f02d, type: 2}
   _recruitingCentersOnMap: {fileID: 11400000, guid: f0e43706a8e1d53478a27e3f4542795d, type: 2}
   _templesOnMap: {fileID: 11400000, guid: a587d90aea4f9a442b126b2077d06762, type: 2}
+  _restingPlaceOnMap: {fileID: 11400000, guid: c3e304d7380f39842b3952d1dfacbf58, type: 2}
+  _observationPlaceOnMap: {fileID: 11400000, guid: 0779692533a48d647b524addfbaff45c, type: 2}
   GameTimeSettings:
     _defaultTickTime: 0.2
     _restTickTime: 0.3

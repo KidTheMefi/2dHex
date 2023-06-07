@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a51b36707064af7b8a3650c5840ea1a, type: 3}
   m_Name: Church of Earth
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 7c6c8b4baa5364447a19c7dc2fec3fa3, type: 3}
+  sprite: {fileID: 21300000, guid: 125c001dea7506149a5c265d6db00746, type: 3}
   name: Church of Earth
   description: 
   landType: 3

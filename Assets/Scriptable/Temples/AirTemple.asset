@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcbe89338a0b49ba8bdaeb6916b7d0eb, type: 3}
   m_Name: AirTemple
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 9653f43ee557e3248a6d4842032bf026, type: 3}
   name: Air Temple
   description: 
   landType: 3
   landBiom: 0
+  sprite: {fileID: 21300000, guid: 2bcf7e3482c9e01458d2dfad7ff7c745, type: 3}
+  iconSprite: {fileID: 21300000, guid: 9653f43ee557e3248a6d4842032bf026, type: 3}
