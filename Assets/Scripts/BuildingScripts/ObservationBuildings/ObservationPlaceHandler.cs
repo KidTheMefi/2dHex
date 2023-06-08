@@ -30,9 +30,9 @@ namespace BuildingScripts.ObservationBuildings
                 if (_hexMapContinents.TryGetAvailablePositionForBuilding(placeSetup, out var positionAvailable))
                 {
                     var baseBuilding = _buildingFactory.Create(new BaseBuilding.BaseBuildingSavedData(placeSetup, positionAvailable, true));
-                    var restVillage = _observationPlaceFactory.Create(placeSetup, baseBuilding);
+                    var observationPlace = _observationPlaceFactory.Create(placeSetup, baseBuilding);
                     
-                    _buildings.Add(restVillage);
+                    _buildings.Add(observationPlace);
                 }
             }
             await UniTask.Yield();

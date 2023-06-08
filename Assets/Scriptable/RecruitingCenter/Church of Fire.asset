@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a51b36707064af7b8a3650c5840ea1a, type: 3}
   m_Name: Church of Fire
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 0ade84da543024b459597c792396f746, type: 3}
   name: 'Church of Fire '
   description: 
   landType: 1
   landBiom: 3
+  sprite: {fileID: 21300000, guid: 0ade84da543024b459597c792396f746, type: 3}
+  iconSprite: {fileID: 21300000, guid: 73b277da837c0874893f6123d5842ca0, type: 3}
   Recruits:
   - {fileID: 11400000, guid: be9098b648cdd474e947e54fe46acb1d, type: 2}
   - {fileID: 11400000, guid: b5c35ac9374658047bfa4a82f04f3507, type: 2}

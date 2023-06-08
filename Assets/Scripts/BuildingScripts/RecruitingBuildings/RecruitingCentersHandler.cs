@@ -1,38 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
-using GameEvents;
 using Interfaces;
-using UnityEngine;
-using Zenject;
-using Random = UnityEngine.Random;
 
 namespace BuildingScripts.RecruitingBuildings
 {
-    public class RecruitingCentersHandler : IInitializable, IDisposable
+    public class RecruitingCentersHandler
     {
         private RecruitingCenter.Factory _factory;
+        private BaseBuilding.Factory _buildingFactory;
         private RecruitingCentersOnMap _centersOnNewMap;
         private HexMapContinents _hexMapContinents;
-        readonly SignalBus _signalBus;
-        private IPlayerGroupEvents _playerGroupEvents;
 
         private List<RecruitingCenter> _centers = new List<RecruitingCenter>();
 
         public RecruitingCentersHandler(RecruitingCenter.Factory factory, RecruitingCentersOnMap centersOnNewMap,
-            HexMapContinents hexMapContinents, SignalBus signalBus, IPlayerGroupEvents playerGroupEvents)
+            HexMapContinents hexMapContinents, BaseBuilding.Factory buildingFactory)
         {
-            _playerGroupEvents = playerGroupEvents;
+            _buildingFactory = buildingFactory;
             _factory = factory;
             _centersOnNewMap = centersOnNewMap;
             _hexMapContinents = hexMapContinents;
-            _signalBus = signalBus;
         }
 
-        public List<RecruitingCenter.RecruitingCenterSavedData> SavedData()
+        public async UniTask CreateNewCentersAsync()
         {
-            return _centers.Select(center => center.GetRecruitingCenterData()).ToList();
+            await RemoveAllCentersAsync();
+
+            foreach (var placeSetup in _centersOnNewMap.recruitingCenterProperties)
+            {
+                if (_hexMapContinents.TryGetAvailablePositionForBuilding(placeSetup, out var positionAvailable))
+                {
+                    var baseBuilding = _buildingFactory.Create(new BaseBuilding.BaseBuildingSavedData(placeSetup, positionAvailable, true));
+                    var center = _factory.Create(placeSetup, baseBuilding);
+                    _centers.Add(center);
+                }
+            }
+            await UniTask.Yield();
         }
 
         public async UniTask CreateLoadedCentersAsync(List<RecruitingCenter.RecruitingCenterSavedData> savedRCData)
@@ -41,55 +45,27 @@ namespace BuildingScripts.RecruitingBuildings
 
             foreach (var data in savedRCData)
             {
-                var center = _factory.Create(data);
+                var baseBuilding = _buildingFactory.Create(data.baseBuildingSavedData);
+                var center = _factory.Create(data.recruitingCenterSetup, baseBuilding);
                 _centers.Add(center);
             }
             await UniTask.Yield();
         }
         
         
-        public async UniTask CreateNewCentersAsync()
-        {
-           await RemoveAllCentersAsync();
-
-            foreach (var centerData in _centersOnNewMap.recruitingCenterProperties)
-            {
-                if (_hexMapContinents.TryGetAvailablePositionForBuilding(centerData, out var positionAvailable))
-                {
-                    var center = _factory.Create(new RecruitingCenter.RecruitingCenterSavedData(centerData, positionAvailable, false));
-                    _centers.Add(center);
-                }
-            }
-            await UniTask.Yield();
-        }
-        
         private async UniTask RemoveAllCentersAsync()
         {
             foreach (var center in _centers)
             {
-                center.Despawn();
+                center.Remove();
             }
             _centers.Clear();
             await UniTask.Yield();
         }
-
-        private void CheckVisit(Vector2Int axialPosition)
+        
+        public List<RecruitingCenter.RecruitingCenterSavedData> SavedData()
         {
-            var center = _centers.Find(rc => rc.AxialPosition == axialPosition);
-
-            if (center != null && !center.Visited)
-            {
-                center.Visited = true;
-                _signalBus.Fire(new GameSignals.RecruitingCenterVisitSignal() {RecruitingCenter = center} );
-            }
-        }
-        public void Initialize()
-        {
-            _playerGroupEvents.StoppedOnPosition += CheckVisit;
-        }
-        public void Dispose()
-        {
-            _playerGroupEvents.StoppedOnPosition -= CheckVisit;
+            return _centers.Select(center => center.GetRecruitingCenterData()).ToList();
         }
     }
 }

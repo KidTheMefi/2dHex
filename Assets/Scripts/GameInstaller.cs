@@ -121,28 +121,21 @@ public class GameInstaller : MonoInstaller
     {
         Container.BindFactory<RestingPlaceSetup, BaseBuilding, RestingPlace, RestingPlace.Factory>().AsSingle();
         Container.BindFactory<ObservationPlaceSetup, BaseBuilding, ObservationPlace, ObservationPlace.Factory>().AsSingle();
+        Container.BindFactory<RecruitingCenterSetup, BaseBuilding, RecruitingCenter, RecruitingCenter.Factory>().AsSingle();
         
         Container.BindFactory<BaseBuilding.BaseBuildingSavedData, BaseBuilding, BaseBuilding.Factory>()
             .FromPoolableMemoryPool<BaseBuilding.BaseBuildingSavedData, BaseBuilding, BaseBuildingPool>(poolBinder => poolBinder
-                .WithInitialSize(30).FromComponentInNewPrefab(_prefabList.BaseBuilding)
+                .WithInitialSize(50).FromComponentInNewPrefab(_prefabList.BaseBuilding)
                 .UnderTransformGroup("Buildings"));
-        Container.BindInterfacesAndSelfTo<BuildingsHandler>().AsSingle();
         
-        InstallRecruitingCenter();
+        Container.BindInterfacesAndSelfTo<BuildingsHandler>().AsSingle();
         Container.BindInterfacesAndSelfTo<ObservationPlaceHandler>().AsSingle();
         Container.BindInterfacesAndSelfTo<TempleBuildingHandler>().AsSingle();
         Container.BindInterfacesAndSelfTo<RestingPlaceHandler>().AsSingle();
+        Container.BindInterfacesAndSelfTo<RecruitingCentersHandler>().AsSingle();
         
     }
-    private void InstallRecruitingCenter()
-    {
-        Container.BindInterfacesAndSelfTo<RecruitingCentersHandler>().AsSingle();
-        Container.BindFactory<RecruitingCenter.RecruitingCenterSavedData, RecruitingCenter, RecruitingCenter.Factory>()
-            .FromPoolableMemoryPool<RecruitingCenter.RecruitingCenterSavedData, RecruitingCenter, RecruitingCenterPool>(poolBinder => poolBinder
-                .WithInitialSize(20).FromComponentInNewPrefab(_prefabList.RecruitingCenterPrefab)
-                .UnderTransformGroup("RecruitingCenters"));
-    }
-    
+
     private void InstallEnemies()
     {
         Container.BindInterfacesAndSelfTo<EnemySpawner>().AsSingle();
@@ -181,11 +174,6 @@ public class GameInstaller : MonoInstaller
 
 class EnemyFacadePool : MonoPoolableMemoryPool<Vector2Int, EnemyModel.Properties, IMemoryPool, EnemyFacade>
 {
-}
-
-class RecruitingCenterPool : MonoPoolableMemoryPool<RecruitingCenter.RecruitingCenterSavedData, IMemoryPool, RecruitingCenter>
-{
-
 }
 
 class BaseBuildingPool : MonoPoolableMemoryPool<BaseBuilding.BaseBuildingSavedData, IMemoryPool, BaseBuilding>

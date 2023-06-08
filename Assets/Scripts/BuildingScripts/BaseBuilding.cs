@@ -1,5 +1,4 @@
 ﻿using System;
-using GameEvents.MapObjectDescriptionSignal;
 using Interfaces;
 using UnityEngine;
 using Zenject;
@@ -23,7 +22,7 @@ namespace BuildingScripts
         
         public BaseBuildingSetup BaseBuildingSetup { get; private set; }
         public Vector2Int AxialPosition { get; private set; }
-        public bool Open { get; set; }
+        public bool Open { get; private set; }
 
         
         [Inject]
@@ -34,7 +33,7 @@ namespace BuildingScripts
 
         private void PlayerGroupEventsOnStoppedOnPosition(Vector2Int playerPosition)
         {
-            if (playerPosition == AxialPosition)
+            if (playerPosition == AxialPosition && Open)
             {
                 PlayerAtBuilding.Invoke();
             }
@@ -61,7 +60,18 @@ namespace BuildingScripts
             _pool = null;
             BaseBuildingSetup = null;
             Open = true;
+            
+        }
+        
+        private void OnDisable()
+        {
+           // Debug.Log("DISABLE + Unsubscribed");
             _playerGroupEvents.StoppedOnPosition -= PlayerGroupEventsOnStoppedOnPosition;
+        }
+        private void OnEnable()
+        {
+            //Debug.Log("ENABLE + Subscribed");
+            _playerGroupEvents.StoppedOnPosition += PlayerGroupEventsOnStoppedOnPosition;
         }
         
         public BaseBuildingSavedData GetBaseBuildingSavedData()
@@ -80,7 +90,6 @@ namespace BuildingScripts
             _pool = pool;
             AxialPosition = property.axialPosition;
             transform.position = HexUtils.CalculatePosition(AxialPosition) + Vector3.back*0.1f;
-            _playerGroupEvents.StoppedOnPosition += PlayerGroupEventsOnStoppedOnPosition;
         }
 
         public void SetOpen(bool value)
@@ -88,7 +97,6 @@ namespace BuildingScripts
             Color greenTransparent = new Color(0, 1, 0, 0.5f);
           
             Open = value;
-            Debug.LogFormat($"Set open {value}");
             _openHighlight.color = Open ? greenTransparent : Color.clear;
            
         }

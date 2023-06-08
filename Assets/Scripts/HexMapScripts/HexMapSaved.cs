@@ -19,12 +19,16 @@ namespace HexMapScripts
         [SerializeField]
         private List<Continent> _allContinents;
         public List<Continent> AllContinents => _allContinents;
-        
-        
+
+        [SerializeField]
+        private List<RiverGenerator.RiverStruct> rivers;
+
+        public List<RiverGenerator.RiverStruct> Rivers => rivers;
+
         public void SaveMap(Hex[,] hexMap, Vector2Int mapResolution)
         {
             _mapResolution = mapResolution;
-            Debug.Log("Saved Map");
+            //Debug.Log("Saved Map");
             
             _hexes = new List<Hex>();
             foreach (var hex in hexMap)
@@ -35,8 +39,14 @@ namespace HexMapScripts
 
         public void SaveContinents(List<Continent> continents)
         {
-            Debug.Log("Saved Continents");
+            //Debug.Log("Saved Continents");
             _allContinents = continents;
+        }
+
+        public void SaveRivers(List<RiverGenerator.RiverStruct> rivers)
+        {
+            //Debug.Log("Saved rivers: " + rivers.Count);
+            this.rivers = rivers;
         }
 
         public static HexMapSaved GetSaveFromJson()

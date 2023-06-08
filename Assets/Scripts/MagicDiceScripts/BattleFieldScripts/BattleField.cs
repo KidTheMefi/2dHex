@@ -75,10 +75,7 @@ namespace BattleFieldScripts
             _characterAttacksCanceletion?.Cancel();
             if (deadTeam == _rightTeamField)
             {
-                Debug.Log("Player win");
-                _playerTeam.SaveTeam(_leftTeamField.GetTeamScriptable());
-                var save = _playerTeam.SavePlayerTeamToJsonData();
-                SceneChanger.GetInstance().LoadGame();
+                Win();
             }
             else
             {
@@ -94,6 +91,14 @@ namespace BattleFieldScripts
         }
 
 
+        public void Win()
+        {
+            Debug.Log("Player win");
+            _playerTeam.SaveTeam(_leftTeamField.GetTeamScriptable());
+            var save = _playerTeam.SavePlayerTeamToJsonData();
+            SceneChanger.GetInstance().LoadGame();
+        }
+        
         public void FillBattleField()
         {
             _leftTeamField.FillWithCharacters(_playerTeam.CharactersInPosition);

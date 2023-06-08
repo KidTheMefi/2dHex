@@ -21,18 +21,15 @@ namespace TeamCreation
         [SerializeField] private SceneScriptableData _sceneScriptableData;
 
         private ProgressionHandler _progressionHandler;
-        private RecruitingCenterProperty _recruitingCenterProperty;
+        private RecruitingCenterSetup _recruitingCenterSetup;
         private CharacterScriptable _currentSelectedCharacterToCreate;
-
-
-
-
+        
         private void Start()
         {
             _progressionHandler = ProgressionHandler.GetInstance();
             _playerTeamSelector.CharacterSelected += PlayerTeamSelectorOnCharacterSelected;
-            _recruitingCenterProperty = _sceneScriptableData.GetRecruitingCenterProperty();
-            _playerTeamSelector.SetupSelector(_recruitingCenterProperty);
+            _recruitingCenterSetup = _sceneScriptableData.GetRecruitingCenterProperty();
+            _playerTeamSelector.SetupSelector(_recruitingCenterSetup);
             SpellStateChange += SpellExecutorOnSpellStateChange;
             
             if (_savedTeam.CharactersInPosition != null)
@@ -40,16 +37,14 @@ namespace TeamCreation
                 _teamField.FillWithCharacters(_savedTeam.CharactersInPosition);
             }
             _nextSceneButton.interactable = _teamField.GetTeamScriptable().Count > 0;
-
             _nextSceneButton.onClick.AddListener(ToNextScene);
             
             if (SceneChanger.GetInstance() != null)
             {
                 SceneChanger.GetInstance().LoadScreenEnabled(false);
             }
-
-
         }
+        
         private void PlayerTeamSelectorOnCharacterSelected(CharacterScriptable characterScriptable)
         {
 
@@ -94,7 +89,7 @@ namespace TeamCreation
 
             var saved = SaveTeam();
             
-            if (_recruitingCenterProperty == null)
+            if (_recruitingCenterSetup == null)
             {
                 SceneChanger.GetInstance().CreateNewMap();
             }

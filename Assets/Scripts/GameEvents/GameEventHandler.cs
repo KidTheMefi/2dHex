@@ -35,9 +35,10 @@ namespace GameEvents
             SceneChanger.GetInstance().FightScene();
         }
 
-        public async UniTask RecruitCenterVisitAsync(RecruitingCenterProperty recruitingCenterProperty)
+        public async UniTask RecruitCenterVisitAsync(RecruitingCenterSetup recruitingCenterSetup)
         {
-            _sceneScriptableData.SetRecruits(recruitingCenterProperty);
+            _sceneScriptableData.SetRecruits(recruitingCenterSetup);
+            _sceneScriptableData.LoadMap = true;//load
             await SaveBeforeEventAsync();
             SceneChanger.GetInstance().RecruitSceneBegin();
         }

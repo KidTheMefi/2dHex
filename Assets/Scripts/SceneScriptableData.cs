@@ -12,7 +12,7 @@ namespace DefaultNamespace
     {
         
         private EnemyModel _enemyModelAttacked;
-        private RecruitingCenterProperty _recruitingCenterProperty;
+        private RecruitingCenterSetup _recruitingCenterSetup;
         
         public bool LoadMap;
 
@@ -30,15 +30,19 @@ namespace DefaultNamespace
             return enemy;
         }
 
-        public void SetRecruits(RecruitingCenterProperty recruits)
+        public void SetRecruits(RecruitingCenterSetup recruits)
         {
-            _recruitingCenterProperty = recruits;
+            _recruitingCenterSetup = recruits;
         }
-        public RecruitingCenterProperty GetRecruitingCenterProperty()
+        public RecruitingCenterSetup GetRecruitingCenterProperty()
         {
-            if (_recruitingCenterProperty == null) return null;
-            var recruit = _recruitingCenterProperty;
-            _recruitingCenterProperty = null;
+            
+            if (_recruitingCenterSetup == null)
+            {
+                return null;
+            }
+            var recruit = _recruitingCenterSetup;
+            _recruitingCenterSetup = null;
             return recruit;
         }
     }

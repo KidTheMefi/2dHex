@@ -5,7 +5,7 @@ using UnityEngine;
 namespace BuildingScripts.RecruitingBuildings
 {
     [CreateAssetMenu(menuName = "Buildings/RecruitingCenter")]
-    public class RecruitingCenterProperty : BaseBuildingSetup
+    public class RecruitingCenterSetup : BaseBuildingSetup
     {
         public List<CharacterScriptable> Recruits;
     }

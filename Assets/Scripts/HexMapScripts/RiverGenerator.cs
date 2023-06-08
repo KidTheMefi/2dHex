@@ -1,9 +1,10 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Interfaces;
 using UnityEngine;
 using Zenject;
+using Random = UnityEngine.Random;
 
 public class RiverGenerator : IInitializable
 {
@@ -14,19 +15,35 @@ public class RiverGenerator : IInitializable
     private IHexStorage _hexStorage;
     private RiverView.Factory _riverFactory;
 
+    public List<RiverStruct> riversPositions {get; private set; }
+    
+
     public RiverGenerator(AStarSearch pathFind, IHexStorage hexStorage, RiverView.Factory riverFactory, HexMapContinents mapContinents)
     {
         _pathFind = pathFind;
         _hexStorage = hexStorage;
         _riverFactory = riverFactory;
         _mapContinents = mapContinents;
+        riversPositions = new List<RiverStruct>();
     }
     
     public void Initialize()
     {
        // _mapContinents.ContinentsGenerated += () => DrawRandomRivers(6);
     }
-    
+
+    public async UniTask DrawLoadedRivers(List<RiverStruct> rivers)
+    {
+
+        foreach (var river in rivers)
+        {
+            var currentRiver = _riverFactory.Create();
+            currentRiver.SetRiver(river.RiverPositions);
+        }
+        await UniTask.Yield();
+        riversPositions = rivers;
+    }
+
     public async UniTask DrawRandomRivers(int count)
     {
         if (_testRivers.Count != 0)
@@ -65,15 +82,27 @@ public class RiverGenerator : IInitializable
         if (_pathFind.TryPathFindForRiver(starPathPos, endPathPos, out var riverPositions))
         {
             var currentRiver = _riverFactory.Create();
-           
-
+            
             foreach (var pathPoint in riverPositions)
             {
                 positions.Add(_hexStorage.GetHexAtAxialCoordinate(pathPoint).Position + new Vector3(Random.Range(-0.1f, 0.1f), Random.Range(-0.1f, 0.1f)));
             }
 
             currentRiver.SetRiver(positions);
+            riversPositions.Add(new RiverStruct(positions));
             _testRivers.Add(currentRiver);
+        }
+    }
+    
+    [Serializable]
+    public struct RiverStruct
+    {
+        [SerializeField]
+        public List<Vector3> RiverPositions;
+        
+        public RiverStruct(List<Vector3> riverPositions)
+        {
+            RiverPositions = riverPositions;
         }
     }
 }

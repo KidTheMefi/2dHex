@@ -34,11 +34,9 @@ public class MapGeneration : IRandomPassablePosition
 
         await _hexStorage.LoadMap(savedMap);
         await _hexMapContinents.LoadContinentsAsync(savedMap.AllContinents);
-        
+        await _riverGenerator.DrawLoadedRivers(savedMap.Rivers);
         Debug.Log("Fog loaded;");
-        
-        //await _riverGenerator.DrawRandomRivers(6);
-        
+
         await UniTask.Yield();
     }
 
@@ -60,6 +58,7 @@ public class MapGeneration : IRandomPassablePosition
     {
         HexMapSaved savedMap = new HexMapSaved();
         savedMap.SaveContinents(_hexMapContinents.AllContinents);
+        savedMap.SaveRivers(_riverGenerator.riversPositions);
         _hexStorage.SaveMap(savedMap);
         await UniTask.Delay(TimeSpan.FromSeconds(1));
         HexMapSaved.SaveToJson(savedMap);

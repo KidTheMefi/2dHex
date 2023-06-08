@@ -102,15 +102,17 @@ namespace BuildingScripts
             int visitedTemples = 0;
             foreach (var temple in _temples)
             {
-                if (temple.Open)
+                if (!temple.Open)
                 {
                     visitedTemples++;
                 }
             }
 
+            Debug.Log($"{_temples.Count} = {visitedTemples}");
             if (_temples.Count == visitedTemples)
             {
                 Debug.Log("GAME WIN");
+                Application.Quit();
 #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
 #endif

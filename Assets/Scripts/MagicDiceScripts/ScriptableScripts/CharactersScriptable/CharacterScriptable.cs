@@ -13,6 +13,7 @@ namespace ScriptableScripts
         public bool SummonedCreature;
         public Animator CharacterAnimatorPrefab;
         public Sprite CharacterSprite;
+        public CubeSetup CubeSetup;
         [Range(1, 10)]
         public int HP;
         [Range(0, 10)]

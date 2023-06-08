@@ -14,7 +14,6 @@ namespace Enemies.EnemyStates
 
         public event Action<EnemyState> ChangeState = delegate(EnemyState state) { };
         
-
         private EnemyModel _enemyModel;
         private EnemyView _enemyView;
         private EnemyPathFind _enemyPathFind;
@@ -25,6 +24,8 @@ namespace Enemies.EnemyStates
         private Queue<Vector3> _movementQueue = new Queue<Vector3>();
         private Queue<Hex> _path = new Queue<Hex>();
         private Vector2Int _target;
+
+        private bool _playerReached;
         
         public EnemyChasing(InGameTime gameTime, EnemyView enemyView, EnemyModel enemyModel, EnemyPathFind enemyPathFind, SignalBus signalBus)
         {
@@ -91,6 +92,11 @@ namespace Enemies.EnemyStates
             }
             else
             {
+                if (_playerReached)
+                {
+                    return;
+                }
+                _playerReached = true;
                 Debug.Log("PlayerReached");
                 _signalBus.Fire(new GameSignals.EnemyAttackSignal() {EnemyModel = _enemyModel} );
             }

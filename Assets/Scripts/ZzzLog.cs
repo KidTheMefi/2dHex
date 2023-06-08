@@ -7,6 +7,7 @@ public class ZzzLog : MonoBehaviour
     Queue myLogQueue = new Queue();
 
     void Start() {
+        DontDestroyOnLoad(this);
         Debug.Log("Started up logging.");
     }
 

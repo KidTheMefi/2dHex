@@ -1,5 +1,4 @@
-﻿using System;
-using GameEvents.MapObjectDescriptionSignal;
+﻿using GameEvents.MapObjectDescriptionSignal;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -52,6 +51,5 @@ namespace DefaultNamespace
             _signal.ShowDescription -= SignalOnShowDescription;
             _signal.HideDescription -= SignalOnHideDescription;
         }
-
     }
 }

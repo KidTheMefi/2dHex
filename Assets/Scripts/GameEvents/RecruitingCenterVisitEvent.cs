@@ -22,11 +22,10 @@ namespace GameEvents
     
         private void Visit(GameSignals.RecruitingCenterVisitSignal signal)
         {
-            Debug.LogWarning($"{signal.RecruitingCenter.RecruitingCenterProperty.name} visit");
-            
             _playerGroupStateManager.ChangeState(PlayerState.Event);
-            _gameEventHandler.RecruitCenterVisitAsync(signal.RecruitingCenter.RecruitingCenterProperty).Forget();
+            _gameEventHandler.RecruitCenterVisitAsync(signal.RecruitingCenter.RecruitingCenterSetup).Forget();
         }
+        
         public void Initialize()
         {
             _signalBus.Subscribe<GameSignals.RecruitingCenterVisitSignal>(Visit);

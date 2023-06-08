@@ -45,9 +45,9 @@ namespace BuildingScripts
         
         public void Remove()
         {
-            _baseBuilding.Despawn();
             _baseBuilding.PlayerAtBuilding -= PlayerAtBuilding;
             _baseBuilding.MouseOnBuilding -= BaseBuildingOnMouseOnBuilding;
+            _baseBuilding.Despawn();
         }
 
         public void SetOpen(bool value)

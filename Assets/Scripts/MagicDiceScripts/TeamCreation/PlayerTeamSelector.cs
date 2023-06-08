@@ -27,7 +27,7 @@ namespace TeamCreation
        [SerializeField]
        private TextMeshProUGUI _descriptionText;
 
-       private RecruitingCenterProperty _recruitingCenterProperty;
+       private RecruitingCenterSetup _recruitingCenterSetup;
        
         
         private void Start()
@@ -37,11 +37,11 @@ namespace TeamCreation
         }
 
 
-        public void SetupSelector(RecruitingCenterProperty recruitingCenterProperty)
+        public void SetupSelector(RecruitingCenterSetup recruitingCenterSetup)
         {
-            _recruitingCenterProperty = recruitingCenterProperty;
+            _recruitingCenterSetup = recruitingCenterSetup;
             
-            if (_recruitingCenterProperty  == null)
+            if (_recruitingCenterSetup  == null)
             {
                 _characterDropdown.onValueChanged.AddListener(AllCharacterListDropDownSelect);
                 AllCharacterTypeDropDownSetup();
@@ -102,7 +102,7 @@ namespace TeamCreation
 
         private void CharacterListDropDownSetup()
         {
-            List<string> options = _recruitingCenterProperty.Recruits.Select(recruit => recruit.CharacterName).ToList();
+            List<string> options = _recruitingCenterSetup.Recruits.Select(recruit => recruit.CharacterName).ToList();
             _characterDropdown.ClearOptions();
             _characterDropdown.AddOptions(options);
             _characterDropdown.RefreshShownValue();
@@ -112,14 +112,13 @@ namespace TeamCreation
         
         private void CharacterFromRecruitCenterSelect(int index)
         {
-            var selectedCharacterScriptable = _recruitingCenterProperty.Recruits[index];
+            var selectedCharacterScriptable = _recruitingCenterSetup.Recruits[index];
             _character.Setup(selectedCharacterScriptable);
             _descriptionText.text = _character.CharacterDescription();
             if (selectedCharacterScriptable != null)
             {
                 CharacterSelected.Invoke(selectedCharacterScriptable);
             }
-            
         }
     }
 }

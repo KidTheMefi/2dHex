@@ -1,10 +1,10 @@
 {
-    "CurrentTimeInTick": 8,
+    "CurrentTimeInTick": 44,
     "EnemyList": [
         {
             "_properties": {
                 "_sprite": {
-                    "instanceID": 19744
+                    "instanceID": 19842
                 },
                 "_maxEnergy": 60,
                 "_enemyLvl": 2,
@@ -14,14 +14,31 @@
                 "_viewRadius": 5
             },
             "_axialPosition": {
-                "x": 41,
-                "y": 2
+                "x": 2,
+                "y": 14
             }
         },
         {
             "_properties": {
                 "_sprite": {
-                    "instanceID": 19746
+                    "instanceID": 19842
+                },
+                "_maxEnergy": 60,
+                "_enemyLvl": 2,
+                "_name": "Coyote",
+                "_description": "",
+                "_biomSpawn": 3,
+                "_viewRadius": 5
+            },
+            "_axialPosition": {
+                "x": 7,
+                "y": 3
+            }
+        },
+        {
+            "_properties": {
+                "_sprite": {
+                    "instanceID": 19844
                 },
                 "_maxEnergy": 60,
                 "_enemyLvl": 3,
@@ -31,14 +48,14 @@
                 "_viewRadius": 3
             },
             "_axialPosition": {
-                "x": 54,
-                "y": 25
+                "x": 37,
+                "y": 29
             }
         },
         {
             "_properties": {
                 "_sprite": {
-                    "instanceID": 19748
+                    "instanceID": 19846
                 },
                 "_maxEnergy": 50,
                 "_enemyLvl": 1,
@@ -48,65 +65,65 @@
                 "_viewRadius": 4
             },
             "_axialPosition": {
+                "x": 23,
+                "y": 11
+            }
+        },
+        {
+            "_properties": {
+                "_sprite": {
+                    "instanceID": 19848
+                },
+                "_maxEnergy": 45,
+                "_enemyLvl": 4,
+                "_name": "Bandits",
+                "_description": "",
+                "_biomSpawn": 1,
+                "_viewRadius": 3
+            },
+            "_axialPosition": {
+                "x": 36,
+                "y": 14
+            }
+        },
+        {
+            "_properties": {
+                "_sprite": {
+                    "instanceID": 19848
+                },
+                "_maxEnergy": 45,
+                "_enemyLvl": 4,
+                "_name": "Bandits",
+                "_description": "",
+                "_biomSpawn": 1,
+                "_viewRadius": 3
+            },
+            "_axialPosition": {
                 "x": 19,
-                "y": 24
-            }
-        },
-        {
-            "_properties": {
-                "_sprite": {
-                    "instanceID": 19750
-                },
-                "_maxEnergy": 45,
-                "_enemyLvl": 4,
-                "_name": "Bandits",
-                "_description": "",
-                "_biomSpawn": 1,
-                "_viewRadius": 3
-            },
-            "_axialPosition": {
-                "x": 11,
-                "y": 25
-            }
-        },
-        {
-            "_properties": {
-                "_sprite": {
-                    "instanceID": 19750
-                },
-                "_maxEnergy": 45,
-                "_enemyLvl": 4,
-                "_name": "Bandits",
-                "_description": "",
-                "_biomSpawn": 1,
-                "_viewRadius": 3
-            },
-            "_axialPosition": {
-                "x": 18,
                 "y": 22
             }
         },
         {
             "_properties": {
                 "_sprite": {
-                    "instanceID": 19754
+                    "instanceID": 19850
                 },
-                "_maxEnergy": 35,
-                "_enemyLvl": 5,
-                "_name": "",
+                "_maxEnergy": 45,
+                "_enemyLvl": 4,
+                "_name": "Desert Bandits",
                 "_description": "",
-                "_biomSpawn": 2,
-                "_viewRadius": 3
+                "_biomSpawn": 3,
+                "_viewRadius": 4
             },
             "_axialPosition": {
-                "x": 36,
-                "y": 47
+                "x": 19,
+                "y": 4
             }
         },
         {
             "_properties": {
                 "_sprite": {
-                    "instanceID": 19754
+                    "instanceID": 19852
                 },
                 "_maxEnergy": 35,
                 "_enemyLvl": 5,
@@ -116,19 +133,19 @@
                 "_viewRadius": 3
             },
             "_axialPosition": {
-                "x": 30,
-                "y": 48
+                "x": 32,
+                "y": 35
             }
         }
     ],
     "PlayerGroupModel": {
         "PlayerSettings": {
             "_visionRadius": 4,
-            "_energy": 37,
+            "_energy": 10,
             "_energyMax": 72,
             "_minSleepTime": 8,
             "_savedTeam": {
-                "instanceID": 19324
+                "instanceID": 19390
             },
             "SavedTeamList": [
                 {
@@ -137,7 +154,7 @@
                         "y": 0
                     },
                     "Character": {
-                        "instanceID": 19722
+                        "instanceID": 19802
                     }
                 },
                 {
@@ -146,7 +163,7 @@
                         "y": 1
                     },
                     "Character": {
-                        "instanceID": 19732
+                        "instanceID": 19802
                     }
                 },
                 {
@@ -155,435 +172,419 @@
                         "y": 2
                     },
                     "Character": {
-                        "instanceID": 19692
-                    }
-                },
-                {
-                    "Position": {
-                        "x": 1,
-                        "y": 1
-                    },
-                    "Character": {
-                        "instanceID": 19680
-                    }
-                },
-                {
-                    "Position": {
-                        "x": 1,
-                        "y": 2
-                    },
-                    "Character": {
-                        "instanceID": 19680
-                    }
-                },
-                {
-                    "Position": {
-                        "x": 2,
-                        "y": 1
-                    },
-                    "Character": {
-                        "instanceID": 19680
-                    }
-                },
-                {
-                    "Position": {
-                        "x": 2,
-                        "y": 2
-                    },
-                    "Character": {
-                        "instanceID": 19680
+                        "instanceID": 19802
                     }
                 }
             ]
         },
         "AxialPosition": {
-            "x": 19,
-            "y": 23
+            "x": 23,
+            "y": 11
         }
     },
     "BuildingsSaveData": {
         "templesSavedData": [
             {
                 "baseBuildingSetup": {
-                    "instanceID": 19494
+                    "instanceID": 19568
                 },
                 "axialPosition": {
-                    "x": 24,
-                    "y": 54
+                    "x": 25,
+                    "y": 46
                 },
                 "open": false
             },
             {
                 "baseBuildingSetup": {
-                    "instanceID": 19496
+                    "instanceID": 19570
                 },
                 "axialPosition": {
-                    "x": 51,
+                    "x": 22,
                     "y": 8
-                },
-                "open": false
-            },
-            {
-                "baseBuildingSetup": {
-                    "instanceID": 19498
-                },
-                "axialPosition": {
-                    "x": 44,
-                    "y": 26
                 },
                 "open": true
             },
             {
                 "baseBuildingSetup": {
-                    "instanceID": 19500
+                    "instanceID": 19572
                 },
                 "axialPosition": {
-                    "x": 0,
-                    "y": 35
+                    "x": 23,
+                    "y": 25
+                },
+                "open": false
+            },
+            {
+                "baseBuildingSetup": {
+                    "instanceID": 19574
+                },
+                "axialPosition": {
+                    "x": 33,
+                    "y": 38
                 },
                 "open": false
             }
         ],
         "recruitingCenterSavedData": [
             {
-                "recruitingCenterProperty": {
-                    "instanceID": 19480
-                },
-                "axialPosition": {
-                    "x": 53,
-                    "y": 44
-                },
-                "visited": false
-            },
-            {
-                "recruitingCenterProperty": {
-                    "instanceID": 19482
-                },
-                "axialPosition": {
-                    "x": 48,
-                    "y": 5
-                },
-                "visited": true
-            },
-            {
-                "recruitingCenterProperty": {
-                    "instanceID": 19484
-                },
-                "axialPosition": {
-                    "x": 47,
-                    "y": 46
-                },
-                "visited": false
-            },
-            {
-                "recruitingCenterProperty": {
-                    "instanceID": 19486
-                },
-                "axialPosition": {
-                    "x": 8,
-                    "y": 4
-                },
-                "visited": false
-            },
-            {
-                "recruitingCenterProperty": {
-                    "instanceID": 19488
-                },
-                "axialPosition": {
-                    "x": 12,
-                    "y": 46
-                },
-                "visited": false
-            },
-            {
-                "recruitingCenterProperty": {
-                    "instanceID": 19490
-                },
-                "axialPosition": {
-                    "x": 64,
-                    "y": 14
-                },
-                "visited": false
-            },
-            {
-                "recruitingCenterProperty": {
-                    "instanceID": 19492
-                },
-                "axialPosition": {
-                    "x": 60,
-                    "y": 24
-                },
-                "visited": false
-            },
-            {
-                "recruitingCenterProperty": {
-                    "instanceID": 19492
-                },
-                "axialPosition": {
-                    "x": 31,
-                    "y": 16
-                },
-                "visited": true
-            },
-            {
-                "recruitingCenterProperty": {
-                    "instanceID": 19492
-                },
-                "axialPosition": {
-                    "x": 55,
-                    "y": 17
-                },
-                "visited": false
-            },
-            {
-                "recruitingCenterProperty": {
-                    "instanceID": 19480
-                },
-                "axialPosition": {
-                    "x": 17,
-                    "y": 49
-                },
-                "visited": true
-            },
-            {
-                "recruitingCenterProperty": {
-                    "instanceID": 19482
-                },
-                "axialPosition": {
-                    "x": 6,
-                    "y": 8
-                },
-                "visited": false
-            },
-            {
-                "recruitingCenterProperty": {
-                    "instanceID": 19484
-                },
-                "axialPosition": {
-                    "x": 51,
-                    "y": 30
-                },
-                "visited": false
-            },
-            {
-                "recruitingCenterProperty": {
-                    "instanceID": 19486
-                },
-                "axialPosition": {
-                    "x": 6,
-                    "y": 11
-                },
-                "visited": false
-            },
-            {
-                "recruitingCenterProperty": {
-                    "instanceID": 19488
-                },
-                "axialPosition": {
-                    "x": 54,
-                    "y": 5
-                },
-                "visited": false
-            },
-            {
-                "recruitingCenterProperty": {
-                    "instanceID": 19490
-                },
-                "axialPosition": {
-                    "x": 62,
-                    "y": 25
-                },
-                "visited": false
-            },
-            {
-                "recruitingCenterProperty": {
-                    "instanceID": 19492
-                },
-                "axialPosition": {
-                    "x": 30,
-                    "y": 45
-                },
-                "visited": false
-            }
-        ],
-        "restingPlacesSavedData": [
-            {
-                "restingPlaceSetup": {
-                    "instanceID": 19502
+                "recruitingCenterSetup": {
+                    "instanceID": 19554
                 },
                 "baseBuildingSavedData": {
                     "baseBuildingSetup": {
-                        "instanceID": 19502
+                        "instanceID": 19554
                     },
                     "axialPosition": {
-                        "x": 51,
-                        "y": 11
-                    },
-                    "open": false
-                }
-            },
-            {
-                "restingPlaceSetup": {
-                    "instanceID": 19502
-                },
-                "baseBuildingSavedData": {
-                    "baseBuildingSetup": {
-                        "instanceID": 19502
-                    },
-                    "axialPosition": {
-                        "x": 73,
-                        "y": 9
+                        "x": 26,
+                        "y": 46
                     },
                     "open": true
                 }
             },
             {
-                "restingPlaceSetup": {
-                    "instanceID": 19502
+                "recruitingCenterSetup": {
+                    "instanceID": 19556
                 },
                 "baseBuildingSavedData": {
                     "baseBuildingSetup": {
-                        "instanceID": 19502
+                        "instanceID": 19556
                     },
                     "axialPosition": {
-                        "x": 27,
+                        "x": 29,
+                        "y": 3
+                    },
+                    "open": true
+                }
+            },
+            {
+                "recruitingCenterSetup": {
+                    "instanceID": 19558
+                },
+                "baseBuildingSavedData": {
+                    "baseBuildingSetup": {
+                        "instanceID": 19558
+                    },
+                    "axialPosition": {
+                        "x": 44,
+                        "y": 22
+                    },
+                    "open": true
+                }
+            },
+            {
+                "recruitingCenterSetup": {
+                    "instanceID": 19560
+                },
+                "baseBuildingSavedData": {
+                    "baseBuildingSetup": {
+                        "instanceID": 19560
+                    },
+                    "axialPosition": {
+                        "x": 28,
+                        "y": 3
+                    },
+                    "open": true
+                }
+            },
+            {
+                "recruitingCenterSetup": {
+                    "instanceID": 19562
+                },
+                "baseBuildingSavedData": {
+                    "baseBuildingSetup": {
+                        "instanceID": 19562
+                    },
+                    "axialPosition": {
+                        "x": 11,
                         "y": 14
                     },
-                    "open": false
+                    "open": true
                 }
             },
             {
-                "restingPlaceSetup": {
-                    "instanceID": 19504
+                "recruitingCenterSetup": {
+                    "instanceID": 19564
                 },
                 "baseBuildingSavedData": {
                     "baseBuildingSetup": {
-                        "instanceID": 19504
+                        "instanceID": 19564
                     },
                     "axialPosition": {
-                        "x": 15,
-                        "y": 7
+                        "x": 28,
+                        "y": 14
+                    },
+                    "open": true
+                }
+            },
+            {
+                "recruitingCenterSetup": {
+                    "instanceID": 19566
+                },
+                "baseBuildingSavedData": {
+                    "baseBuildingSetup": {
+                        "instanceID": 19566
+                    },
+                    "axialPosition": {
+                        "x": 39,
+                        "y": 30
                     },
                     "open": false
                 }
             },
             {
-                "restingPlaceSetup": {
-                    "instanceID": 19504
+                "recruitingCenterSetup": {
+                    "instanceID": 19566
                 },
                 "baseBuildingSavedData": {
                     "baseBuildingSetup": {
-                        "instanceID": 19504
+                        "instanceID": 19566
                     },
                     "axialPosition": {
                         "x": 19,
-                        "y": 6
+                        "y": 21
                     },
-                    "open": false
+                    "open": true
                 }
             },
             {
-                "restingPlaceSetup": {
-                    "instanceID": 19504
+                "recruitingCenterSetup": {
+                    "instanceID": 19566
                 },
                 "baseBuildingSavedData": {
                     "baseBuildingSetup": {
-                        "instanceID": 19504
+                        "instanceID": 19566
                     },
                     "axialPosition": {
-                        "x": 12,
-                        "y": 8
-                    },
-                    "open": false
-                }
-            }
-        ],
-        "observationPlaceSavedData": [
-            {
-                "placeSetup": {
-                    "instanceID": -1789326
-                },
-                "baseBuildingSavedData": {
-                    "baseBuildingSetup": {
-                        "instanceID": -1789326
-                    },
-                    "axialPosition": {
-                        "x": 45,
+                        "x": 30,
                         "y": 26
                     },
                     "open": true
                 }
             },
             {
-                "placeSetup": {
-                    "instanceID": -1789326
+                "recruitingCenterSetup": {
+                    "instanceID": 19554
                 },
                 "baseBuildingSavedData": {
                     "baseBuildingSetup": {
-                        "instanceID": -1789326
+                        "instanceID": 19554
                     },
                     "axialPosition": {
-                        "x": 25,
-                        "y": 37
+                        "x": 41,
+                        "y": 19
                     },
                     "open": true
                 }
             },
             {
-                "placeSetup": {
-                    "instanceID": -1789326
+                "recruitingCenterSetup": {
+                    "instanceID": 19556
                 },
                 "baseBuildingSavedData": {
                     "baseBuildingSetup": {
-                        "instanceID": -1789326
+                        "instanceID": 19556
+                    },
+                    "axialPosition": {
+                        "x": 11,
+                        "y": 11
+                    },
+                    "open": true
+                }
+            },
+            {
+                "recruitingCenterSetup": {
+                    "instanceID": 19558
+                },
+                "baseBuildingSavedData": {
+                    "baseBuildingSetup": {
+                        "instanceID": 19558
+                    },
+                    "axialPosition": {
+                        "x": 39,
+                        "y": 33
+                    },
+                    "open": true
+                }
+            },
+            {
+                "recruitingCenterSetup": {
+                    "instanceID": 19560
+                },
+                "baseBuildingSavedData": {
+                    "baseBuildingSetup": {
+                        "instanceID": 19560
+                    },
+                    "axialPosition": {
+                        "x": 35,
+                        "y": 1
+                    },
+                    "open": true
+                }
+            },
+            {
+                "recruitingCenterSetup": {
+                    "instanceID": 19562
+                },
+                "baseBuildingSavedData": {
+                    "baseBuildingSetup": {
+                        "instanceID": 19562
                     },
                     "axialPosition": {
                         "x": 38,
-                        "y": 52
+                        "y": 19
                     },
                     "open": true
                 }
             },
             {
-                "placeSetup": {
-                    "instanceID": -1789326
+                "recruitingCenterSetup": {
+                    "instanceID": 19564
                 },
                 "baseBuildingSavedData": {
                     "baseBuildingSetup": {
-                        "instanceID": -1789326
+                        "instanceID": 19564
                     },
                     "axialPosition": {
                         "x": 54,
-                        "y": 35
+                        "y": 21
+                    },
+                    "open": true
+                }
+            },
+            {
+                "recruitingCenterSetup": {
+                    "instanceID": 19566
+                },
+                "baseBuildingSavedData": {
+                    "baseBuildingSetup": {
+                        "instanceID": 19566
+                    },
+                    "axialPosition": {
+                        "x": 52,
+                        "y": 12
+                    },
+                    "open": true
+                }
+            }
+        ],
+        "restingPlacesSavedData": [
+            {
+                "restingPlaceSetup": {
+                    "instanceID": 19576
+                },
+                "baseBuildingSavedData": {
+                    "baseBuildingSetup": {
+                        "instanceID": 19576
+                    },
+                    "axialPosition": {
+                        "x": 20,
+                        "y": 34
+                    },
+                    "open": true
+                }
+            },
+            {
+                "restingPlaceSetup": {
+                    "instanceID": 19576
+                },
+                "baseBuildingSavedData": {
+                    "baseBuildingSetup": {
+                        "instanceID": 19576
+                    },
+                    "axialPosition": {
+                        "x": 63,
+                        "y": 7
+                    },
+                    "open": true
+                }
+            },
+            {
+                "restingPlaceSetup": {
+                    "instanceID": 19576
+                },
+                "baseBuildingSavedData": {
+                    "baseBuildingSetup": {
+                        "instanceID": 19576
+                    },
+                    "axialPosition": {
+                        "x": 39,
+                        "y": 10
+                    },
+                    "open": true
+                }
+            },
+            {
+                "restingPlaceSetup": {
+                    "instanceID": 19578
+                },
+                "baseBuildingSavedData": {
+                    "baseBuildingSetup": {
+                        "instanceID": 19578
+                    },
+                    "axialPosition": {
+                        "x": 16,
+                        "y": 12
+                    },
+                    "open": true
+                }
+            },
+            {
+                "restingPlaceSetup": {
+                    "instanceID": 19578
+                },
+                "baseBuildingSavedData": {
+                    "baseBuildingSetup": {
+                        "instanceID": 19578
+                    },
+                    "axialPosition": {
+                        "x": 17,
+                        "y": 2
+                    },
+                    "open": true
+                }
+            },
+            {
+                "restingPlaceSetup": {
+                    "instanceID": 19578
+                },
+                "baseBuildingSavedData": {
+                    "baseBuildingSetup": {
+                        "instanceID": 19578
+                    },
+                    "axialPosition": {
+                        "x": 18,
+                        "y": 5
+                    },
+                    "open": true
+                }
+            }
+        ],
+        "observationPlaceSavedData": [
+            {
+                "placeSetup": {
+                    "instanceID": 19580
+                },
+                "baseBuildingSavedData": {
+                    "baseBuildingSetup": {
+                        "instanceID": 19580
+                    },
+                    "axialPosition": {
+                        "x": 31,
+                        "y": 16
                     },
                     "open": true
                 }
             },
             {
                 "placeSetup": {
-                    "instanceID": -1789326
+                    "instanceID": 19580
                 },
                 "baseBuildingSavedData": {
                     "baseBuildingSetup": {
-                        "instanceID": -1789326
+                        "instanceID": 19580
                     },
                     "axialPosition": {
-                        "x": 57,
-                        "y": 13
-                    },
-                    "open": false
-                }
-            },
-            {
-                "placeSetup": {
-                    "instanceID": -1785938
-                },
-                "baseBuildingSavedData": {
-                    "baseBuildingSetup": {
-                        "instanceID": -1785938
-                    },
-                    "axialPosition": {
-                        "x": 34,
+                        "x": 42,
                         "y": 20
                     },
                     "open": false
@@ -591,60 +592,120 @@
             },
             {
                 "placeSetup": {
-                    "instanceID": -1785938
+                    "instanceID": 19580
                 },
                 "baseBuildingSavedData": {
                     "baseBuildingSetup": {
-                        "instanceID": -1785938
+                        "instanceID": 19580
                     },
                     "axialPosition": {
-                        "x": 31,
-                        "y": 18
-                    },
-                    "open": false
-                }
-            },
-            {
-                "placeSetup": {
-                    "instanceID": -1785938
-                },
-                "baseBuildingSavedData": {
-                    "baseBuildingSetup": {
-                        "instanceID": -1785938
-                    },
-                    "axialPosition": {
-                        "x": 61,
-                        "y": 25
-                    },
-                    "open": false
-                }
-            },
-            {
-                "placeSetup": {
-                    "instanceID": -1785938
-                },
-                "baseBuildingSavedData": {
-                    "baseBuildingSetup": {
-                        "instanceID": -1785938
-                    },
-                    "axialPosition": {
-                        "x": 40,
-                        "y": 30
+                        "x": 25,
+                        "y": 20
                     },
                     "open": true
                 }
             },
             {
                 "placeSetup": {
-                    "instanceID": -1785938
+                    "instanceID": 19580
                 },
                 "baseBuildingSavedData": {
                     "baseBuildingSetup": {
-                        "instanceID": -1785938
+                        "instanceID": 19580
                     },
                     "axialPosition": {
-                        "x": 9,
-                        "y": 38
+                        "x": 54,
+                        "y": 3
+                    },
+                    "open": true
+                }
+            },
+            {
+                "placeSetup": {
+                    "instanceID": 19580
+                },
+                "baseBuildingSavedData": {
+                    "baseBuildingSetup": {
+                        "instanceID": 19580
+                    },
+                    "axialPosition": {
+                        "x": 5,
+                        "y": 31
+                    },
+                    "open": true
+                }
+            },
+            {
+                "placeSetup": {
+                    "instanceID": 19582
+                },
+                "baseBuildingSavedData": {
+                    "baseBuildingSetup": {
+                        "instanceID": 19582
+                    },
+                    "axialPosition": {
+                        "x": 35,
+                        "y": 22
+                    },
+                    "open": false
+                }
+            },
+            {
+                "placeSetup": {
+                    "instanceID": 19582
+                },
+                "baseBuildingSavedData": {
+                    "baseBuildingSetup": {
+                        "instanceID": 19582
+                    },
+                    "axialPosition": {
+                        "x": 34,
+                        "y": 39
+                    },
+                    "open": true
+                }
+            },
+            {
+                "placeSetup": {
+                    "instanceID": 19582
+                },
+                "baseBuildingSavedData": {
+                    "baseBuildingSetup": {
+                        "instanceID": 19582
+                    },
+                    "axialPosition": {
+                        "x": 56,
+                        "y": 10
+                    },
+                    "open": true
+                }
+            },
+            {
+                "placeSetup": {
+                    "instanceID": 19582
+                },
+                "baseBuildingSavedData": {
+                    "baseBuildingSetup": {
+                        "instanceID": 19582
+                    },
+                    "axialPosition": {
+                        "x": 42,
+                        "y": 29
+                    },
+                    "open": true
+                }
+            },
+            {
+                "placeSetup": {
+                    "instanceID": 19582
+                },
+                "baseBuildingSavedData": {
+                    "baseBuildingSetup": {
+                        "instanceID": 19582
+                    },
+                    "axialPosition": {
+                        "x": 38,
+                        "y": 20
                     },
                     "open": false
                 }

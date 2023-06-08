@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a51b36707064af7b8a3650c5840ea1a, type: 3}
   m_Name: DesertCamp
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: ae589448c70f5244694497cc0d48fe42, type: 3}
   name: Desert Camp
   description: azaza
   landType: 1
   landBiom: 3
+  sprite: {fileID: 21300000, guid: ae589448c70f5244694497cc0d48fe42, type: 3}
+  iconSprite: {fileID: 21300000, guid: 73b277da837c0874893f6123d5842ca0, type: 3}
   Recruits:
   - {fileID: 11400000, guid: 6cb130ea6c8589047bade5a3ef1e6672, type: 2}
   - {fileID: 11400000, guid: c0048e278ebb72049b7216643602d213, type: 2}

@@ -35,6 +35,7 @@ public class RiverView : MonoBehaviour, IPoolable<IMemoryPool>, IDisposable
         _lineRenderer.positionCount = positions.Count;
         _lineRenderer.SetPositions(positions.ToArray());
     }
+    
 
     public class Factory : PlaceholderFactory<RiverView>
     {

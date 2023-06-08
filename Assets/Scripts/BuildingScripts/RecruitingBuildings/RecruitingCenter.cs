@@ -1,54 +1,51 @@
 ﻿using System;
+using GameEvents;
+using GameEvents.MapObjectDescriptionSignal;
 using UnityEngine;
 using Zenject;
 
 namespace BuildingScripts.RecruitingBuildings
 {
-    public class RecruitingCenter : MonoBehaviour, IPoolable<RecruitingCenter.RecruitingCenterSavedData, IMemoryPool>
+    public class RecruitingCenter : BuildingModel
     {
-        [SerializeField]
-        private SpriteRenderer _spriteRendererImage;
-        [SerializeField]
-        private SpriteRenderer _visitHighlight;
+        public RecruitingCenterSetup RecruitingCenterSetup { get;}
+        private SignalBus _signalBus; 
 
-        private IMemoryPool _pool;
-
-        public RecruitingCenterProperty RecruitingCenterProperty { get; private set; }
-
-        public Vector2Int AxialPosition { get; private set; }
-        public bool Visited { get; set; }
-
-
-        public void Despawn()
+        
+        public RecruitingCenter(RecruitingCenterSetup recruitingCenterSetup, BaseBuilding baseBuilding, IDescriptionSignalInvoker descriptionSignalInvoker, SignalBus signalBus) : base(baseBuilding, descriptionSignalInvoker)
         {
-            _pool.Despawn(this);
+            RecruitingCenterSetup = recruitingCenterSetup;
+            _signalBus = signalBus;
+        }
+
+        protected override void PlayerAtBuilding()
+        {
+            if (Open)
+            {
+                SetOpen(false);
+                _signalBus.Fire(new GameSignals.RecruitingCenterVisitSignal() {RecruitingCenter = this} );
+            }
         }
         
-        public void OnDespawned()
-        {
-            _pool = null;
-            RecruitingCenterProperty = null;
-            Visited = false;
-        }
         
-        public void OnSpawned(RecruitingCenterSavedData property, IMemoryPool pool)
-        {   
-            Visited = property.visited;
-            RecruitingCenterProperty = property.recruitingCenterProperty;
-            _spriteRendererImage.sprite = property.recruitingCenterProperty.sprite;
-            _visitHighlight.color = Visited ? Color.clear : Color.green;
-            _pool = pool;
-            AxialPosition = property.axialPosition;
-            transform.position = HexUtils.CalculatePosition(AxialPosition);
-        }
 
         public RecruitingCenterSavedData GetRecruitingCenterData()
         {
-            return new RecruitingCenterSavedData(RecruitingCenterProperty, AxialPosition, Visited);
+            return new RecruitingCenterSavedData(RecruitingCenterSetup, _baseBuilding.GetBaseBuildingSavedData());
         }
         
+        protected override string GetDescription()
+        {
+            string description = "Allows to recruit new crew members for money: ";
+
+            foreach (var recruit in RecruitingCenterSetup.Recruits)
+            {
+                description += $"\n {recruit.CharacterName} - {recruit.HireCost}";
+            }
+            return description;
+        }
         
-        public class Factory : PlaceholderFactory<RecruitingCenterSavedData, RecruitingCenter>
+        public class Factory : PlaceholderFactory<RecruitingCenterSetup, BaseBuilding, RecruitingCenter>
         {
 
         }
@@ -57,18 +54,14 @@ namespace BuildingScripts.RecruitingBuildings
         public struct RecruitingCenterSavedData
         {
             [SerializeField]
-            public RecruitingCenterProperty recruitingCenterProperty;
+            public RecruitingCenterSetup recruitingCenterSetup;
             [SerializeField]
-            public Vector2Int axialPosition;
-            [SerializeField]
-            public bool visited;
+            public BaseBuilding.BaseBuildingSavedData baseBuildingSavedData;
 
-
-            public RecruitingCenterSavedData(RecruitingCenterProperty recruitingCenterProperty, Vector2Int axialPosition, bool visited)
+            public RecruitingCenterSavedData(RecruitingCenterSetup recruitingCenterSetup, BaseBuilding.BaseBuildingSavedData baseBuildingSavedData)
             {
-                this.recruitingCenterProperty = recruitingCenterProperty;
-                this.axialPosition = axialPosition;
-                this.visited = visited;
+                this.recruitingCenterSetup = recruitingCenterSetup;
+                this.baseBuildingSavedData = baseBuildingSavedData;
             }
         }
     }

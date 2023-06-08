@@ -6,6 +6,6 @@ namespace BuildingScripts.RecruitingBuildings
     [CreateAssetMenu(menuName = "Buildings/RecruitingCentersOnMap")]
     public class RecruitingCentersOnMap : ScriptableObject
     {
-        public List<RecruitingCenterProperty> recruitingCenterProperties;
+        public List<RecruitingCenterSetup> recruitingCenterProperties;
     }
 }

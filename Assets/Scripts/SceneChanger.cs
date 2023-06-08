@@ -54,6 +54,7 @@ namespace DefaultNamespace
 
         public void RecruitSceneBegin()
         {
+            Debug.Log("RecruitSceneBegin");
             SceneManager.LoadSceneAsync("TeamCreationScene", LoadSceneMode.Single);
         }
         
